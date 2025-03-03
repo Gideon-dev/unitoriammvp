@@ -2,20 +2,209 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+.sora{
+  font-family: var(--font-sora);
+}
+.border-thin{
+  border: 2px solid red;
+}
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 11 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.label-text{
+  font-family: var(--font-sora);
+  font-weight: 400;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15.12px;
+  letter-spacing: -0.03em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  margin-bottom: 10px;
+}
+.input-style{
+  background-color: rgba(17, 17, 17, 1);
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+}
+#main-box{
+  background-color: rgba(26, 27, 26, 1); 
+}
+.sign-in,
+.create-account{
+  font-family:var(--font-sora);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17.64px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  padding-block: 1.5rem;
+}
+.entry-select{
+  background-color: rgba(17, 17, 17, 1);
+}
+.forgot-password-link{
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12.6px;
+  letter-spacing: -0.03em;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: auto;
+}
+.sign-in-btn{
+  background-color: #DB0D0D;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15.12px;
+  letter-spacing: -0.03em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #FFFFFF;
+}
+.sign-in-btn:disabled{
+  background-color: #AC8D8A;
+  color: #DB0D0D;
+}
+.google-sign-in-btn{
+  background-color: rgba(255, 255, 255, 1);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15.12px;
+  letter-spacing: -0.03em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 0, 0, 1);
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(50);
+  animation: fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.err-msg{
+  font-size: 11.6px;
+  font-weight: 400;
+  line-height: 14.62px;
+  letter-spacing: -0.03em;
+  color: rgba(219, 13, 13, 1);
+  text-align: left;
+  padding-right: 1rem; 
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+.succ-msg{
+  font-size: 11.6px;
+  font-weight: 400;
+  line-height: 14.62px;
+  letter-spacing: -0.03em;
+  color: green;
+  text-align: left;
+  padding-right: 1rem; 
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+.search-icon{
+  position: absolute;
+  top: 50%;
+  left: 3vw;
+  transform: translateY(-50%);
+}
+.selectedTexT{
+  color: #DB0D0D;
+}
+.selected-border{
+  border: 1px solid #DB0D0D;
+}
+.p_selected{
+  background-color: #F0DEDE;
+  color: #DB0D0D;
+  border: 1px solid #DB0D0D;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  --font-sora: 'sora', sans-serif;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
