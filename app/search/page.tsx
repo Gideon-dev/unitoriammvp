@@ -1,5 +1,4 @@
 "use client";
-import { MainCourse } from '@/app/utils/interface';
 import React, { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { useCourseStore } from '../lib/useCourseStore';
@@ -16,7 +15,7 @@ export default function SearchPage() {
   // Fetch courses on mount
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [fetchCourses]);
 
   // Handle Search
   const handleSearch = (query: string) => {
@@ -73,7 +72,7 @@ export default function SearchPage() {
           <div className='w-full flex flex-col items-center justify-center mt-5 sora'>
             <Image src={NoResultFoundImg} className='w-[90%] h-auto' alt='Error image' />
             <p className='text-center text-[16px]/[20px] text-[#FFFFFF] font-semibold'>No Tutorial Found for</p>
-            <p className='text-center text-[14px]/[20px] text-[#FFFFFF]/[50%] font-normal'>'{query}'</p>
+            <p className='text-center text-[14px]/[20px] text-[#FFFFFF]/[50%] font-normal'>&lsquo;{query}&rsquo;</p>
           </div>
         )}
       </div>

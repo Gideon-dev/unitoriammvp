@@ -16,7 +16,7 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
       if (course?.lectures.length > 0) {
         setSelectedCourse(course.lectures[0]);
       }
-    }, []);
+    }, [course.lectures]);
     
   return (
     <section className='w-full mt-[49px] sora'>

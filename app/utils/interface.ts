@@ -14,7 +14,7 @@ export interface genericInputProps {
     placeholder?: string,
     label?: string,
     value?: string,
-    handleChange?: (e:any) => void;
+    handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface formBtnProps {
@@ -126,7 +126,7 @@ export interface MainCourse {
     lectures: Lecture[];
     average_rating: number | null;
     rating_count: number;
-    review: any[]; // Assuming an array of reviews (modify if needed)
+    review: unknown[]; // Assuming an array of reviews (modify if needed)
 }
 export interface CourseFilters {
     level?: string;

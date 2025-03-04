@@ -1,4 +1,4 @@
-import backBtn from "../../../../public/back-btn.svg";
+
 import Image from "next/image";
 import UtilityBar from "@/app/components/UtilityBar";
 import UserBadge from "@/app/components/UserBadge";

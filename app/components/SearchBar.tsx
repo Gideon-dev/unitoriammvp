@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import searchLogo from "../../public/search-normal.svg";
 import debounce from "lodash.debounce";
@@ -13,9 +13,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
     const [query, setQuery] = useState<string|undefined>(defValue);
 
  
-    const debouncedSearch = useCallback(
-        debounce((value) => onSearchChange(value), 500), 
-        []
+     const debouncedSearch = useMemo(
+        () => debounce((value) => onSearchChange(value), 500), 
+        [onSearchChange]
     );
 
     // Handle Input Change

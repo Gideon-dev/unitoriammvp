@@ -4,22 +4,17 @@ import Image from 'next/image';
 import unitoriaLogo from '../../../public/logo.svg';  
 import googleLogo from '../../../public/google-icon.svg';
 import Link from 'next/link';
-import { FormEvent, useActionState, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import FormBtn from "@/app/components/FormBtn";
 import MessageBox from "@/app/components/ErrorAndSuccessMsg";
 import { useRouter } from "next/navigation";
 
-const page: React.FC = () => {
+const SignInPage: React.FC = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [ErrorMessage, setErrorMessage] = useState<string|null>("");
-  const [userInfo, setuserInfo] = useState({
-    email: "",
-    password:""
-  })
   const [password, setPassword] = useState("");
-  const [passwordProgress, setPasswordProgress] = useState<number>(0);
   const passwordRules = {
     minLength: {
       test: (password: string) => password.length >= 8,
@@ -116,9 +111,14 @@ const page: React.FC = () => {
         }
       }
       
-    } catch (error: any) {
-      console.error("Invalid credentials:", error);
-      throw new Error(error.message || "An error occurred while signing in.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Invalid credentials:", error.message);
+        setErrorMessage(error.message || "An error occurred while signing in.");
+      } else {
+        console.error("An unexpected error occurred.");
+        setErrorMessage("An unexpected error occurred.");
+      }
     } finally{
       setisLoading((previsLoading) => !previsLoading);
     }
@@ -197,10 +197,10 @@ const page: React.FC = () => {
             </div>
               <div className="flex flex-col gap-5 mt-[45px]">
                 <FormBtn 
-                btnlabel='Sign in' 
+                btnlabel={isLoading ? 'Signing in...' : 'Sign in'} 
                 btnStyling='sign-in-btn p-3'
                 btnName='credentials'
-                // isDisabled={!isValidPassword}
+                isDisabled={isValidPassword}
                 />
                 <FormBtn
                 btnlabel='Sign in with Google' 
@@ -218,4 +218,4 @@ const page: React.FC = () => {
   )
 }
 
-export default page;
+export default SignInPage;

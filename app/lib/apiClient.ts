@@ -40,7 +40,7 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return apiClient(originalRequest); // Retry request with new token
       } catch (refreshError) {
-        console.error("Refresh Token Expired. Signing out...");
+        console.error("Refresh Token Expired. Signing out...", refreshError);
         signOut(); // Log the user out
       }
     }

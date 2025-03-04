@@ -33,7 +33,6 @@ const RatedItems = () =>{
 
 export const RatedItem = ({
     course_jpg, 
-    id,
     author_name, 
     tut_topic, 
     subject_icon, 

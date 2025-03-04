@@ -1,9 +1,10 @@
 import { auth } from "../utils/auth";
+import { MainCourse } from "../utils/interface";
 
-export async function getCourse(slug: string) {
+export async function getCourse(slug: string):Promise<MainCourse | null> {
     console.log("Fetching course with slug:", slug); // Debugging
     
-    const session = await auth(); // Ensure authentication
+    const session = await auth() // Ensure authentication
     // console.log("getCourse Session Data:", session);
     if (!session?.accessToken) {
         console.error("No valid access token found");
@@ -18,8 +19,12 @@ export async function getCourse(slug: string) {
         });
 
         return await response.json();
-    } catch (error: any) {
-        console.error("Error fetching course:", error.response?.data || error.message);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Error fetching course:", error.message);
+        } else {
+            console.error("An unexpected error occurred", error);
+        }
         return null; // Handle errors gracefully
     }
 }

@@ -18,11 +18,12 @@ export async function getEnrolledCourses() {
     });
 
     if (!response.ok) throw new Error("Failed to fetch enrolled courses");
-
     const data = await response.json();
     return data?.courses || []; // Assuming the API response has `courses` array
-  } catch (error: any) {
-    console.error("Error fetching enrolled courses:", error.message);
+  } catch (error: unknown) {
+    if(error instanceof Error){
+      console.error("Error fetching enrolled courses:", error.message);
+    }
     return [];
   }
 }

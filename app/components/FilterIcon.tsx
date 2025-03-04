@@ -7,18 +7,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CustomDropdown } from './CustomDropdown';
 import { dataRated, departments } from '../utils/data';
 import { useCourseStore } from '../lib/useCourseStore';
-import { CourseFilters } from '../utils/interface';
 import { useRouter } from 'next/navigation';
 
 
 
 export const FilterIcon = () => {
-  const  {setFilters, filters} = useCourseStore();
+  const  {setFilters} = useCourseStore();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [courseList, setIsCourseList] = useState(dataRated.map((item)=> item.tut_topic));
-  const [department, setDepartment] = useState(departments.map((item)=> item.name));
-  const [Level, setLevel] = useState<string[]>(["100","200","300","400","500"]);
+  const courseList = dataRated.map((item) => item.tut_topic);
+  const department = departments.map((item) => item.name);
+  const Level = ["100", "200", "300", "400", "500"];
+  
 
   const handleSelectDropdown = (key: string, value: string) => {
     setFilters((prev) => ({ 

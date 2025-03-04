@@ -14,7 +14,7 @@ import { signOut, useSession } from "next-auth/react";
 
 
 
-const page = () => {
+const DashboardHome = () => {
   const { data: session, status } = useSession();
    console.log("Session Data:", session);
   console.log("Status:", status);
@@ -96,4 +96,4 @@ const page = () => {
   )
 }
 
-export default page
+export default DashboardHome;

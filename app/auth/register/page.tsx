@@ -7,12 +7,12 @@ import Link from 'next/link'
 import Logo from "../../../public/logo.svg"
 import googleLogo from "../../../public/google-icon.svg"
 import { useRouter } from "next/navigation"
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 const RegisterPage = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false );
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  // const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [Data, setData] = useState({
     full_name: "",
@@ -25,6 +25,7 @@ const RegisterPage = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true)
+    // setBtnDisabled()
     // Prepare the data object
     const updatedData = {
       full_name: (event.target as HTMLFormElement).full_name.value,
@@ -129,7 +130,7 @@ const RegisterPage = () => {
             </div>
             <div className="flex flex-col gap-5 mt-[45px]">
               <FormBtn 
-              isDisabled={btnDisabled}
+              isDisabled={loading}
               btnlabel='Sign Up' 
               btnStyling='p-3 sign-in-btn'
               btnName='credentials'

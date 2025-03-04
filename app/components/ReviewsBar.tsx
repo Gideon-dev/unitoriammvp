@@ -1,8 +1,8 @@
 import React from 'react'
 
-type Props = {}
 
-const ReviewsBar = (props: Props) => {
+
+const ReviewsBar = () => {
   return (
     <div>ReviewsBar</div>
   )

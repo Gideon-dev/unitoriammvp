@@ -1,29 +1,26 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import apiClient from './apiClient';
-import { User } from 'next-auth';
 import { MainCourse } from '../utils/interface';
-import { auth } from '../utils/auth';
-import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 type handlePaymentProps = {
     gateway: string,
     course: MainCourse | null,
+    session: Session | null
 }
-const handlePayment = async ({gateway, course}:handlePaymentProps) => {
-    const { data: session } = useSession();
-
+const HandlePayment = async ({gateway, course, session}:handlePaymentProps) => {
     if (!session) {
         console.error("User not authenticated");
         return;
     }
     try {
         const response = await apiClient.post("https://tutormeapi-6w2f.onrender.com/api/v2/initialize-payment/", {
-            full_name: session.full_name,
-            email: session.email,
+            full_name: session?.full_name,
+            email: session?.email,
             price: course?.price,
             course_id: course?.id,
-            user_id: session.userId,
+            user_id: session?.userId,
             gateway : gateway
         });
 
@@ -68,4 +65,4 @@ const VerifyPayment = () => {
     return null;
 };
 
-export { handlePayment, VerifyPayment };
+export { HandlePayment, VerifyPayment };

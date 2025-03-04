@@ -1,12 +1,11 @@
 "use client";
 import apiClient from '@/app/lib/apiClient';
-import { VerifyPayment } from '@/app/lib/paymentHandle'
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 
-type Props = {}
 
-const page = async() => {
+
+const HandleSuccessPage = () => {
     const router = useRouter();
 
     useEffect(() => {
@@ -44,4 +43,4 @@ const page = async() => {
   )
 }
 
-export default page
+export default HandleSuccessPage;

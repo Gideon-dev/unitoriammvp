@@ -1,5 +1,3 @@
-"use client";
-import React, { MouseEvent, useState } from 'react';
 import Image from 'next/image';
 import EyeIcon from '../../public/eye.svg';
 import EyeOffIcon from '../../public/eye-slash.svg'; 

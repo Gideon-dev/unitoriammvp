@@ -9,6 +9,7 @@ import AuthProvider from "./components/SessionProvider";
 export const metadata: Metadata = {
   title: "Unitoria",
   description: "Your Best Study Guide",
+  icons: "/favicon.png"
 };
 
 export default function RootLayout({

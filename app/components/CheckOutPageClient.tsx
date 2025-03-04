@@ -3,10 +3,7 @@ import BillingItems from '@/app/components/BillingItems';
 import CheckoutBtn from '@/app/components/CheckoutBtn';
 import UtilityBar from '@/app/components/UtilityBar';
 import { MainCourse } from '@/app/utils/interface';
-import Image from 'next/image';
-import { useParams, useSearchParams } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react'
-import { getCourse } from '../lib/getCourse';
+import React, { useRef, useState } from 'react'
 
 type CheckoutProps ={
     course: MainCourse
@@ -16,7 +13,7 @@ type CheckoutProps ={
     const flutterWaveRef = useRef<HTMLButtonElement | null>(null);
     const payStackRef = useRef<HTMLButtonElement | null>(null);
     const [gateway, setGateway] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);   
+    // const [loading, setLoading] = useState<boolean>(false);   
 
     const handleSelect = (selected: "flutterwave" | "paystack") => {
         if (selected === "flutterwave") {

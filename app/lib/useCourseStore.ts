@@ -29,7 +29,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
 
   searchCourses: (query, searchfilters) => {
     const { courses } = get();
-    let filtered = courses.filter(course => 
+    const filtered = courses.filter(course => 
       course.title.toLowerCase().includes(query.toLowerCase()) &&
       (searchfilters?.level ? course.level === searchfilters.level : true) &&
       (searchfilters?.department ? course.department.includes(searchfilters.department) : true)

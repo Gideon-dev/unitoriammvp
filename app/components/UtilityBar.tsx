@@ -1,9 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {}
-
-const UtilityBar = (props: Props) => {
+const UtilityBar = () => {
   return (
     <div className='flex w-fit gap-2 items-center'>
       <div className='flex items-center gap-1 text-[8.73px]/[11px] -tracking-[3%]'>
