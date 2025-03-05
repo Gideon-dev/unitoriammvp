@@ -76,7 +76,9 @@ export const authOptions: NextAuthOptions = {
       session.userId = token.sub;
       session.full_name = token.full_name;
       session.user!.email = token.email;
+      // console.log("session body:", session);
       return session;
+      
     },
   },
 };

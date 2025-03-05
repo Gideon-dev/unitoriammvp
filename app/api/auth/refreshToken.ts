@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 import axios from "axios";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const session = await getSession({ req });
+  const session = await getSession({ req });  
 
   if (!session || !session.refreshToken) {
     return res.status(401).json({ error: "Unauthorized" });

@@ -9,28 +9,46 @@ type handlePaymentProps = {
     course: MainCourse | null,
     session: Session | null
 }
-const HandlePayment = async ({gateway, course, session}:handlePaymentProps) => {
+const HandlePayment = async ({ gateway, course, session }: handlePaymentProps) => {
     if (!session) {
         console.error("User not authenticated");
         return;
     }
+
+    const requestData = {
+        full_name: session?.full_name,
+        email: session.user?.email,
+        price: course?.price,
+        course_id: course?.id,
+        user_id: session?.userId,
+        gateway: gateway
+    };
+
+    console.log("🚀 Sending request:", requestData);
+
     try {
-        const response = await apiClient.post("https://tutormeapi-6w2f.onrender.com/api/v2/initialize-payment/", {
-            full_name: session?.full_name,
-            email: session?.email,
-            price: course?.price,
-            course_id: course?.id,
-            user_id: session?.userId,
-            gateway : gateway
-        });
+        const response = await apiClient.post(
+            "https://tutormeapi-6w2f.onrender.com/api/v2/initialize-payment/",
+            requestData ,
+               {
+                headers: {
+                    "Content-Type": "application/json",
+                    // Authorization: `Bearer ${session?.token}`
+                }
+            }
+        
+        );
+
+        console.log("✅ Payment initialized:", response.data);
 
         if (response.data.payment_url) {
             window.location.href = response.data.payment_url;
         }
     } catch (error) {
-        console.error("Payment initialization failed:", error);
+        console.error("❌ Payment initialization failed:", error);
     }
 };
+
 
 const VerifyPayment = () => {
     const router = useRouter();

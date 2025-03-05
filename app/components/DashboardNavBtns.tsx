@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
  const DashboardBtns = () =>{
   const pathname = usePathname();
   const router = useRouter();
-  const hiddenRoutes = ["/auth/signIn","/auth/register","/auth/signUp","/search","/courses/course-detail","/auth/checkout"];
+  const hiddenRoutes = ["/auth/signIn","/auth/register","/auth/signUp","/search","/courses/course-detail","/auth/checkout/"];
   const [navigation, setNavigation] = useState<string>("Home");
   const BtnStyles = "w-[25px] aspect-square ";
   const containerStyles = "flex flex-col items-center gap-3";
