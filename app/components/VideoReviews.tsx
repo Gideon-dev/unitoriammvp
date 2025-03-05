@@ -5,19 +5,19 @@ import { Lecture, MainCourse } from '../utils/interface';
 
 type tabProps = {
   isEnrolled: boolean,
-  course: MainCourse;
+  course: MainCourse | null;
 }
 
 const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
   const [tab, setTab] = useState<string>("tutorial");
-  const [selectedCourse,  setSelectedCourse] =useState<Lecture | null>();
+  const [selectedCourse,  setSelectedCourse] =useState<Lecture | null>(null);
 
-    useEffect(() => {
-      if (course?.lectures.length > 0) {
-        setSelectedCourse(course.lectures[0]);
-      }
-    }, [course.lectures]);
-    
+  useEffect(() => {
+    if (course && course.lectures.length > 0) {
+      setSelectedCourse(course.lectures[0]);
+    }
+  }, [course]);
+
   return (
     <section className='w-full mt-[49px] sora'>
       <div className='w-full flex text-center'>
@@ -45,7 +45,7 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
                 <VideoContent btnType='open' mainText={selectedCourse?.description} altText={selectedCourse?.content_duration} proceed={true}/>
               </div>
              <div className="flex flex-col gap-3 w-full h-auto ">
-                {course.lectures.map((lecture, index)=> (
+                {course?.lectures.map((lecture, index)=> (
                   <VideoContent
                   key={index}
                   btnType={isEnrolled ? "open": "locked"}
@@ -59,7 +59,7 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
                 <h1 className="sora text-[12px]/[18px] font-semibold mb-[15px]"> Documents </h1>
                 <VideoContent 
                   btnType="document"
-                  mainText={course.document}
+                  mainText={course?.document}
                   altText="30Pages"
                   proceed={true}
                 />

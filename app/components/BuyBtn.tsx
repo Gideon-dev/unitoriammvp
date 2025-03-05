@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 
 type buyBtnProps = {
-  slug: string,
-  price: string,
+  slug: string | undefined,
+  price: string | undefined,
 }
 
 const BuyBtn: React.FC<buyBtnProps> = ({slug, price}) => {
