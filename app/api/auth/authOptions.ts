@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { JwtPayload } from "@/app/utils/interface";
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   debug: true,
   session: { strategy: 'jwt' },
   providers: [

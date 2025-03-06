@@ -97,7 +97,7 @@ const SignInPage: React.FC = () => {
         const result = await signIn("credentials", 
         {
           redirect: false, 
-          callbackUrl: "/auth/dashboard",
+          callbackUrl: "/auth/signIn",
           email: updatedData.email,
           password: updatedData.password,
         });
@@ -105,7 +105,7 @@ const SignInPage: React.FC = () => {
           console.log("Sign-in response:", result);
         if (result?.ok) {
           setErrorMessage(null);
-          router.push("/dashboard");
+          router.push("/auth/dashboard");
         } else {
           setErrorMessage("Invalid email or password,new? try creating an account.");
         }
