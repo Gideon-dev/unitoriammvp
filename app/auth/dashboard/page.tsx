@@ -1,6 +1,5 @@
 "use client";
 import Image from 'next/image';
-import searchIcon from '../../../public/search-normal.svg';
 import UserImage from '../../../public/user-picture.png';
 import completedIcon from '../../../public/completed-icon.svg';
 import completedBg from '../../../public/award.svg';
@@ -19,7 +18,7 @@ const DashboardHome = () => {
    console.log("Session Data:", session);
   console.log("Status:", status);
   return (
-    <>
+    <div className='py-3 flex flex-col gap-7'>
       <div id="user-banner" className='w-full flex items-center gap-5 sora'>
         <div className='w-[46px] aspect-square'>
           <Image src={UserImage} className='rounded-[50%]' alt='user image'/>
@@ -32,16 +31,10 @@ const DashboardHome = () => {
         </div>
       </div>
 
-      <section id='search-section' className="flex gap-8 w-full items-center justify-between sora">
-        <div id='search-box' className='w-[80%] relative'>
-          <Image src={searchIcon} alt='search-icon' className='search-icon'/>
-          <label htmlFor='tutorial' >
-            <input type='text' id='tutorial' placeholder='Search tutorials here' className='text-white w-full bg-[#1A1B1A] rounded-md py-[10px] ps-[30px] text-[10px]/[12.6px]'/>
-          </label>
-        </div>
-        <div id="filter-box" className='w-[13%] h-full rounded-lg bg-[#1A1B1A] p-[8px]'>
+      <section id='search-section' className="">
+        <div id="filter-box" className=''>
           <FilterIcon/>
-        </div>
+        </div> 
       </section>
 
       <section id='status-section' className='w-full h-auto flex justify-between items-center sora'>
@@ -88,11 +81,11 @@ const DashboardHome = () => {
       </section>
       <button
       onClick={() => signOut({ callbackUrl: "/auth/signIn" })} // Redirects to home after logout
-      className="px-4 py-2 bg-red-500 text-white rounded-md"
+      className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
       >
       Sign Out
-    </button>
-    </>
+      </button>
+    </div>
   )
 }
 

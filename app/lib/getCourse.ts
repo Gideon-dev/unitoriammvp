@@ -1,7 +1,7 @@
 import { auth } from "../utils/auth";
 import { MainCourse } from "../utils/interface";
 
-export async function getCourse(slug: string):Promise<MainCourse | null> {
+export async function getCourse(slug: string | null):Promise<MainCourse | null> {
     console.log("Fetching course with slug:", slug); // Debugging
     
     const session = await auth() // Ensure authentication

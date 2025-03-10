@@ -4,7 +4,7 @@ type Props = {}
 
 const failed = (props: Props) => {
   return (
-    <div>failed</div>
+    <div>please try again, payment not verified.</div>
   )
 }
 

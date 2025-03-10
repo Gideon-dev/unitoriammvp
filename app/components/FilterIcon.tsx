@@ -8,6 +8,7 @@ import { CustomDropdown } from './CustomDropdown';
 import { dataRated, departments } from '../utils/data';
 import { useCourseStore } from '../lib/useCourseStore';
 import { useRouter } from 'next/navigation';
+import searchIcon from '../../public/search-normal.svg';
 
 
 
@@ -30,7 +31,19 @@ export const FilterIcon = () => {
 
   return (
     <>
-        <Image src={filterIcon} className='w-full h-full' alt="filter icon" onClick={()=> setIsOpen((prev)=> !prev)} />
+      <div className='flex w-full items-center justify-between sora' >
+        <div id='search-box' className='w-[80%] relative'>
+          <Image src={searchIcon} alt='search-icon' className='search-icon'/>
+          <label htmlFor='tutorial' >
+            <input type='text' id='tutorial' placeholder='Search tutorials here' className='text-white w-full bg-[#1A1B1A] rounded-md py-[10px] ps-[30px] text-[10px]/[12.6px]'
+            onClick={()=> setIsOpen((prev)=> !prev)}
+            />
+          </label>
+        </div>
+        <div className="w-[15%] h-full rounded-lg bg-[#1A1B1A] p-[8px] flex justify-center">
+          <Image src={filterIcon} className='' alt="filter icon" onClick={()=> setIsOpen((prev)=> !prev)} />
+        </div>
+      </div>
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 bg-[#504646A6] bg-opacity-65 justify-center w-full z-10" onClick={() => setIsOpen((prev)=> !prev)}>

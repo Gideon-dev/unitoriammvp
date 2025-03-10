@@ -7,10 +7,12 @@ import Link from 'next/link'
 import Logo from "../../../public/logo.svg"
 import googleLogo from "../../../public/google-icon.svg"
 import { useRouter } from "next/navigation"
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react';
 
 const RegisterPage = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
   // const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
   const [ErrorMessage, setErrorMessage] = useState("");
@@ -20,7 +22,62 @@ const RegisterPage = () => {
     password:"",
     password2: ""
   });
+  const [password, setPassword] = useState("");
+  const passwordRules = {
+    minLength: {
+      test: (password: string) => password.length >= 8,
+      label: "Minimum of 8 characters",
+    },
+    lowercase: {
+      test: (password: string) => /[a-z]/.test(password),
+      label: "Include one lowercase letter",
+    },
+    uppercase: {
+      test: (password: string) => /[A-Z]/.test(password),
+      label: "Include one uppercase letter",
+    },
+    digit: {
+      test: (password: string) => /\d/.test(password),
+      label: "Include one number",
+    },
+    specialChar: {
+      test: (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      label: "Include one special character",
+    },
+  };
+  const [validations, setValidations] = useState({
+    minLength: false,
+    lowercase: false,
+    uppercase: false,
+    digit: false,
+    specialChar: false,
+  });
 
+  // Validate the password every time it changes
+  useEffect(() => {
+    setValidations({
+      minLength: passwordRules.minLength.test(password),
+      lowercase: passwordRules.lowercase.test(password),
+      uppercase: passwordRules.uppercase.test(password),
+      digit: passwordRules.digit.test(password),
+      specialChar: passwordRules.specialChar.test(password),
+    });
+  }, [password]);
+
+  // To Check if all conditions are met
+  const isValidPassword = Object.values(validations).every((v) => v);
+
+  // const [isLoading, setisLoading] = useState<boolean>(false);
+
+  const satisfiedRulesCount = Object.values(validations).filter(Boolean).length;
+  const loaderWidth = `${satisfiedRulesCount * 20}%`; 
+
+
+   useEffect(() => {
+      if (status === "authenticated") {
+        router.push("/auth/dashboard"); // Redirect if already logged in
+      }
+    }, [status, router]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -79,7 +136,7 @@ const RegisterPage = () => {
     <section id="main-box" className="text-center rounded-[10px] h-auto w-[80%] mx-auto">
       <div>
         <div className="flex w-full">
-          <div className="w-1/2 rounded-tl-[10px] sign-in entry-select"> Sign in </div>
+          <div className="w-1/2 rounded-tl-[10px] sign-in entry-select" role="button" onClick={()=> router.push("/auth/signIn")}> Sign in </div>
           <div className="w-1/2 rounded-tr-[10px] create-account"> Create an account </div>
         </div>
         <div className="w-full p-5">
@@ -106,7 +163,7 @@ const RegisterPage = () => {
               id='password'
               label='Password'
               value={Data.password}
-              handleChange={(e)=> {setData({...Data, password: e.target.value})}}
+              handleChange={(e)=> {setData({...Data, password: e.target.value}); setPassword(e.target.value)}}
               type='password'
               parentClass='mt-3'
               />
@@ -120,6 +177,9 @@ const RegisterPage = () => {
               />
              
             </div>
+            <div className="w-full h-2 flex mt-2">
+              <div id="p-loader" className="relative bg-green-500 h-full rounded-r-md rounded-l-md transition-all duration-300" style={{width: loaderWidth}}></div>
+            </div>
             <div className="w-full flex justify-end mt-2 h-auto">
               <Link 
               href="/forgotPassword"
@@ -128,9 +188,33 @@ const RegisterPage = () => {
                 forgot password
               </Link>
             </div>
+            <div className="sora">
+                <ul className="mb-4 space-y-2">
+                  {Object.entries(passwordRules).map(([key, rule]) => (
+                    <div key={key} className="flex items-center gap-2">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          validations[key as keyof typeof validations] 
+                            ? "bg-[#46D126]"  // Green when satisfied
+                            : "bg-[#ADE1A0]"    // Gray when not satisfied
+                        }`}
+                      />
+                      <li
+                        className={`text-[10px]/[12.6px] font-normal ${
+                          validations[key as keyof typeof validations] 
+                            ? "text-green-600"  // Green text when satisfied
+                            : "text-[#9EAD9A]"    // Gray text otherwise
+                        }`}
+                      >
+                        {rule.label} 
+                      </li>
+                    </div>
+                  ))}
+                </ul>
+             </div>
             <div className="flex flex-col gap-5 mt-[45px]">
               <FormBtn 
-              isDisabled={loading}
+              isDisabled={!isValidPassword}
               btnlabel='Sign Up' 
               btnStyling='p-3 sign-in-btn'
               btnName='credentials'

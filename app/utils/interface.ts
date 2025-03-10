@@ -128,6 +128,35 @@ export interface MainCourse {
     rating_count: number;
     review: unknown[]; // Assuming an array of reviews (modify if needed)
 }
+
+export interface EnrolledCourse {
+    course: string; // Course ID or name (e.g., "GEL121")
+    course_slug: string; // Unique course slug (e.g., "gel12141cfOpqSZ2")
+    course_image: string; // Course image URL
+    user: string; // User email
+    tutor: string; // Tutor name
+    lectures: EnrolledLecture[]; // List of enrolled lectures
+    completed_lesson?: any[]; // Define proper type if available
+    curriculum?: any[]; // Define proper type if available
+    note?: any[]; // Define proper type if available
+    question_answer?: any[]; // Define proper type if available
+    review: string | null; // Course review (if available)
+    enrollment_id: string; // Unique enrollment ID
+}
+
+// Define the EnrolledLecture interface if not already defined
+export interface EnrolledLecture {
+    course: string;
+    title: string;
+    description: string;
+    intro_url: string;
+    video_url: string;
+    content_duration: string;
+    preview: boolean;
+    variant_item_id: string;
+}
+
+  
 export interface CourseFilters {
     level?: string;
     department?: string;
@@ -137,4 +166,11 @@ export interface CourseFilters {
 }
   
 export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price">
-  
+
+export interface EnrolledCardprops {
+    tutor: string,
+    course_image: string,
+    topic: string
+}
+
+

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import apiClient from "@/app/lib/apiClient"; // Your API client
 import { CourseFilters, MainCourse } from "../utils/interface";
+import { getCourse } from "./getCourse";
 
 interface CourseStore {
   courses: MainCourse[];
@@ -37,5 +38,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
 
     console.log("Finally filtered:", filtered);
     set({ filteredCourses: filtered });
-  },
+  }
+
+ 
 }));

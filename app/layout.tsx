@@ -30,8 +30,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
           >
-          <section className='relative w-full p-[25px] overflow-x-hidden h-[100vh]'>
-            <main className="flex flex-col gap-5 min-h-[84%] max-h-[100%] overflow-x-hidden overflow-y-scroll py-8 scrollbar-hide">
+          <section className='flex flex-col gap-2 relative w-full p-[25px] overflow-x-hidden h-[100vh]'>
+            <main className=" min-h-[84%] max-h-[100%] overflow-x-hidden overflow-y-scroll py-8 scrollbar-hide">
               <AuthProvider>
                 {children} 
               </AuthProvider>

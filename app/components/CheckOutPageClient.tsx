@@ -48,9 +48,9 @@ type CheckoutProps ={
             <div className='mt-[30px] sora'>
                 <h1 className={`${headingStyles} sora`}>Billing Summary</h1>
                 <div className="flex flex-col gap-[8px] mt-[15px]">
-                    <BillingItems left='Tutorial Price' right={course?.price}/>
-                    <BillingItems left='Discount' right={discount}/>
-                    <BillingItems left='Amount to pay' right={total}/>
+                    <BillingItems left='Tutorial Price' right={`#${course?.price}`}/>
+                    <BillingItems left='Discount' right={`#${discount}`}/>
+                    <BillingItems left='Amount to pay' right={`#${total}`}/>
                 </div>
             </div>  
             <div className="mt-[33px]">

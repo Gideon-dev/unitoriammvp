@@ -7,6 +7,7 @@ import HeaderBoard from '../components/HeaderBoard';
 import Image from 'next/image';
 import NoResultFoundImg from '../../public/404.svg';
 import Link from 'next/link';
+import BackBtn from '../components/BackBtn';
 
 export default function SearchPage() {
   const { filteredCourses, fetchCourses, searchCourses, setFilters, filters } = useCourseStore();
@@ -39,6 +40,9 @@ export default function SearchPage() {
 
   return (
     <div>
+      <div className='mb-3'>
+        <BackBtn/>
+      </div>
       <SearchBar onSearchChange={handleSearch} defValue={query} />
       
       {/* Filter Chips */}

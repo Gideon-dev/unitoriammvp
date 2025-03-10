@@ -30,11 +30,11 @@ const HandlePayment = async ({ gateway, course, session }: handlePaymentProps) =
         const response = await apiClient.post(
             "https://tutormeapi-6w2f.onrender.com/api/v2/initialize-payment/",
             requestData ,
-               {
-                headers: {
-                    "Content-Type": "application/json",
-                    // Authorization: `Bearer ${session?.token}`
-                }
+            {
+            headers: {
+                "Content-Type": "application/json",
+                // Authorization: `Bearer ${session?.token}`
+            }
             }
         
         );

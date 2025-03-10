@@ -1,21 +1,38 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconProps } from "../utils/interface";
 import { usePathname, useRouter } from "next/navigation";
 
  const DashboardBtns = () =>{
   const pathname = usePathname();
   const router = useRouter();
-  const hiddenRoutes = ["/auth/signIn","/auth/register","/auth/signUp","/search","/courses/course-detail","/auth/checkout/"];
-  const [navigation, setNavigation] = useState<string>("Home");
+  const hiddenRoutes = [
+    "/auth/signIn", 
+    "/auth/register", 
+    "/auth/signUp", 
+    "/search",
+    "/courses/course-detail", 
+    "/auth/checkout"
+    ];
+  const isHidden = hiddenRoutes.some((route) => pathname.startsWith(route));
+     // Dynamically set active navigation based on pathname
+  const getActivePage = () => {
+    if (pathname.startsWith("/auth/library")) return "Library";
+    if (pathname.startsWith("/auth/explore")) return "Explore";
+    return "Home";
+  };
+  const [navigation, setNavigation] = useState(getActivePage());
+  useEffect(() => {
+    setNavigation(getActivePage());
+  }, [pathname]);
   const BtnStyles = "w-[25px] aspect-square ";
   const containerStyles = "flex flex-col items-center gap-3";
   const textSyles ="font-normal text-xs leading-[15.12px] tracking-[0.01em]";
   const selectedIcon = "#DB0D0D";
   return(
     <>
-      {!hiddenRoutes.includes(pathname) && (
-        <section className="h-[13%] rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
+      {!isHidden && (
+        <section className=" rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
           <div className="flex justify-around w-full sora">
             <div className={containerStyles} onClick={() => {setNavigation("Home"); router.push("/auth/dashboard")}}>
               <HomeIcon fillProperty={navigation === "Home" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
