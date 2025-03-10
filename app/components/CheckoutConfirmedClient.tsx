@@ -42,7 +42,7 @@ const ConfirmedPageClient = ({course, payment_method}: ConfirmedClientProps) => 
         <div className='w-full flex justify-center items-center mb-[25px]'>
           <button
            className='w-[85%] rounded-lg text-center flex  justify-center items-center bg-[#DB0D0D] font-normal text-[12px]/[100%] sora py-4' 
-           onClick={()=> router.push(`/courses/course-detail/${course?.slug}`)}
+           onClick={()=> router.replace(`/courses/course-detail/${course?.slug}`)}
            >
             Start Tutorial now
           </button>

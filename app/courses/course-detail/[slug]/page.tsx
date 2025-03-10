@@ -17,9 +17,9 @@ export default async function CourseDetailPage({params}:{ params: Promise<{ slug
     const course:MainCourse | null = await getCourse(resolvedParams.slug);
     const enrolledCourses: EnrolledCourse[] = await getEnrolledCourses();
     const isEnrolled = enrolledCourses.some((c) => resolvedParams.slug.startsWith(c.course.toLowerCase()));
-    // console.log("Enrolled Courses:", enrolledCourses);
-    // console.log("Course Slug:", resolvedParams.slug);
-    // console.log(isEnrolled); 
+    console.log("Enrolled Courses:", enrolledCourses);
+    console.log("Course Slug:", resolvedParams.slug);
+    console.log(isEnrolled); 
     
     if(!course && !enrolledCourses){
         <p>something occured, try again...</p>
