@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import { MainCourse } from '../utils/interface'
 import { HandlePayment } from '../lib/paymentHandle'

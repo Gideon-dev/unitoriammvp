@@ -1,25 +1,53 @@
 "use client";
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import filterIcon from '../../public/filter.svg';
 import HeaderBoard from './HeaderBoard';
 import { AnimatePresence, motion } from "framer-motion";
 import { CustomDropdown } from './CustomDropdown';
-import { dataRated, departments } from '../utils/data';
 import { useCourseStore } from '../lib/useCourseStore';
 import { useRouter } from 'next/navigation';
 import searchIcon from '../../public/search-normal.svg';
 
 
+// type FilterIconProps = {
+//     courseList: string[],
+//     department: string[]
+// }
 
-export const FilterIcon = () => {
+ const FilterIconClient= () => {
   const  {setFilters} = useCourseStore();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const courseList = dataRated.map((item) => item.tut_topic);
-  const department = departments.map((item) => item.name);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [courseList, setCourseList] = useState();
+  const [department, setDepartment] = useState();
+  const [isPending, startTransition] = useTransition();
+  
   const Level = ["100", "200", "300", "400", "500"];
   
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/filter");
+        const data = await response.json();
+        if (response.ok) {
+          setCourseList(data.courseList);
+          setDepartment(data.department);
+        } else {
+          console.error("Error fetching data:", data.error);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFilters();
+  }, []);
+
 
   const handleSelectDropdown = (key: string, value: string) => {
     setFilters((prev) => ({ 
@@ -28,6 +56,11 @@ export const FilterIcon = () => {
     }));
   };  
   
+  const handleSearch = () =>{
+    startTransition(() => {
+      router.push("/search");
+    });
+  }
 
   return (
     <>
@@ -78,15 +111,21 @@ export const FilterIcon = () => {
                         />
                       </div>  
                       <div className='mt-6 w-[80%] mx-auto sora'>
-                        <button className='bg-[#DB0D0D] text-[10px] leading-[18px] tracking-[0.02em] px-[80px] py-[12px] rounded-[20px]' onClick={()=> router.push("/search")}>Apply and Search</button>
+                        <button className='bg-[#DB0D0D] text-[10px] leading-[18px] tracking-[0.02em] px-[80px] py-[12px] rounded-[20px]' onClick={handleSearch}>Apply and Search</button>
                       </div>
                        
                     </motion.div>
                 </div>)
             }
         </AnimatePresence>
+        {isPending && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+              <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        )}
     </>
    
   )
 }
 
+export default FilterIconClient;

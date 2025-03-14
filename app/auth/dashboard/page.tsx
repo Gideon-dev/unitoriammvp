@@ -7,25 +7,25 @@ import timeIcon from '../../../public/time-icon.svg';
 import timeBg from '../../../public/timer.svg';
 import RatedItems from '../../components/RatedItems';
 import HeaderBoard from '../../components/HeaderBoard';
-import { FilterIcon } from '../../components/FilterIcon';
 import { signOut, useSession } from "next-auth/react";
+import { Suspense } from 'react';   
+import FilterIconClient from '@/app/components/FilterIconClient';
 
 
 
 
 const DashboardHome = () => {
   const { data: session, status } = useSession();
-   console.log("Session Data:", session);
-  console.log("Status:", status);
+  
   return (
-    <div className='py-3 flex flex-col gap-7'>
+    <div className='flex flex-col gap-7'>
       <div id="user-banner" className='w-full flex items-center gap-5 sora'>
         <div className='w-[46px] aspect-square'>
           <Image src={UserImage} className='rounded-[50%]' alt='user image'/>
         </div>
         <div className='flex flex-col gap-3'>
           <p className='text-[14px]/[12px]  font-semibold'>
-          {`Hey ${status === "authenticated" ? session?.full_name : "..fetching username"}`}
+          {`Hey ${status === "authenticated" ? session?.full_name : "..fetching username"} `}
           </p>
           <p id="" className="font-normal text-[10px]/[12.6px]">Welcome back to learning!!</p> 
         </div>
@@ -33,7 +33,9 @@ const DashboardHome = () => {
 
       <section id='search-section' className="">
         <div id="filter-box" className=''>
-          <FilterIcon/>
+          <Suspense fallback={<p>Loading filters...</p>}>
+            <FilterIconClient />
+          </Suspense>
         </div> 
       </section>
 
@@ -80,7 +82,7 @@ const DashboardHome = () => {
         <RatedItems/>
       </section>
       <button
-      onClick={() => signOut({ callbackUrl: "/auth/signIn" })} // Redirects to home after logout
+      onClick={() => signOut({ callbackUrl: "/auth/signIn" })} 
       className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
       >
       Sign Out

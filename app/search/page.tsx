@@ -1,19 +1,21 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import SearchBar from '../components/SearchBar';
 import { useCourseStore } from '../lib/useCourseStore';
 import TutorialCard from '../components/TutorialCard';
 import HeaderBoard from '../components/HeaderBoard';
 import Image from 'next/image';
 import NoResultFoundImg from '../../public/404.svg';
-import Link from 'next/link';
 import BackBtn from '../components/BackBtn';
+import { useRouter } from 'next/navigation';
 
 export default function SearchPage() {
   const { filteredCourses, fetchCourses, searchCourses, setFilters, filters } = useCourseStore();
-  const [query, setQuery] = useState(filters.course || "");     
+  const [query, setQuery] = useState(filters.course || "");    
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+ 
 
-  // Fetch courses on mount
   useEffect(() => {
     fetchCourses();
   }, [fetchCourses]);
@@ -22,11 +24,17 @@ export default function SearchPage() {
   const handleSearch = (query: string) => {
     setQuery(query);
     if (query.trim() === "") {
-      fetchCourses(); // Reset course list when input is empty
+      fetchCourses(); 
     } else {
       searchCourses(query);
     }
   };
+
+  const handlePageNavigation = (slug:string)=>{
+    startTransition(() => {
+      router.push(`/courses/course-detail/${slug}/`);
+    });
+  }
 
   // Remove filters and reset query
   const removeFilter = () => {
@@ -63,14 +71,15 @@ export default function SearchPage() {
         
         {filteredCourses.length > 0 ? (
           filteredCourses.map((course) => (
-            <Link key={course.id}  href={`/courses/course-detail/${course.slug}/`}>
+            <div key={course.id} onClick={ ()=> handlePageNavigation(course.slug) }>
               <TutorialCard 
                 image={course.image} 
                 tutor={course.tutor} 
                 description={course.description} 
                 price={course.price} 
               />
-            </Link>
+            </div>
+            
           ))
         ) : (
           <div className='w-full flex flex-col items-center justify-center mt-5 sora'>
@@ -78,6 +87,11 @@ export default function SearchPage() {
             <p className='text-center text-[16px]/[20px] text-[#FFFFFF] font-semibold'>No Tutorial Found for</p>
             <p className='text-center text-[14px]/[20px] text-[#FFFFFF]/[50%] font-normal'>&lsquo;{query}&rsquo;</p>
           </div>
+        )}
+         {isPending && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            </div>
         )}
       </div>
     </div>

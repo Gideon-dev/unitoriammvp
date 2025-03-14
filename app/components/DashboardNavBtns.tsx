@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { IconProps } from "../utils/interface";
 import { usePathname, useRouter } from "next/navigation";
 
  const DashboardBtns = () =>{
   const pathname = usePathname();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const hiddenRoutes = [
     "/auth/signIn", 
     "/auth/register", 
@@ -22,9 +23,18 @@ import { usePathname, useRouter } from "next/navigation";
     return "Home";
   };
   const [navigation, setNavigation] = useState(getActivePage());
+
   useEffect(() => {
     setNavigation(getActivePage());
   }, [pathname]);
+
+  const handleNavigation = (page: string, path: string) => {
+    setNavigation(page);
+    startTransition(() => {
+      router.push(path);
+    });
+  };
+
   const BtnStyles = "w-[25px] aspect-square ";
   const containerStyles = "flex flex-col items-center gap-3";
   const textSyles ="font-normal text-xs leading-[15.12px] tracking-[0.01em]";
@@ -34,19 +44,24 @@ import { usePathname, useRouter } from "next/navigation";
       {!isHidden && (
         <section className=" rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
           <div className="flex justify-around w-full sora">
-            <div className={containerStyles} onClick={() => {setNavigation("Home"); router.push("/auth/dashboard")}}>
+            <div className={containerStyles} onClick={() => {handleNavigation("Home", "/auth/dashboard")}}>
               <HomeIcon fillProperty={navigation === "Home" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
               <p className={textSyles} style={navigation === "Home"? {color: "#DB0D0D"}: {color: "white"}}>Home</p>
             </div>
-            <div className={containerStyles} onClick={() => {setNavigation("Library"); router.push("/auth/library")}}>
+            <div className={containerStyles} onClick={() => handleNavigation("Library", "/auth/library")}>
               <Library fillProperty={navigation === "Library" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
               <p className={textSyles} style={navigation === "Library"? {color: "#DB0D0D"}: {color: "white"}}>My Library</p>
             </div>
-            <div className={containerStyles} onClick={() => {setNavigation("Explore"); router.push("/auth/expolore")}}>
+            <div className={containerStyles} onClick={() => handleNavigation("Explore", "/auth/explore")}>
               <ExploreIcon fillProperty={navigation === "Explore" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
             <p className={textSyles} style={navigation === "Explore"? {color: "#DB0D0D"}: {color: "white"}}> Explore</p>
             </div>
           </div>
+          {isPending && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
         </section>
       )}
     </>

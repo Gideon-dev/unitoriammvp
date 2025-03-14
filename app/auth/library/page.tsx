@@ -7,9 +7,8 @@ import Link from "next/link";
 
  export default async function LibraryPage () {
     const enrolledCourses: EnrolledCourse[] = await getEnrolledCourses();
-    console.log(enrolledCourses);
     if(!enrolledCourses || enrolledCourses.length === 0){
-      <p className="sora font-normla text-[14px]/[100%]"> Purchase a Course to have build your Library</p>
+      return <p className="sora font-normal text-[14px]/[100%]"> Purchase a Course to build your Library</p>
     }
     
   return (

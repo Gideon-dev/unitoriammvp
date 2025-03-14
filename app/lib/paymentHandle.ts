@@ -24,7 +24,7 @@ const HandlePayment = async ({ gateway, course, session }: handlePaymentProps) =
         gateway: gateway
     };
 
-    console.log("🚀 Sending request:", requestData);
+    // console.log("🚀 Sending request:", requestData);
 
     try {
         const response = await apiClient.post(
@@ -39,7 +39,7 @@ const HandlePayment = async ({ gateway, course, session }: handlePaymentProps) =
         
         );
 
-        console.log("✅ Payment initialized:", response.data);
+        // console.log("✅ Payment initialized:", response.data);
 
         if (response.data.payment_url) {
             window.location.href = response.data.payment_url;

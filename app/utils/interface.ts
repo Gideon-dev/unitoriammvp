@@ -174,3 +174,7 @@ export interface EnrolledCardprops {
 }
 
 
+export interface Dept {
+    institution: number,
+    name: string
+}
