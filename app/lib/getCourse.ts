@@ -4,19 +4,23 @@ import { MainCourse } from "../utils/interface";
 export async function getCourse(slug: string | null):Promise<MainCourse | null> {
     console.log("Fetching course with slug:", slug); // Debugging
     
-    const session = await auth() // Ensure authentication
-    // console.log("getCourse Session Data:", session);
-    if (!session?.accessToken) {
-        console.error("No valid access token found");
-        throw new Error("Unauthorized");
-    }
+    const session = await auth();
 
-    try {
+       try {
+        const headers: Record<string, string> = {}; // Default headers
+        if (session?.accessToken) {
+            headers.Authorization = `Bearer ${session.accessToken}`;
+        }
+
         const response = await fetch(`https://tutormeapi-6w2f.onrender.com/api/v2/course/course-detail/${slug}/`, {
-            method:"GET",
-            headers: { Authorization: `Bearer ${session.accessToken}` },
-            cache: "no-store", // Ensure fresh data on every request
+            method: "GET",
+            headers, // Apply headers dynamically
+            cache: "no-store", // Ensure fresh data
         });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch course. Status: ${response.status}`);
+        }
 
         return await response.json();
     } catch (error: unknown) {
