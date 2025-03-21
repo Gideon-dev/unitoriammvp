@@ -42,7 +42,7 @@ import { usePathname, useRouter } from "next/navigation";
   return(
     <>
       {!isHidden && (
-        <section className=" rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
+        <section className="rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
           <div className="flex justify-around w-full sora">
             <div className={containerStyles} onClick={() => {handleNavigation("Home", "/auth/dashboard")}}>
               <HomeIcon fillProperty={navigation === "Home" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
@@ -58,7 +58,7 @@ import { usePathname, useRouter } from "next/navigation";
             </div>
           </div>
           {isPending && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}

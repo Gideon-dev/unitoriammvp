@@ -30,13 +30,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
           >
-          <section className='flex flex-col gap-2 relative w-full px-[25px] py-2 overflow-y-hidden h-screen'>
-            <main className=" min-h-[84%] max-h-[100%] overflow-x-hidden overflow-y-scroll py-8 scrollbar-hide">
+          <section className='flex flex-col w-full px-[25px] py-5 overflow-y-hidden h-screen'>
+            <main className="overflow-x-hidden overflow-y-scroll pb-32 scrollbar-hide">
               <AuthProvider>
                 {children} 
               </AuthProvider>
             </main>
-            <DashboardBtns/>
+            <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
+              <DashboardBtns/>
+            </div>
             <div className="absolute bottom-[5%] right-5">
               <ModeToggle />
             </div>

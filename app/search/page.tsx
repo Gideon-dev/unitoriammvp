@@ -14,14 +14,48 @@ export default function SearchPage() {
   const [query, setQuery] = useState(filters.course || "");    
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
- 
+
+
+  // useEffect(() => {
+  //   if (filters.course) {
+  //     console.log("Applying search filter with:", filters.course);
+  //     searchCourses(filters.course);
+  //   } else {
+  //     fetchCourses();
+  //   }  
+  // }, [filters.course, fetchCourses]);
+
+  // useEffect(() => {
+  //   if (!filters.course) {
+  //     if (filteredCourses.length === 0) {
+  //       console.log("🚀 Courses are empty, fetching them now...");
+  //       fetchCourses();
+  //     }
+  //   } else {
+  //     console.log("🔍 Applying search filter with:", filters.course);
+  //     searchCourses(filters.course);
+  //   }
+  // }, [filters.course]);
+
 
   useEffect(() => {
-    fetchCourses();
-  }, [fetchCourses]);
+    if (!filters.course && filteredCourses.length === 0) {
+      console.log("🚀 Courses are empty, fetching them now...");
+      fetchCourses();
+    }
+  }, [filteredCourses]); // Runs only when `filteredCourses` is empty
+  
+  useEffect(() => {
+    if (filters.course) {
+      console.log("🔍 Applying search filter with:", filters.course);
+      searchCourses(filters.course);
+    }
+  }, [filters.course]); // Runs only when `filters.course` changes
+  
 
   // Handle Search
   const handleSearch = (query: string) => {
+    console.log("Searching for:", query);
     setQuery(query);
     if (query.trim() === "") {
       fetchCourses(); 

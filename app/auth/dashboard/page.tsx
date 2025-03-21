@@ -18,7 +18,7 @@ const DashboardHome = () => {
   const { data: session, status } = useSession();
   
   return (
-    <div className='flex flex-col gap-7'>
+    <div className='flex flex-col gap-7 h-screen'>
       <div id="user-banner" className='w-full flex items-center gap-5 sora'>
         <div className='w-[46px] aspect-square'>
           <Image src={UserImage} className='rounded-[50%]' alt='user image'/>
@@ -39,7 +39,7 @@ const DashboardHome = () => {
         </div> 
       </section>
 
-      <section id='status-section' className='w-full h-auto flex justify-between items-center sora'>
+      <section id='status-section' className='w-full h-full flex justify-between items-center sora'>
         <div id='completed-bar' className='relative overflow-hidden bg-[#A5C69D] w-[45%] rounded-xl ps-3 pe-0 py-3 flex flex-col gap-1'>
           <Image src={completedBg} className='absolute -right-0 -top-0' alt='background award icon'/>
           <Image src={completedIcon} alt='completed icon' className=''/>

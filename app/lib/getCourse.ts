@@ -14,7 +14,7 @@ export async function getCourse(slug: string | null):Promise<MainCourse | null> 
 
         const response = await fetch(`https://tutormeapi-6w2f.onrender.com/api/v2/course/course-detail/${slug}/`, {
             method: "GET",
-            headers, // Apply headers dynamically
+            headers, 
             cache: "no-store", // Ensure fresh data
         });
 

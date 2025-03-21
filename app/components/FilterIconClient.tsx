@@ -54,6 +54,7 @@ import searchIcon from '../../public/search-normal.svg';
       ...prev, 
        [key]: value
     }));
+    console.log("Updated Filters in Zustand:", key, value);
   };  
   
   const handleSearch = () =>{
