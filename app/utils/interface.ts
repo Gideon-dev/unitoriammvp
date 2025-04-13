@@ -24,7 +24,8 @@ export interface formBtnProps {
     iconStyle?: string,
     btnName: string,
     isDisabled?: boolean,
-    id?: string
+    id?: string,
+    isLoading?: boolean
 }
   
 export interface signInFormSchema {
@@ -63,7 +64,8 @@ export interface DropdownProps {
     toDisplay?: string[],
     labelName: string,
     placeholder: string,
-    onSelect: (value: string) => void   
+    onSelect: (value: string) => void,
+    isLoading: boolean
 }
 export interface DepartmentProps {
     id: number;
@@ -165,7 +167,7 @@ export interface CourseFilters {
     // value?:string;
 }
   
-export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price">
+export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price" | "title">
 
 export interface EnrolledCardprops {
     tutor: string,

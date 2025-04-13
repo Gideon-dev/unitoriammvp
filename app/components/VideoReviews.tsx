@@ -6,11 +6,12 @@ import { Lecture, MainCourse } from '../utils/interface';
 type tabProps = {
   isEnrolled: boolean,
   course: MainCourse | null;
+  onSelectLecture: (lecture: Lecture) => void;
 }
 
-const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
+const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
   const [tab, setTab] = useState<string>("tutorial");
-  const [selectedCourse,  setSelectedCourse] =useState<Lecture | null>(null);
+  const [selectedCourse,  setSelectedCourse] = useState<Lecture | null>(null);
 
   useEffect(() => {
     if (course && course.lectures.length > 0) {
@@ -31,7 +32,7 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
         <div  
         className={`w-1/2 text-center pb-[8px] text-[12px]/[15.12px] 
         ${tab === "reviews" ? "font-semibold border-b-[2.5px]  border-[#DB0D0D] tracking-[1%]": "font-normal border-b-[2px] border-[#201E1E]"}`}
-        onClick={()=> setTab("reviews") }
+        onClick={()=> setTab("reviews")}
         >
           Reviews
         </div>
@@ -45,14 +46,23 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course}) => {
                 <VideoContent btnType='open' mainText={selectedCourse?.description} altText={selectedCourse?.content_duration} proceed={true}/>
               </div>
              <div className="flex flex-col gap-3 w-full h-auto ">
-                {course?.lectures.map((lecture, index)=> (
-                  <VideoContent
-                  key={index}
-                  btnType={isEnrolled ? "open": "locked"}
-                  mainText={lecture.description}
-                  altText={lecture.content_duration}
-                  proceed={isEnrolled}
-                  />  
+                {course?.lectures.map((lecture, index)=> ( 
+                  <div 
+                    key={index} 
+                    onClick={() => {
+                      if (isEnrolled) {
+                        setSelectedCourse(lecture);
+                        onSelectLecture(lecture);
+                      }
+                    }}
+                  >
+                    <VideoContent
+                      btnType={isEnrolled ? "open" : "locked"}
+                      mainText={lecture.description}
+                      altText={lecture.content_duration}
+                      proceed={isEnrolled}
+                    />  
+                  </div>
                 ))}
              </div>
              <div className='mt-[25px]'>

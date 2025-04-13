@@ -2,10 +2,11 @@
 import { useState } from 'react'
 import { CaretBtn } from './CaretBtn'
 import { DropdownProps } from '../utils/interface';
+import LoadingSpinner from './LoadingSpinner';
 
 
 
-export const CustomDropdown:React.FC<DropdownProps> = ({placeholder,labelName,onSelect,toDisplay }) => {
+export const CustomDropdown:React.FC<DropdownProps> = ({placeholder,labelName,onSelect,toDisplay,isLoading}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [inputPlaceholder, setInputPlaceholder] = useState<string>(placeholder);      
     const rotateToggleDrop = (event: React.MouseEvent<SVGSVGElement>)=>{
@@ -28,6 +29,7 @@ export const CustomDropdown:React.FC<DropdownProps> = ({placeholder,labelName,on
    const handleSelection = (value: string) =>{
         onSelect(value);
    };
+
   return (
     <div className='w-full h-auto  py-[9px] text-[#B1B1B1] flex flex-col gap-2'>
         <div className='relative w-full flex flex-col gap-2' >
@@ -40,11 +42,19 @@ export const CustomDropdown:React.FC<DropdownProps> = ({placeholder,labelName,on
         <div className='h-auto bg-[#1A1B1A] font-normal text-[10px] leading-[12.6px] tracking-[-0.02em]  rounded-[5px]'> 
             {isOpen && (
                 <ul className='w-full  flex flex-col gap-1 p-3'>
-                    {toDisplay?.map((item, index)=> (
-                        <li className='w-full p-3 hover:bg-[#111111] hover: rounded-md' key={index} value={item} onClick={()=> {setInputPlaceholder(item); setIsOpen((prev)=> !prev); handleSelection(item)}}> 
-                            {item} 
-                        </li>
-                    ))}
+                    {
+                    isLoading ? (
+                        <div className='w-full flex justify-center items-center'>
+                            <LoadingSpinner/>
+                        </div>  
+                    ):(
+                        toDisplay?.map((item, index)=> (
+                            <li className='w-full p-3 hover:bg-[#111111] hover: rounded-md' key={index} value={item} onClick={()=> {setInputPlaceholder(item); setIsOpen((prev)=> !prev); handleSelection(item)}}> 
+                                {item} 
+                            </li>
+                        ))
+                    )
+                    }
                 </ul>
             )}
         </div>

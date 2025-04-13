@@ -22,7 +22,7 @@ import searchIcon from '../../public/search-normal.svg';
   const [loading, setLoading] = useState<boolean>(false);
   const [courseList, setCourseList] = useState();
   const [department, setDepartment] = useState();
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition(); 
   
   const Level = ["100", "200", "300", "400", "500"];
   
@@ -97,18 +97,21 @@ import searchIcon from '../../public/search-normal.svg';
                          placeholder='Search courses here'
                          toDisplay={courseList}
                          onSelect={(value)=> handleSelectDropdown("course", value) }
+                          isLoading={loading}
                         />
                         <CustomDropdown 
                           labelName="Level"
                           placeholder='Search your level here' 
                           toDisplay={Level}
                           onSelect={(value)=> handleSelectDropdown("level", value)}
+                          isLoading={loading}
                         />
                         <CustomDropdown 
                           labelName="Department" 
                           placeholder='Search your department here' 
                           toDisplay={department}
                           onSelect={(value)=> handleSelectDropdown("department", value)}
+                          isLoading={loading}
                         />
                       </div>  
                       <div className='mt-6 w-[80%] mx-auto sora'>

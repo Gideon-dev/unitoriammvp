@@ -113,6 +113,11 @@ const RegisterPage = () => {
       } else {
         console.error("Registration failed:", userInfo);
         setErrorMessage(userInfo.error || "Registration failed. Please try again.");
+        if (userInfo.email && Array.isArray(userInfo.email)) {
+          setErrorMessage(userInfo.email[0]); // "user with this email already exists."
+        } else {
+          setErrorMessage(userInfo.error || "Registration failed. Please try again.");
+        }
       }
     } catch (error) {
       console.error("Error during registration:", error);
@@ -126,112 +131,114 @@ const RegisterPage = () => {
 
   return (
     <section className='w-full min-h-screen flex flex-col justify-center items-center '>
-    <div className='w-[60%] h-full mx-auto my-[47.17px]'>
-      <Image
-        src={Logo}
-        alt="logo"
-        priority
-      />
-    </div>
-    <section id="main-box" className="text-center rounded-[10px] h-auto w-[80%] mx-auto">
-      <div>
-        <div className="flex w-full">
-          <div className="w-1/2 rounded-tl-[10px] sign-in entry-select" role="button" onClick={()=> router.push("/auth/signIn")}> Sign in </div>
-          <div className="w-1/2 rounded-tr-[10px] create-account"> Create an account </div>
-        </div>
-        <div className="w-full p-5">
-          {ErrorMessage && <MessageBox message={ErrorMessage} type="error"/>}
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-[30px]">
-              <InputField
-              id='full_name'
-              label='Full name'
-              type='text'
-              value={Data.full_name}
-              handleChange={(e)=> {setData({...Data, full_name: e.target.value})}}
-              parentClass='mt-3'
-              />
-              <InputField
-              id='email'
-              label='Email address'
-              type='text'
-              value={Data.email}
-              handleChange={(e)=> {setData({...Data, email: e.target.value})}}
-              parentClass='mt-3'
-              />
-              <InputField
-              id='password'
-              label='Password'
-              value={Data.password}
-              handleChange={(e)=> {setData({...Data, password: e.target.value}); setPassword(e.target.value)}}
-              type='password'
-              parentClass='mt-3'
-              />
-              <InputField
-              id='password2'
-              label='Confirm Password'
-              type='password'
-              value={Data.password2}
-              handleChange={(e)=> {setData({...Data, password2: e.target.value})}}
-              parentClass='mt-3'
-              />
-             
-            </div>
-            <div className="w-full h-2 flex mt-2">
-              <div id="p-loader" className="relative bg-green-500 h-full rounded-r-md rounded-l-md transition-all duration-300" style={{width: loaderWidth}}></div>
-            </div>
-            <div className="w-full flex justify-end mt-2 h-auto">
-              <Link 
-              href="/forgotPassword"
-              className="forgot-password-link"
-              >
-                forgot password
-              </Link>
-            </div>
-            <div className="sora">
-                <ul className="mb-4 space-y-2">
-                  {Object.entries(passwordRules).map(([key, rule]) => (
-                    <div key={key} className="flex items-center gap-2">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          validations[key as keyof typeof validations] 
-                            ? "bg-[#46D126]"  // Green when satisfied
-                            : "bg-[#ADE1A0]"    // Gray when not satisfied
-                        }`}
-                      />
-                      <li
-                        className={`text-[10px]/[12.6px] font-normal ${
-                          validations[key as keyof typeof validations] 
-                            ? "text-green-600"  // Green text when satisfied
-                            : "text-[#9EAD9A]"    // Gray text otherwise
-                        }`}
-                      >
-                        {rule.label} 
-                      </li>
-                    </div>
-                  ))}
-                </ul>
-             </div>
-            <div className="flex flex-col gap-5 mt-[45px]">
-              <FormBtn 
-              isDisabled={!isValidPassword}
-              btnlabel='Sign Up' 
-              btnStyling='p-3 sign-in-btn'
-              btnName='credentials'
-              />
-              <FormBtn
-              btnlabel='Sign Up with Google' 
-              btnStyling='google-sign-in-btn p-3'
-              btnName='google'
-              icon={googleLogo}
-              />
-            </div>
-
-          </form>
-        </div>
+      <div className='w-[60%] h-full mx-auto my-[47.17px]'>
+        <Image
+          src={Logo}
+          alt="logo"
+          priority
+        />
       </div>
+      <section id="main-box" className="text-center rounded-[10px] h-auto w-full mx-auto">
+        <div>
+          <div className="flex w-full">
+            <div className="w-1/2 rounded-tl-[10px] sign-in entry-select" role="button" onClick={()=> router.push("/auth/signIn")}> Sign in </div>
+            <div className="w-1/2 rounded-tr-[10px] create-account"> Create an account </div>
+          </div>
+          <div className="w-full p-5">
+            {ErrorMessage && <MessageBox message={ErrorMessage} type="error"/>}
+            <form onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-[30px]">
+                <InputField
+                id='full_name'
+                label='Full name'
+                type='text'
+                value={Data.full_name}
+                handleChange={(e)=> {setData({...Data, full_name: e.target.value})}}
+                parentClass='mt-3'
+                />
+                <InputField
+                id='email'
+                label='Email address'
+                type='text'
+                value={Data.email}
+                handleChange={(e)=> {setData({...Data, email: e.target.value})}}
+                parentClass='mt-3'
+                />
+                <InputField
+                id='password'
+                label='Password'
+                value={Data.password}
+                handleChange={(e)=> {setData({...Data, password: e.target.value}); setPassword(e.target.value)}}
+                type='password'
+                parentClass='mt-3'
+                />
+                <InputField
+                id='password2'
+                label='Confirm Password'
+                type='password'
+                value={Data.password2}
+                handleChange={(e)=> {setData({...Data, password2: e.target.value})}}
+                parentClass='mt-3'
+                />
+              
+              </div>
+              <div className="w-full h-2 flex mt-2">
+                <div id="p-loader" className="relative bg-green-500 h-full rounded-r-md rounded-l-md transition-all duration-300" style={{width: loaderWidth}}></div>
+              </div>
+              <div className="w-full flex justify-end mt-2 h-auto">
+                <Link 
+                href="/forgotPassword"
+                className="forgot-password-link"
+                >
+                  forgot password
+                </Link>
+              </div>
+              <div className="sora">
+                  <ul className="mb-4 space-y-2">
+                    {Object.entries(passwordRules).map(([key, rule]) => (
+                      <div key={key} className="flex items-center gap-2">
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            validations[key as keyof typeof validations] 
+                              ? "bg-[#46D126]"  // Green when satisfied
+                              : "bg-[#ADE1A0]"    // Gray when not satisfied
+                          }`}
+                        />
+                        <li
+                          className={`text-[10px]/[12.6px] font-normal ${
+                            validations[key as keyof typeof validations] 
+                              ? "text-green-600"  // Green text when satisfied
+                              : "text-[#9EAD9A]"    // Gray text otherwise
+                          }`}
+                        >
+                          {rule.label} 
+                        </li>
+                      </div>
+                    ))}
+                  </ul>
+              </div>
+              <div className="flex flex-col gap-5 mt-[45px]">
+                <FormBtn 
+                isDisabled={!isValidPassword}
+                btnlabel='Sign Up' 
+                btnStyling='p-3 sign-in-btn'
+                btnName='credentials'
+                isLoading={loading}
+                />
+                <FormBtn
+                btnlabel='Sign Up with Google' 
+                btnStyling='google-sign-in-btn p-3'
+                btnName='google'
+                icon={googleLogo}
+                isLoading={loading}
+                />
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </section>
     </section>
-  </section>
   )
 }
 

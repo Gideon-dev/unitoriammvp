@@ -8,14 +8,16 @@ import timeBg from '../../../public/timer.svg';
 import RatedItems from '../../components/RatedItems';
 import HeaderBoard from '../../components/HeaderBoard';
 import { signOut, useSession } from "next-auth/react";
-import { Suspense } from 'react';   
+import { Suspense, useTransition } from 'react';   
 import FilterIconClient from '@/app/components/FilterIconClient';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 
 
 
 const DashboardHome = () => {
   const { data: session, status } = useSession();
+  const [isPending, startTransition] = useTransition();
   
   return (
     <div className='flex flex-col gap-7 h-screen'>
@@ -82,10 +84,16 @@ const DashboardHome = () => {
         <RatedItems/>
       </section>
       <button
-      onClick={() => signOut({ callbackUrl: "/auth/signIn" })} 
+      onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
       className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
       >
-      Sign Out
+        {isPending ? (
+          <div className='w-full flex justify-center items-center'>
+            <LoadingSpinner/>
+          </div>
+        ) : (
+          <p> Sign Out</p>
+        ) }
       </button>
     </div>
   )

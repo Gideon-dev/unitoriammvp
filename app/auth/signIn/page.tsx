@@ -182,12 +182,14 @@ const SignInPage: React.FC = () => {
                 btnStyling='sign-in-btn p-3'
                 btnName='credentials'
                 isDisabled={isLoading}
+                isLoading={isLoading}
                 />
                 <FormBtn
                 btnlabel='Sign in with Google' 
                 btnStyling='google-sign-in-btn p-3'
                 btnName='google'
                 icon={googleLogo}
+                isLoading={isLoading}
                 />
               </div>
 

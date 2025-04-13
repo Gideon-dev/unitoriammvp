@@ -24,7 +24,7 @@ const InputField: React.FC<genericInputProps> = ({
         </label>
         <div className="relative">
             <input 
-                className={`input-style ${inputClass}`} 
+                className={`input-style sora font-normal text-[12px] ${inputClass}`} 
                 type={isVisible ? "text" : type}
                 placeholder={placeholder} 
                 id={id} 
