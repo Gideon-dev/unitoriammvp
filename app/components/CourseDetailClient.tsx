@@ -38,7 +38,7 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                 </div>
             </div>
             {/* <div className="w-full aspect-video rounded-xl" style={{backgroundImage: `url('https://res.cloudinary.com/dtlz2vhof/${course?.image}')`, backgroundSize: "cover", backgroundPosition: "center"}}  /> */}
-            <div className="w-full aspect-video rounded-xl h-full overflow-hidden"> 
+            <div className="w-full max-h-[400px] min-h-full rounded-xl h-full overflow-hidden"> 
                 <LazyVideo videoUrl ={course?.lectures[0].intro_url} posterUrl={course?.image} />
             </div>
             <div className='w-full pe-[2.5rem] py-[12px] flex flex-col justify-center gap-[6px]'>

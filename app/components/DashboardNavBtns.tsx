@@ -12,7 +12,6 @@ import { usePathname, useRouter } from "next/navigation";
     "/auth/register", 
     "/auth/signUp", 
     "/search",
-    "/courses/course-detail", 
     "/auth/checkout"
     ];
   const isHidden = hiddenRoutes.some((route) => pathname.startsWith(route));
