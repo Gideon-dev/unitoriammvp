@@ -35,7 +35,7 @@ const DashboardHome = () => {
 
       <section id='search-section' className="">
         <div id="filter-box" className=''>
-          <Suspense fallback={<p>Loading filters...</p>}>
+          <Suspense fallback={<p>...</p>}>
             <FilterIconClient />
           </Suspense>
         </div> 

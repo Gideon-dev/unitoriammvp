@@ -21,6 +21,6 @@ export default async function CourseDetailServerPage({params}:{ params: Promise<
         <p>something occured, try again...</p>
     }
   return (
-    <CourseDetailClient  course={course} lectures={course?.lectures} isEnrolled={isEnrolled}/>
+    <CourseDetailClient  course={course} lectures={course?.lectures} isEnrolled={isEnrolled} />
   )
 };  

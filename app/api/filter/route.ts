@@ -9,7 +9,7 @@ export async function GET() {
     const dept:Dept[] = await getAllDept();
 
     if (!courses || !dept) {
-      return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+      return NextResponse.json({ error: "Failed to fetch courses and departments" }, { status: 500 });
     }
 
     return NextResponse.json({

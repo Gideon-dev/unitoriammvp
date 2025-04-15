@@ -3,14 +3,16 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import searchLogo from "../../public/search-normal.svg";
 import debounce from "lodash.debounce";
+import { useCourseStore } from "../lib/useCourseStore";
 
 type SearchBarProps = {
     onSearchChange: (value: string) => void;
     defValue?: string; 
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
+const   SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
     const [query, setQuery] = useState<string|undefined>(defValue);
+    const {setFilters} = useCourseStore();
 
  
     const debouncedSearch = useMemo(
@@ -23,6 +25,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
         const value = event.target.value;
         setQuery(value);
         debouncedSearch(value);
+        setFilters((prev) => ({
+            ...prev,
+            course: value, // Reset only course filter
+        }));
     };
 
     // Handle Clear Search

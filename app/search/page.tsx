@@ -8,8 +8,6 @@ import Image from 'next/image';
 import NoResultFoundImg from '../../public/404.svg';
 import BackBtn from '../components/BackBtn';
 import { useRouter } from 'next/navigation';
-import apiClient from '../lib/apiClient';
-import { MainCourse } from '../utils/interface';
 
 export default function SearchPage() {
   const { filteredCourses, fetchCourses, searchCourses, setFilters, filters } = useCourseStore();
@@ -17,7 +15,7 @@ export default function SearchPage() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  
+
 
  
   // useEffect(()=>{
@@ -50,12 +48,9 @@ export default function SearchPage() {
   // }, [filters.course]);
 
 
-  useEffect(() => {
-    if (!filters.course && filteredCourses.length === 0) {
-      console.log("🚀 Courses are empty, fetching them now...");
-      fetchCourses();
-    }
-  }, [filteredCourses]); // Runs only when `filteredCourses` is empty
+  // useEffect(() => {
+  //   fetchCourses();
+  // }, []); 
   
   useEffect(() => {
     if (filters.course) {
