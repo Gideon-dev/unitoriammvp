@@ -5,6 +5,8 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import { ModeToggle } from "./components/DarkLightModeBtn";
 import AuthProvider from "./components/SessionProvider";
 
+import { redirect } from "next/navigation";
+import { auth } from "./utils/auth";
 
 export const metadata: Metadata = {
   title: "Unitoria",
@@ -12,12 +14,11 @@ export const metadata: Metadata = {
   icons: "/favicon.png"
 };
 
-export default function RootLayout({
+export default  function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
- 
 
   return (
     <html lang="en" suppressHydrationWarning>

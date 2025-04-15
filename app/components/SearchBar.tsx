@@ -13,7 +13,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
     const [query, setQuery] = useState<string|undefined>(defValue);
 
  
-     const debouncedSearch = useMemo(
+    const debouncedSearch = useMemo(
         () => debounce((value) => onSearchChange(value), 500), 
         [onSearchChange]
     );

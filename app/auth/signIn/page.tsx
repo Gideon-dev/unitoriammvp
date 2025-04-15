@@ -72,7 +72,7 @@ const SignInPage: React.FC = () => {
   
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/auth/dashboard"); // Redirect if already logged in
+      router.push("/dashboard"); // Redirect if already logged in
     }
   }, [status, router]);
  
@@ -110,7 +110,7 @@ const SignInPage: React.FC = () => {
           console.log("Sign-in response:", result);
         if (result?.ok) {
           setErrorMessage(null);
-          router.push("/auth/dashboard");
+          router.push("/dashboard");
         } else {
           setErrorMessage("Invalid email or password,new? try creating an account.");
         }

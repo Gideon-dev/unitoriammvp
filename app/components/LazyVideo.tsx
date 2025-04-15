@@ -10,6 +10,8 @@ const LazyVideo = ({ videoUrl, posterUrl }: { videoUrl: string | undefined, post
       // key={videoRef} 
       ref={videoRef}
       controls
+      autoPlay
+      muted
       className="w-full h-full object-cover"
       poster={`https://res.cloudinary.com/dtlz2vhof/${posterUrl}`}
     >

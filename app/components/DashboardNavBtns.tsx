@@ -43,7 +43,7 @@ import { usePathname, useRouter } from "next/navigation";
       {!isHidden && (
         <section className="rounded-[56.59px] w-full border border-[#534949] py-4 bg-[#131313]">
           <div className="flex justify-around w-full sora">
-            <div className={containerStyles} onClick={() => {handleNavigation("Home", "/auth/dashboard")}}>
+            <div className={containerStyles} onClick={() => {handleNavigation("Home", "/dashboard")}}>
               <HomeIcon fillProperty={navigation === "Home" ? selectedIcon : "#eceef3"} styles={BtnStyles}/>
               <p className={textSyles} style={navigation === "Home"? {color: "#DB0D0D"}: {color: "white"}}>Home</p>
             </div>
