@@ -8,13 +8,12 @@ import Logo from "../../../public/logo.svg"
 import googleLogo from "../../../public/google-icon.svg"
 import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 const RegisterPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
-  // const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [Data, setData] = useState({
     full_name: "",
@@ -67,7 +66,6 @@ const RegisterPage = () => {
   // To Check if all conditions are met
   const isValidPassword = Object.values(validations).every((v) => v);
 
-  // const [isLoading, setisLoading] = useState<boolean>(false);
 
   const satisfiedRulesCount = Object.values(validations).filter(Boolean).length;
   const loaderWidth = `${satisfiedRulesCount * 20}%`; 
@@ -75,55 +73,65 @@ const RegisterPage = () => {
 
    useEffect(() => {
       if (status === "authenticated") {
-        router.push("/auth/dashboard"); // Redirect if already logged in
+        router.push("/dashboard"); // Redirect if already logged in
       }
     }, [status, router]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true)
-    // setBtnDisabled()
-    // Prepare the data object
     const updatedData = {
       full_name: (event.target as HTMLFormElement).full_name.value,
       email: (event.target as HTMLFormElement).email.value,
       password: (event.target as HTMLFormElement).password.value,
       password2: (event.target as HTMLFormElement).password2.value,
     };
-  
+    const clickedBtn = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;   
+    const clickedBtnType = clickedBtn?.name
     // Reset error message
     setErrorMessage("");
-  
-    try {
-      // Make the API call
-      const response = await fetch("https://tutormeapi-6w2f.onrender.com/api/v2/user/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData), // Send the correct structure
-      });
-  
-      const userInfo = await response.json();
-  
-      // Check if the registration was successful
-      if (response.ok) {
-        console.log("Registration successful:", userInfo);
-        router.push("/auth/signIn");
-      } else {
-        console.error("Registration failed:", userInfo);
-        setErrorMessage(userInfo.error || "Registration failed. Please try again.");
-        if (userInfo.email && Array.isArray(userInfo.email)) {
-          setErrorMessage(userInfo.email[0]); // "user with this email already exists."
-        } else {
-          setErrorMessage(userInfo.error || "Registration failed. Please try again.");
-        }
+    if(clickedBtnType === "google"){
+      const result = await signIn("google", { redirect: false });
+      console.log(result);
+      if (result?.error) {
+        setErrorMessage("Google sign-in failed. Please try again!")
+        throw new Error("Google sign-in failed. Please try again.");
+
       }
-    } catch (error) {
-      console.error("Error during registration:", error);
-      setErrorMessage("An error occurred. Please try again.");
-    }finally{
-      setLoading((prev)=> !prev)
+      if(result?.url){
+        router.push(`/${result.url}`) 
+      }
+    }else{
+
+      try {
+        const response = await fetch("https://tutormeapi-6w2f.onrender.com/api/v2/user/register/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData)
+        });
+    
+        const userInfo = await response.json();
+    
+        if (response.ok) {
+          console.log("Registration successful:", userInfo);
+          router.push("/auth/signIn");
+        } else {
+          console.error("Registration failed:", userInfo);
+          setErrorMessage(userInfo.error || "Registration failed. Please try again.");
+          if (userInfo.email && Array.isArray(userInfo.email)) {
+            setErrorMessage(userInfo.email[0]); // "user with this email already exists."
+          } else {
+            setErrorMessage(userInfo.error || "Registration failed. Please try again.");
+          }
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        setErrorMessage("An error occurred. Please try again.");
+      }finally{
+        setLoading((prev)=> !prev)
+      }
     }
   };
   
@@ -242,4 +250,4 @@ const RegisterPage = () => {
   )
 }
 
-export default RegisterPage
+export default RegisterPage;

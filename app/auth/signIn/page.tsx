@@ -33,9 +33,7 @@ const SignInPage: React.FC = () => {
       password: (event.target as HTMLFormElement).password.value,
     };
 
-    const clickedBtn = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-    //  console.log(password)
-    
+    const clickedBtn = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;   
     const clickedBtnType = clickedBtn?.name
 
     try {
