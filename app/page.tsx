@@ -10,7 +10,7 @@ export default function Home() {
     if (status === "loading") return; // Don't redirect yet
 
     if (status === "unauthenticated") {
-      router.push("/signin");
+      router.push("/auth/signIn");
     }
   }, [status, router]);
   

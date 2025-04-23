@@ -43,10 +43,12 @@ const SignInPage: React.FC = () => {
         // Handles Google sign-in
         const result = await signIn("google", { redirect: false });
         if (result?.error) {
+          setErrorMessage("Google sign-in failed. Please try again!")
           throw new Error("Google sign-in failed. Please try again.");
+
         }
         if(result?.url){
-          window.location.href = result.url;
+          router.push(`/${result.url}`) 
         }
       } else {
         // Handles regular credentials sign-in

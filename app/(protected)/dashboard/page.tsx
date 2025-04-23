@@ -23,12 +23,9 @@ const DashboardHome = () => {
 
 
   useEffect(() => {
-    if (status === "loading") return; // Wait until session is ready
+    if (status === "loading") return; 
     if (status === "unauthenticated") {router.push("/auth/signIn")};
   }, [session, status]);
-
-console.log(session?.full_name)
-console.log(session, status)
 
   
   return (
