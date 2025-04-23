@@ -8,56 +8,42 @@ import Image from 'next/image';
 import NoResultFoundImg from '../../public/404.svg';
 import BackBtn from '../components/BackBtn';
 import { useRouter } from 'next/navigation';
+import { set } from 'lodash';
 
 export default function SearchPage() {
-  const { filteredCourses, fetchCourses, searchCourses, setFilters, filters } = useCourseStore();
+  const { filteredCourses, fetchCourses, searchCourses, filters, isFetched } = useCourseStore();
+  const setFilters = useCourseStore((state) => state.setFilters);
   const [query, setQuery] = useState(filters.course || "");    
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const [courseLoading, setCourseLoading] = useState(false);
 
 
 
- 
-  // useEffect(()=>{
-  //  async (params:type) => {
-  //     async function name(params:type) {
-       
-  //    }
-  //  }
-  // })
+
+  useEffect(() => {
+    if (!isFetched) {
+      fetchCourses().then(()=> {
+        searchCourses(query)
+        setCourseLoading((prev) => !prev)
+      }).finally(()=> setCourseLoading((prev) => !prev))
+      if (filters.course) {
+        console.log("🔍 Applying search filter with:", filters.course);
+        searchCourses(filters.course);
+      }
+    }
+        console.log(isFetched);  
+
+    // setCourseLoading((prev)=> !prev);
+  }, [isFetched, fetchCourses,filters.course]);
+
 
   // useEffect(() => {
   //   if (filters.course) {
-  //     console.log("Applying search filter with:", filters.course);
-  //     searchCourses(filters.course);
-  //   } else {
-  //     fetchCourses();
-  //   }  
-  // }, [filters.course, fetchCourses]);
-
-  // useEffect(() => {
-  //   if (!filters.course) {
-  //     if (filteredCourses.length === 0) {
-  //       console.log("🚀 Courses are empty, fetching them now...");
-  //       fetchCourses();
-  //     }
-  //   } else {
   //     console.log("🔍 Applying search filter with:", filters.course);
   //     searchCourses(filters.course);
   //   }
-  // }, [filters.course]);
-
-
-  // useEffect(() => {
-  //   fetchCourses();
-  // }, []); 
-  
-  useEffect(() => {
-    if (filters.course) {
-      console.log("🔍 Applying search filter with:", filters.course);
-      searchCourses(filters.course);
-    }
-  }, [filters.course]); // Runs only when `filters.course` changes
+  // }, [filters.course]); // Runs only when `filters.course` changes
   
 
   // Handle Search
@@ -65,7 +51,7 @@ export default function SearchPage() {
     console.log("Searching for:", query);
     setQuery(query);
     if (query.trim() === "") {
-      fetchCourses(); 
+      fetchCourses();
     } else {
       searchCourses(query);
     }
@@ -123,11 +109,21 @@ export default function SearchPage() {
             </div>
             
           ))
-        ) : (
-          <div className='w-full flex flex-col items-center justify-center mt-5 sora'>
-            <Image src={NoResultFoundImg} className='w-[90%] h-auto' alt='Error image' />
-            <p className='text-center text-[16px]/[20px] text-[#FFFFFF] font-semibold'>No Tutorial Found for</p>
-            <p className='text-center text-[14px]/[20px] text-[#FFFFFF]/[50%] font-normal'>&lsquo;{query}&rsquo;</p>
+        ): (
+          <div >
+            { 
+              !isFetched || courseLoading ? (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ):(
+                <div className='w-full flex flex-col items-center justify-center mt-5 sora'>
+                  <Image src={NoResultFoundImg} className='w-[90%] h-auto' alt='Error image' />
+                  <p className='text-center text-[16px]/[20px] text-[#FFFFFF] font-semibold'>No Tutorial Found for</p>
+                  <p className='text-center text-[14px]/[20px] text-[#FFFFFF]/[50%] font-normal'>&lsquo;{query}&rsquo;</p>
+                </div>
+              )
+            }
           </div>
         )}
          {isPending && (

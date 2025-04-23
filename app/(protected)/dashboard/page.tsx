@@ -8,9 +8,10 @@ import timeBg from '../../../public/timer.svg';
 import RatedItems from '../../components/RatedItems';
 import HeaderBoard from '../../components/HeaderBoard';
 import { signOut, useSession } from "next-auth/react";
-import { Suspense, useTransition } from 'react';   
+import { Suspense, useEffect, useTransition } from 'react';   
 import FilterIconClient from '@/app/components/FilterIconClient';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -18,6 +19,14 @@ import LoadingSpinner from '@/app/components/LoadingSpinner';
 const DashboardHome = () => {
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "loading") return; // Wait until session is ready
+    if (status === "unauthenticated") router.push("/auth/signIn");
+  }, [session, status]);
+
+
+
   
   return (
     <div className='flex flex-col gap-7 h-screen'>
@@ -26,8 +35,8 @@ const DashboardHome = () => {
           <Image src={UserImage} className='rounded-[50%]' alt='user image'/>
         </div>
         <div className='flex flex-col gap-3'>
-          <p className='text-[14px]/[12px]  font-semibold'>
-          {`Hey ${status === "authenticated" ? session?.full_name : "..fetching username"} `}
+          <p className='text-[14px]/[12px]  font-semibold capitalize'>
+          {`Hey ${status === "authenticated" ? session.user?.name : "..fetching username"} `}
           </p>
           <p id="" className="font-normal text-[10px]/[12.6px]">Welcome back to learning!!</p> 
         </div>
@@ -36,7 +45,7 @@ const DashboardHome = () => {
       <section id='search-section' className="">
         <div id="filter-box" className=''>
           <Suspense fallback={<p>...</p>}>
-            <FilterIconClient />
+            <FilterIconClient /> 
           </Suspense>
         </div> 
       </section>

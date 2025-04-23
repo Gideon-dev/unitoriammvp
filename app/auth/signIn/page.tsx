@@ -14,61 +14,9 @@ const SignInPage: React.FC = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [ErrorMessage, setErrorMessage] = useState<string|null>("");
-  // const [password, setPassword] = useState("");
-  // const passwordRules = {
-  //   minLength: {
-  //     test: (password: string) => password.length >= 8,
-  //     label: "Minimum of 8 characters",
-  //   },
-  //   lowercase: {
-  //     test: (password: string) => /[a-z]/.test(password),
-  //     label: "Include one lowercase letter",
-  //   },
-  //   uppercase: {
-  //     test: (password: string) => /[A-Z]/.test(password),
-  //     label: "Include one uppercase letter",
-  //   },
-  //   digit: {
-  //     test: (password: string) => /\d/.test(password),
-  //     label: "Include one number",
-  //   },
-  //   specialChar: {
-  //     test: (password: string) => /[!@#$%^&*(),.?":{}|<>]/.test(password),
-  //     label: "Include one special character",
-  //   },
-  // };
-  // const [validations, setValidations] = useState({
-  //   minLength: false,
-  //   lowercase: false,
-  //   uppercase: false,
-  //   digit: false,
-  //   specialChar: false,
-  // });
 
-  // // Validate the password every time it changes
-  // useEffect(() => {
-  //   setValidations({
-  //     minLength: passwordRules.minLength.test(password),
-  //     lowercase: passwordRules.lowercase.test(password),
-  //     uppercase: passwordRules.uppercase.test(password),
-  //     digit: passwordRules.digit.test(password),
-  //     specialChar: passwordRules.specialChar.test(password),
-  //   });
-  // }, [password]);
-
-  // // To Check if all conditions are met
-  // const isValidPassword = Object.values(validations).every((v) => v);
 
   const [isLoading, setisLoading] = useState<boolean>(false);
-
-  // const satisfiedRulesCount = Object.values(validations).filter(Boolean).length;
-  // const loaderWidth = `${satisfiedRulesCount * 20}%`; 
-  
-  // useEffect(() => {
-  //   if (session) {
-  //     router.push("/auth/dashboard"); // Redirect logged-in users
-  //   }
-  // }, [session, router]);
   
   useEffect(() => {
     if (status === "authenticated") {
@@ -94,8 +42,11 @@ const SignInPage: React.FC = () => {
       if (clickedBtnType === "google") {
         // Handles Google sign-in
         const result = await signIn("google", { redirect: false });
-        if (!result || !result.ok) {
+        if (result?.error) {
           throw new Error("Google sign-in failed. Please try again.");
+        }
+        if(result?.url){
+          window.location.href = result.url;
         }
       } else {
         // Handles regular credentials sign-in

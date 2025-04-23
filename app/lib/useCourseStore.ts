@@ -8,6 +8,7 @@ interface CourseStore {
   filters: CourseFilters;
   setFilters: (update: (prev: CourseFilters) => CourseFilters) => void;
   fetchCourses: () => Promise<void>;
+  isFetched: boolean;
   searchCourses: (query: string, searchfilters?: { level?: string; department?: string }) => void;
 }
 
@@ -15,14 +16,14 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   courses: [],
   filteredCourses: [],
   filters: {},
-
+  isFetched: false,
   setFilters: (update) => set((state) => ({ filters: update(state.filters) })),
-
+  // setCourse: (update) => set((prevstate)=> ({courses: update(prevstate.courses)})),
   fetchCourses: async () => {
     try {
       const { data } = await apiClient.get<MainCourse[]>("https://tutormeapi-6w2f.onrender.com/api/v2/course/course-list/");
       console.log("Fetched Courses:", data);
-      set({ courses: data, filteredCourses: data }); // Store and initialize filtered list
+      set({ courses: data, filteredCourses: data , isFetched:true}); // Store and initialize filtered list
     } catch (error) {
       console.error("Error fetching courses:", error);
     }

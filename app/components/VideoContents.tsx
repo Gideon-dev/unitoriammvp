@@ -11,11 +11,22 @@ type videoPillProps = {
   altText: string | undefined,
   proceed: boolean,
   docuLink?: string
+  videoLink?: string | undefined;
+  syncLink?: (vLink: string) => void;
 }
 
-export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillProps) =>{
+export const VideoContent = ({btnType, mainText, altText, proceed,syncLink,videoLink}: videoPillProps) =>{
+ 
+const handleSyncing = () => {
+  if(syncLink && videoLink){
+    syncLink(videoLink);
+  }
+}
   return(
-    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 ' disabled={proceed ? true : false} >
+    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 ' 
+    disabled={proceed ? true : false}
+    onClick={handleSyncing}
+    >
       <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
       width={20}
       height={20} 
@@ -36,19 +47,21 @@ export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillPro
 export default VideoContent;
 
 export const DocumentContent = ({btnType, mainText, altText, proceed,docuLink}: videoPillProps)=>{
-  <button className='w-full rounded-xl flex justify-between bg-[#1A1B1A] text-white items-center sora p-3' disabled={proceed ? true : false} >
-  <Link href={`/${docuLink}`}>
-    <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
-    width={20}
-    height={20} 
-    alt="video button"
-    />
-    <p className="text-[10px]/[18px] font-semibold text-[#D1D1D6] ">
-    {mainText}
-    </p>
-    <p className="text-[8px]/[14px] font-normal">
-    {altText}
-    </p>
-  </Link>
-</button>
+  return(
+    <button className='w-full rounded-xl flex justify-between bg-[#1A1B1A] text-white items-center sora p-3' disabled={proceed ? true : false} >
+    <Link href={`/${docuLink}`}>
+      <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
+      width={20}
+      height={20} 
+      alt="video button"
+      />
+      <p className="text-[10px]/[18px] font-semibold text-[#D1D1D6] ">
+      {mainText}
+      </p>
+      <p className="text-[8px]/[14px] font-normal">
+      {altText}
+      </p>
+    </Link>
+  </button>
+  )
 } 

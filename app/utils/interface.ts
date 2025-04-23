@@ -91,6 +91,7 @@ export type JwtPayload = {
     jti: string;
     user_id: number;
     full_name: string;
+    name: string;
     email: string;
     username: string;
 };
@@ -103,6 +104,7 @@ export interface Lecture {
     content_duration: string;
     preview: boolean;
     variant_item_id: string;
+    hls_video_url: string;
 }
   
 export interface MainCourse {

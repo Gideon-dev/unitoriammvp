@@ -4,9 +4,7 @@ import DashboardBtns from "./components/DashboardNavBtns";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ModeToggle } from "./components/DarkLightModeBtn";
 import AuthProvider from "./components/SessionProvider";
-
-import { redirect } from "next/navigation";
-import { auth } from "./utils/auth";
+import { Providers } from "./components/Providers";
 
 export const metadata: Metadata = {
   title: "Unitoria",
@@ -25,26 +23,29 @@ export default  function RootLayout({
       <body
         className="sora"
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
-          <section className='flex flex-col w-full px-[25px] py-5 overflow-y-hidden h-screen'>
-            <main className="overflow-x-hidden overflow-y-scroll pb-32 scrollbar-hide">
-              <AuthProvider>
-                {children} 
-              </AuthProvider>
-            </main>
-            <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
-              <DashboardBtns/>
-            </div>
-            <div className="absolute bottom-[5%] right-5">
-              <ModeToggle />
-            </div>
-          </section> 
-        </ThemeProvider>
+            <section className='flex flex-col w-full px-[25px] py-5 overflow-y-hidden h-screen'>
+              <main className="overflow-x-hidden overflow-y-scroll pb-32 scrollbar-hide">
+                <AuthProvider>
+                  {children} 
+                </AuthProvider>
+              </main>
+              <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
+                <DashboardBtns/>
+              </div>
+              <div className="absolute bottom-[5%] right-5">
+                <ModeToggle />
+              </div>
+            </section> 
+          </ThemeProvider>
+        </Providers>
+       
       </body>
     </html>
   );

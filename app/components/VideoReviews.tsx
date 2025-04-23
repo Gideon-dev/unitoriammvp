@@ -7,9 +7,10 @@ type tabProps = {
   isEnrolled: boolean,
   course: MainCourse | null;
   onSelectLecture: (lecture: Lecture) => void;
+  syncVideoUrl?: (vid: string | undefined) => void;
 }
 
-const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
+const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture,syncVideoUrl}) => {
   const [tab, setTab] = useState<string>("tutorial");
   const [selectedCourse,  setSelectedCourse] = useState<Lecture | null>(null);
 
@@ -19,6 +20,12 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
     }
   }, [course]);
 
+
+  const handleVideo = (vid: string | undefined) => {
+    if (syncVideoUrl && vid !== selectedCourse?.hls_video_url) {  // currentVideoUrl is the state you're maintaining in the parent
+      syncVideoUrl(vid);
+    }
+  };
   return (
     <section className='w-full mt-[49px] sora'>
       <div className='w-full flex text-center'>
@@ -43,12 +50,12 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
             <p className="sora text-[12px]/[18px] font-semibold text-[#D1D1D6]">Video Contents</p>
             <div className='mt-6'>
               <div className='w-full mb-3'>
-                <VideoContent btnType='open' mainText={selectedCourse?.description} altText={selectedCourse?.content_duration} proceed={true}/>
+                <VideoContent btnType='open' mainText={selectedCourse?.title} altText={selectedCourse?.content_duration} proceed={true}/>
               </div>
              <div className="flex flex-col gap-3 w-full h-auto ">
-                {course?.lectures.map((lecture, index)=> ( 
+                {course?.lectures.slice(1).map((lecture, index) => ( 
                   <div 
-                    key={index} 
+                    key={index}
                     onClick={() => {
                       if (isEnrolled) {
                         setSelectedCourse(lecture);
@@ -58,9 +65,11 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
                   >
                     <VideoContent
                       btnType={isEnrolled ? "open" : "locked"}
-                      mainText={lecture.description}
+                      mainText={lecture.title}
                       altText={lecture.content_duration}
                       proceed={isEnrolled}
+                      videoLink={lecture.hls_video_url}
+                      syncLink={handleVideo}
                     />  
                   </div>
                 ))}

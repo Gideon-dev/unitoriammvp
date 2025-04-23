@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import jwt from "jsonwebtoken";
 import { JwtPayload } from "@/app/utils/interface";
 
@@ -24,7 +25,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           const responseJson = await res.json();
-          console.log("Parsed API Response:", responseJson);
+          
 
           const accessToken = responseJson.access || null;
           const refreshToken = responseJson.refresh || null;
@@ -34,7 +35,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const decoded = jwt.decode(accessToken) as JwtPayload;
-          console.log("Decoded Token:", decoded);
+          
 
           return {
             id: String(decoded?.user_id) || "",
@@ -50,24 +51,54 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    })
   ],
   pages: { signIn: "/auth/signIn" },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-
-        if (user.accessToken) {
-          const decoded = jwt.decode(user.accessToken) as JwtPayload;
-          if (decoded?.user_id) {
-            token.sub = String(decoded.user_id);
-          }
+    async jwt({ account, token, user, trigger }) {
+     if(user && account){
+      if (account?.provider === "google" && trigger !== "update") {
+        try {
+          // Call your backend to register/login the user
+          const res = await fetch("https://tutormeapi-6w2f.onrender.com/api/v2/auth/google/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id_token: account?.id_token }),
+          });
+  
+          const responseJson = await res.json();
+            
+          token.accessToken = responseJson.access;
+          token.refreshToken = responseJson.refresh;
+  
+          const decoded = jwt.decode(responseJson.access) as JwtPayload;
+          token.sub = String(decoded?.user_id);
           token.email = decoded?.email;
           token.full_name = decoded?.full_name;
           token.username = decoded?.username;
+  
+        } catch (error) {
+          console.error("Error during Google token fetch:", error);
         }
       }
+  
+      // If normal credentials login
+      if (user && account?.provider !== "google") {
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+  
+        const decoded = jwt.decode(user.accessToken) as JwtPayload;
+        token.sub = String(decoded?.user_id);
+        token.email = decoded?.email;
+        account?.provider === 'google' ? 
+        token.full_name = decoded?.name : decoded?.full_name
+        token.username = decoded?.username;
+       
+      }
+     }
       return token;
     },
     async session({ session, token }) {
@@ -76,7 +107,7 @@ export const authOptions: NextAuthOptions = {
       session.userId = token.sub;
       session.full_name = token.full_name;
       session.user!.email = token.email;
-      // console.log("session body:", session);
+    
       return session;
       
     },
