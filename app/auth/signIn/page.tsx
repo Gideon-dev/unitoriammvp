@@ -53,15 +53,15 @@ const SignInPage: React.FC = () => {
         const result = await signIn("credentials", 
         {
           redirect: false, 
-          callbackUrl: "/auth/signIn",
           email: updatedData.email,
           password: updatedData.password,
+          callbackUrl:"/dashboard"
         });
 
           console.log("Sign-in response:", result);
         if (result?.ok) {
           setErrorMessage(null);
-          router.push("/dashboard");
+          window.location.href = result.url!;
         } else {
           setErrorMessage("Invalid email or password,new? try creating an account.");
         }

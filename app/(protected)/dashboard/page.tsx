@@ -20,12 +20,15 @@ const DashboardHome = () => {
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+
   useEffect(() => {
     if (status === "loading") return; // Wait until session is ready
-    if (status === "unauthenticated") router.push("/auth/signIn");
+    if (status === "unauthenticated") {router.push("/auth/signIn")};
   }, [session, status]);
 
-
+console.log(session?.full_name)
+console.log(session, status)
 
   
   return (
@@ -36,7 +39,7 @@ const DashboardHome = () => {
         </div>
         <div className='flex flex-col gap-3'>
           <p className='text-[14px]/[12px]  font-semibold capitalize'>
-          {`Hey ${status === "authenticated" ? session.user?.name : "..fetching username"} `}
+          {`Hey ${status === "authenticated" ? session.user?.name || session?.full_name : "..fetching username"} `}
           </p>
           <p id="" className="font-normal text-[10px]/[12.6px]">Welcome back to learning!!</p> 
         </div>

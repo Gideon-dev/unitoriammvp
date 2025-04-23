@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const decoded = jwt.decode(accessToken) as JwtPayload;
-          
+          console.log("Decoded jwt:" ,decoded);
 
           return {
             id: String(decoded?.user_id) || "",
@@ -93,8 +93,9 @@ export const authOptions: NextAuthOptions = {
         const decoded = jwt.decode(user.accessToken) as JwtPayload;
         token.sub = String(decoded?.user_id);
         token.email = decoded?.email;
-        account?.provider === 'google' ? 
-        token.full_name = decoded?.name : decoded?.full_name
+        token.full_name = account?.provider === 'google'
+        ? decoded?.name
+        : decoded?.full_name;
         token.username = decoded?.username;
        
       }
