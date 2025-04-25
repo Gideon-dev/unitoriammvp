@@ -7,15 +7,13 @@ export async function getCourse(slug: string | null):Promise<MainCourse | null> 
     const session = await auth();
 
        try {
-        const headers: Record<string, string> = {}; // Default headers
-        if (session?.accessToken) {
-            headers.Authorization = `Bearer ${session.accessToken}`;
-        }
+        // const headers: Record<string, string> = {}; // Default headers
+        // if (session?.accessToken) {
+        //     headers.Authorization = `Bearer ${session.accessToken}`;
+        // }
 
         const response = await fetch(`https://tutormeapi-6w2f.onrender.com/api/v2/course/course-detail/${slug}/`, {
-            method: "GET",
-            headers, 
-            cache: "no-store", // Ensure fresh data
+            method: "GET"
         });
 
         if (!response.ok) {
