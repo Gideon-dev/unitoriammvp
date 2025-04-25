@@ -24,7 +24,7 @@ export async function getEnrolledCourses() {
     }
   }else{
     console.error("No valid access token found");
-    return null;  
+    return [];  
   }
 
 

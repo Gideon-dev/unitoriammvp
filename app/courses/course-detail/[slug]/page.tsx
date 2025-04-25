@@ -8,7 +8,7 @@ export default async function CourseDetailServerPage({params}:{ params: Promise<
     const course: MainCourse | null = await getCourse(resolvedParams.slug);
     const enrolledCourses: EnrolledCourse[] = await getEnrolledCourses();
     // const isEnrolled = enrolledCourses.some((c) => resolvedParams.slug.startsWith(c.course.toLowerCase()));
-    const isEnrolled = enrolledCourses.some((c) => 
+    const isEnrolled = (enrolledCourses ?? []).some((c) => 
       resolvedParams.slug.trim().toLowerCase() === c.course_slug.trim().toLowerCase()
     );
     
