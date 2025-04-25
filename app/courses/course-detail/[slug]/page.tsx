@@ -18,7 +18,7 @@ export default async function CourseDetailServerPage({params}:{ params: Promise<
     // console.log(isEnrolled); 
     
     if(!course && !enrolledCourses){
-        <p>something occured, try again...</p>
+      return <p>something occured, try again...</p>
     }
   return (
     <CourseDetailClient  course={course} lectures={course?.lectures} isEnrolled={isEnrolled} />
