@@ -6,55 +6,49 @@ import { useRouter } from 'next/navigation'
 
 type TempBuyBtnProps = {
     userId: number | undefined,
-    courseId: string | undefined,
+    courseId?: string | undefined,
     courseSlug: string | undefined,
 }
 
 const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false)
-    const handleEnrollment = async() =>{
+    const handleEnrollment = async() => {
         setIsLoading(true);
-        
-        try{
-            const enrollUser = await apiClient.post("https://tutormeapi-6w2f.onrender.com/api/v2/enroll-course/",
-                {
-                    user_id: userId,
-                    course_id: courseId
-                },
-                {
-                headers: {
-                    "Content-Type": "application/json",
-                    // Authorization: `Bearer ${session?.token}`
+        if(courseId){
+            try{
+                const enrollUser = await apiClient.post("https://tutormeapi-6w2f.onrender.com/api/v2/enroll-course/",
+                    {
+                        user_id: userId,
+                        course_id: courseId
+                    },
+                    {
+                    headers: {
+                        "Content-Type": "application/json",
+                        // Authorization: `Bearer ${session?.token}`
+                    }
+                    }
+                );
+                if(enrollUser.data.status && enrollUser.data.message){
+                    router.replace(`/courses/course-detail/${courseSlug}`)
+                    alert("Enrollment Successful");
                 }
-                }
-            );
-            if(enrollUser.data.status && enrollUser.data.message){
-                router.replace(`/courses/course-detail/${courseSlug}`)
-                alert("Enrollment Successful");
+                
+            }catch(error){
+                console.log(error)
+                alert("Enrollment Failed, try again later!");
             }
-            
-        }catch(error){
-            console.log(error)
-            alert("Enrollment Failed, try again later!");
+        
+            setIsLoading(false);
+        }else{
+            router.push("/auth/signIn");
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }
   return (
     <button 
     className='w-4/5 rounded-lg  text-white px-3 py-5 bg-[#DB0D0D] flex justify-center items-center'
-    onClick={ () => {
-        confetti({
-            particleCount: 150,
-            angle: 60,
-            spread: 360,
-            startVelocity: 25,
-            origin: { x: 0.5, y: 0.8 }, 
-            colors: ['#ff0000', '#ff9900', '#ffff00', '#33cc33', '#3399ff', '#cc33ff'],
-            scalar: 0.8,
-        });
-        handleEnrollment();
-    }}
+    onClick={handleEnrollment}
     >
         {isLoading ? (
        

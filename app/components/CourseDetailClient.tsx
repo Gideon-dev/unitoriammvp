@@ -10,6 +10,8 @@ import BookIcon from "../../public/book-icon.svg";
 import { useEffect, useState } from "react";
 import TempBuyBtn from "./TempBuyBtn";
 import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 
 type detailProps = {
@@ -21,8 +23,8 @@ type detailProps = {
 const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
     const [selectedLecture, setSelectedLecture] = useState<Lecture | null>( null);
     const [videoUrl, setVideoUrl] = useState<string|undefined>( course?.lectures[0].hls_video_url);
-    console.log(videoUrl);
-    const { data: session } = useSession();
+    // console.log(videoUrl);
+    const { data: session, status } = useSession();
 
     const syncVideoUrl = (updatedVideoUrl: string| undefined) =>{
         setVideoUrl(updatedVideoUrl);
@@ -68,14 +70,15 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                 <UserBadge userName={course?.tutor}/>
                 <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture} syncVideoUrl={syncVideoUrl}/>
                 <div className="w-full flex justify-center mt-[36px] sora">
-                    {!isEnrolled && (
+                    {!isEnrolled &&  (
                         // <BuyBtn slug={course?.slug} price={course?.price}/>
                         <TempBuyBtn 
                             courseId={course?.course_id} 
                             userId={session?.userId ? Number(session?.userId): undefined} 
                             courseSlug={course?.slug}
                         />
-                    )}
+                    )
+                    }
                 </div>
             </section>
         </div>

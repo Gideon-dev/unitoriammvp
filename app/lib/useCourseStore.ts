@@ -22,17 +22,17 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   fetchCourses: async () => {
     try {
       const { data } = await apiClient.get<MainCourse[]>("https://tutormeapi-6w2f.onrender.com/api/v2/course/course-list/");
-      console.log("Fetched Courses:", data);
+      // console.log("Fetched Courses:", data);
       set({ courses: data, filteredCourses: data , isFetched:true}); // Store and initialize filtered list
     } catch (error) {
-      console.error("Error fetching courses:", error);
+      // console.error("Error fetching courses:", error);
     }
   },
 
   searchCourses: (query, searchfilters) => {
     const { courses } = get();
-    console.log("All courses in Zustand:", courses);
-    console.log("Filtering with:", query, searchfilters);
+    // console.log("All courses in Zustand:", courses);
+    // console.log("Filtering with:", query, searchfilters);
     const filtered = courses.filter(course => 
       course.title.toLowerCase().includes(query.toLowerCase()) &&
       (searchfilters?.level ? course.level === searchfilters.level : true) &&
