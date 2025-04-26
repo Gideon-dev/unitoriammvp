@@ -15,7 +15,7 @@ const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const handleEnrollment = async() => {
         setIsLoading(true);
-        if(courseId){
+        if(userId){
             try{
                 const enrollUser = await apiClient.post("https://tutormeapi-6w2f.onrender.com/api/v2/enroll-course/",
                     {
