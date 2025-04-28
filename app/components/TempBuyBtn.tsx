@@ -53,7 +53,7 @@ const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
         }
     }
   return (
-    <div className='relative w-full flex justify-center border border-red-500'>
+    <div className='relative w-full flex justify-center'>
         {showConfetti && <Confetti width={width} height={height} />}
         <button 
         className='w-4/5 rounded-lg  text-white px-3 py-5 bg-[#DB0D0D] flex justify-center items-center'
