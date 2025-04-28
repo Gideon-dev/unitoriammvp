@@ -8,7 +8,6 @@ import Image from 'next/image';
 import NoResultFoundImg from '../../public/404.svg';
 import BackBtn from '../components/BackBtn';
 import { useRouter } from 'next/navigation';
-import { set } from 'lodash';
 
 export default function SearchPage() {
   const { filteredCourses, fetchCourses, searchCourses, filters, isFetched } = useCourseStore();
@@ -32,19 +31,12 @@ export default function SearchPage() {
         searchCourses(filters.course);
       }
     }
-        console.log(isFetched);  
+      console.log(isFetched);  
 
     // setCourseLoading((prev)=> !prev);
   }, [isFetched, fetchCourses,filters.course]);
 
 
-  // useEffect(() => {
-  //   if (filters.course) {
-  //     console.log("🔍 Applying search filter with:", filters.course);
-  //     searchCourses(filters.course);
-  //   }
-  // }, [filters.course]); // Runs only when `filters.course` changes
-  
 
   // Handle Search
   const handleSearch = (query: string) => {

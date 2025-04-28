@@ -8,10 +8,15 @@ import timeBg from '../../../public/timer.svg';
 import RatedItems from '../../components/RatedItems';
 import HeaderBoard from '../../components/HeaderBoard';
 import { signOut, useSession } from "next-auth/react";
-import { Suspense, useEffect, useTransition } from 'react';   
+import { Suspense, useEffect, useState, useTransition } from 'react';   
 import FilterIconClient from '@/app/components/FilterIconClient';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
+import { useCourseStore } from '@/app/lib/useCourseStore';
+import { MainCourse } from '@/app/utils/interface';
+import TutorialCard from '@/app/components/TutorialCard';
+import SkeletonCard from '@/app/components/ShimmerSkeleton';
+import Link from 'next/link';
 
 
 
@@ -20,6 +25,21 @@ const DashboardHome = () => {
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const {courses,fetchCourses,isFetched} = useCourseStore();
+  const [onboardingCourse, setOnboardingCourse] = useState<MainCourse>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isFetched) {
+      fetchCourses();
+    }
+  }, [isFetched]);
+  
+  useEffect(() => {
+    if (courses.length > 0) {
+      setOnboardingCourse(courses[0]);
+    }
+  }, [courses]);
 
 
   useEffect(() => {
@@ -70,22 +90,21 @@ const DashboardHome = () => {
 
       <section id="tutorials-section" className='flex flex-col gap-[20px] sora'>
         <HeaderBoard mainHead='Tutorials for you' nextHead='see all'/>
-        <div className="flex flex-col items-center first-letter:w-full h-full relative aspect-video overflow-hidden rounded-[15px]">
-          <div className="bg-[url('/tutor.png')] w-full bg-cover bg-top center bg-no-repeat h-[50%]" />
-          <div className='w-full h-[50%] px-[17px] py-[12px] flex flex-col justify-center gap-[6px] bg-[#1A1B1A]'>
-            <p className="text-[10px]/[12.6px] text-[#9EAD9A] flex items-center gap-1">By<span id='tutor-name' className="text-[#FAFAFA]">Aishatou Abdullahi</span></p>
-            <p id="tut-topic" className="font-semibold text-[12px]/[15.12px] ">How to solve arithmetic Progression (A.P.)</p>
-            <div className="flex items-center gap-2 ">
-              <Image src={"/subject-icon.svg"} width={70} height={25} alt="subject icon"/>
-              <span id='r-and-r' className='flex items-center gap-2 text-[9.04px]/[11.39px]'>
-                <Image src={'/star.png'} width={11} height={11} alt="rating icon"/>
-                <p className="font-sembiold">4.5</p>
-                <p className="font-normal text-[#9EAD9A]">200 Reviews</p>
-              </span>
-            </div>
-            <p className='text-[10px]/[12.6px] font-semibold '>#2,500</p>
-          </div>
-        </div>
+        <Suspense fallback={<SkeletonCard />}>
+          {onboardingCourse ? (
+            <Link href={`/courses/course-detail/${onboardingCourse.slug}`}>
+              <TutorialCard
+                description={onboardingCourse.description}
+                image={onboardingCourse.image}
+                price={onboardingCourse.price}
+                title={onboardingCourse.title}
+                tutor={onboardingCourse.tutor}
+              />
+            </Link>
+          ) : (
+            <SkeletonCard />
+          )}
+        </Suspense>
       </section>
 
       <section id="rated-section" className='w-full'>

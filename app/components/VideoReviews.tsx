@@ -10,22 +10,10 @@ type tabProps = {
   syncVideoUrl?: (vid: string | undefined) => void;
 }
 
-const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture,syncVideoUrl}) => {
-  const [tab, setTab] = useState<string>("tutorial");
-  const [selectedCourse,  setSelectedCourse] = useState<Lecture | null>(null);
+const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
+  const [tab, setTab] = useState<"tutorial" | "reviews">("tutorial");
+  const isLectureLocked = (index: number) => index !== 0 && !isEnrolled;
 
-  useEffect(() => {
-    if (course && course.lectures.length > 0) {
-      setSelectedCourse(course.lectures[0]);
-    }
-  }, [course]);
-
-
-  const handleVideo = (vid: string | undefined) => {
-    if (syncVideoUrl && vid !== selectedCourse?.hls_video_url) {  // currentVideoUrl is the state you're maintaining in the parent
-      syncVideoUrl(vid);
-    }
-  };
   return (
     <section className='w-full mt-[49px] sora'>
       <div className='w-full flex text-center'>
@@ -48,51 +36,35 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture,syncVide
         {tab === "tutorial" ? (
           <div className=" mt-[30px]">
             <p className="sora text-[12px]/[18px] font-semibold text-[#D1D1D6]">Video Contents</p>
-            <div className='mt-6'>
-              <div className='w-full mb-3'>
-                <VideoContent btnType='open' mainText={selectedCourse?.title} altText={selectedCourse?.content_duration} proceed={true}/>
-              </div>
-             <div className="flex flex-col gap-3 w-full h-auto ">
-                {course?.lectures.slice(1).map((lecture, index) => ( 
-                  <div 
-                    key={index}
-                    onClick={() => {
-                      if (isEnrolled) {
-                        setSelectedCourse(lecture);
-                        onSelectLecture(lecture);
-                      }
-                    }}
-                  >
-                    <VideoContent
-                      btnType={isEnrolled ? "open" : "locked"}
-                      mainText={lecture.title}
-                      altText={lecture.content_duration}
-                      proceed={isEnrolled}
-                      videoLink={lecture.hls_video_url}
-                      syncLink={handleVideo}
-                    />  
-                  </div>
-                ))}
-             </div>
-             <div className='mt-[25px]'>
-                <h1 className="sora text-[12px]/[18px] font-semibold mb-[15px]"> Documents </h1>
-                <VideoContent 
-                  btnType="document"
-                  mainText={course?.document}
-                  altText="30Pages"
-                  proceed={true}
-                />
-             </div>
+            <div className='mt-6 space-y-4'>
+              {course && course.lectures.map((lec,idx) => {
+                const isLocked = isLectureLocked(idx);
+                return(
+                <div 
+                key={lec.variant_item_id}
+                onClick={() => {
+                  if (!isLocked) {
+                    onSelectLecture(lec);
+                  }
+                }}
+                className=''
+                >
+                  <VideoContent
+                    btnType={isLocked ? "locked" : "open"}
+                    mainText={lec.title}
+                    altText={lec.content_duration}
+                    proceed={!isLocked}
+                  />
+                </div>
+              )})}
             </div>
           </div>
         ):(
-          <>
-          </>
+        <div className="mt-[30px]">
+          <p className="text-center text-gray-400">No reviews yet. Coming soon!</p>
+        </div>
         )}
       </section>
-      
-      
-        
     </section>
   )
 }

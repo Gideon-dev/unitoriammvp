@@ -68,11 +68,10 @@ import searchIcon from '../../public/search-normal.svg';
       <div className='flex w-full items-center justify-between sora' >
         <div id='search-box' className='w-[80%] relative'>
           <Image src={searchIcon} alt='search-icon' className='search-icon'/>
-          <label htmlFor='tutorial' >
-            <input type='text' id='tutorial' placeholder='Search tutorials here' className='text-white w-full bg-[#1A1B1A] rounded-md py-[10px] ps-[30px] text-[10px]/[12.6px]'
-            onClick={()=> setIsOpen((prev)=> !prev)}
-            />
-          </label>
+          <div  className='text-white w-full bg-[#1A1B1A] rounded-md py-[10px] ps-[30px] text-[10px]/[12.6px]'  
+            onClick={()=> setIsOpen((prev)=> !prev)}>
+            search tutorials here
+          </div>
         </div>
         <div className="w-[15%] h-full rounded-lg bg-[#1A1B1A] p-[8px] flex justify-center">
           <Image src={filterIcon} className='' alt="filter icon" onClick={()=> setIsOpen((prev)=> !prev)} />

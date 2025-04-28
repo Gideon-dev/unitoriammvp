@@ -98,13 +98,10 @@ export type JwtPayload = {
 export interface Lecture {
     course: string;
     title: string;
-    description: string;
-    intro_url: string;
-    video_url: string;
+   cloudflare_uid: string;
     content_duration: string;
     preview: boolean;
     variant_item_id: string;
-    hls_video_url: string;
 }
   
 export interface MainCourse {
@@ -170,11 +167,18 @@ export interface CourseFilters {
 }
   
 export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price" | "title">
-
+// export interface TutorialCardProps {
+//     tutor: string | undefined,
+//     image: string | undefined,
+//     description: string | undefined,
+//     price: string | undefined,
+//     title: string | undefined
+// }
 export interface EnrolledCardprops {
     tutor: string,
     course_image: string,
     topic: string
+    title: string
 }
 
 

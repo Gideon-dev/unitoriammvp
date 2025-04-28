@@ -21,6 +21,7 @@ import Link from "next/link";
               course_image={course.course_image}
               tutor={course.tutor}
               topic={course.lectures[0].title}
+              title={course.course}
               />
             </Link>
           ))}

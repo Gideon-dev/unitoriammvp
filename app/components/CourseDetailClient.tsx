@@ -22,19 +22,14 @@ type detailProps = {
 
 const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
     const [selectedLecture, setSelectedLecture] = useState<Lecture | null>( null);
-    const [videoUrl, setVideoUrl] = useState<string|undefined>( course?.lectures[0].hls_video_url);
-    // console.log(videoUrl);
     const { data: session, status } = useSession();
 
-    const syncVideoUrl = (updatedVideoUrl: string| undefined) =>{
-        setVideoUrl(updatedVideoUrl);
-    }
     useEffect(() => {
         if (course?.lectures.length) {
             setSelectedLecture(course.lectures[0]);
         }
     }, [course])
-    
+ 
   return (
     <div>
         <div>
@@ -45,10 +40,9 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                         <p className="text-[14px]/[17.64px] font-semibold sora">Tutorial details</p>
                     </div>
                 </div>
-                {/* <div className="w-full aspect-video rounded-xl" style={{backgroundImage: `url('https://res.cloudinary.com/dtlz2vhof/${course?.image}')`, backgroundSize: "cover", backgroundPosition: "center"}}  /> */}
-                <div className="w-full aspect-video rounded-xl h-full overflow-hidden"> 
-                    <LazyVideo videoUrl ={videoUrl} posterUrl={course?.image} />
-                </div>
+              
+                <LazyVideo key={selectedLecture?.cloudflare_uid} videoUrl={selectedLecture?.cloudflare_uid} />
+              
                 <div className='w-full pe-[2.5rem] py-[12px] flex flex-col justify-center gap-[6px]'>
                     <p id="tut-topic" className="font-semibold text-[18px]/[26px]">{course?.description}</p>
                     <div className="flex items-center gap-2">
@@ -68,7 +62,7 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                     <UtilityBar/>
                 </div>
                 <UserBadge userName={course?.tutor}/>
-                <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture} syncVideoUrl={syncVideoUrl}/>
+                <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture}/>
                 <div className="w-full flex justify-center mt-[36px] sora">
                     {!isEnrolled &&  (
                         // <BuyBtn slug={course?.slug} price={course?.price}/>

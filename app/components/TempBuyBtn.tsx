@@ -1,7 +1,8 @@
-import confetti from 'canvas-confetti'
+import Confetti from 'react-confetti';
 import React, { useState } from 'react'
 import apiClient from '../lib/apiClient'
 import { useRouter } from 'next/navigation'
+import { useWindowSize } from 'react-use';
 
 
 type TempBuyBtnProps = {
@@ -12,7 +13,9 @@ type TempBuyBtnProps = {
 
 const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const { width, height } = useWindowSize(); 
     const handleEnrollment = async() => {
         setIsLoading(true);
         if(userId){
@@ -40,25 +43,32 @@ const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
             }
         
             setIsLoading(false);
+            setShowConfetti(true);
+
+            // Stop confetti after 3 seconds
+            setTimeout(() => setShowConfetti(false), 3000);
         }else{
             router.push("/auth/signIn");
             setIsLoading(false);
         }
     }
   return (
-    <button 
-    className='w-4/5 rounded-lg  text-white px-3 py-5 bg-[#DB0D0D] flex justify-center items-center'
-    onClick={handleEnrollment}
-    >
-        {isLoading ? (
-       
-       <div className="w-4 h-4 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-       
-     ):
-     (
-       <p className="text-[12px]/[15.12px] font-normal">Enroll Now</p>
-     )}
-    </button>
+    <div className='relative w-full flex justify-center border border-red-500'>
+        {showConfetti && <Confetti width={width} height={height} />}
+        <button 
+        className='w-4/5 rounded-lg  text-white px-3 py-5 bg-[#DB0D0D] flex justify-center items-center'
+        onClick={handleEnrollment}
+        >
+            {isLoading ? (
+        
+        <div className="w-4 h-4 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        
+        ):
+        (
+        <p className="text-[12px]/[15.12px] font-normal">Enroll Now</p>
+        )}
+        </button>
+    </div>
   )
 }
 

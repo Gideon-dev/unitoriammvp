@@ -11,21 +11,13 @@ type videoPillProps = {
   altText: string | undefined,
   proceed: boolean,
   docuLink?: string
-  videoLink?: string | undefined;
-  syncLink?: (vLink: string) => void;
 }
 
-export const VideoContent = ({btnType, mainText, altText, proceed,syncLink,videoLink}: videoPillProps) =>{
+export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillProps) =>{
  
-const handleSyncing = () => {
-  if(syncLink && videoLink){
-    syncLink(videoLink);
-  }
-}
   return(
     <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 ' 
-    disabled={proceed ? true : false}
-    onClick={handleSyncing}
+    disabled={!proceed}
     >
       <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
       width={20}
@@ -49,7 +41,6 @@ export default VideoContent;
 export const DocumentContent = ({btnType, mainText, altText, proceed,docuLink}: videoPillProps)=>{
   return(
     <button className='w-full rounded-xl flex justify-between bg-[#1A1B1A] text-white items-center sora p-3' disabled={proceed ? true : false} >
-    <Link href={`/${docuLink}`}>
       <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
       width={20}
       height={20} 
@@ -61,7 +52,6 @@ export const DocumentContent = ({btnType, mainText, altText, proceed,docuLink}: 
       <p className="text-[8px]/[14px] font-normal">
       {altText}
       </p>
-    </Link>
   </button>
   )
 } 
