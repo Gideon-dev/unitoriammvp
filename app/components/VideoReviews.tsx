@@ -8,9 +8,10 @@ type tabProps = {
   course: MainCourse | null;
   onSelectLecture: (lecture: Lecture) => void;
   syncVideoUrl?: (vid: string | undefined) => void;
+  scrollToTop: () => void;
 }
 
-const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
+const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture, scrollToTop}) => {
   const [tab, setTab] = useState<"tutorial" | "reviews">("tutorial");
   const isLectureLocked = (index: number) => index !== 0 && !isEnrolled;
 
@@ -45,7 +46,9 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture}) => {
                 onClick={() => {
                   if (!isLocked) {
                     onSelectLecture(lec);
+                    scrollToTop();
                   }
+                  
                 }}
                 className=''
                 >

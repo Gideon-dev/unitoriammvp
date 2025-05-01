@@ -34,9 +34,13 @@ export default function SearchPage() {
   
       await fetchCourses();
   
-      if (filters.course) {
+      if (filters.course || filters.department || filters.level) {
         console.log("🔍 Applying search filter with:", filters.course);
-        searchCourses(filters.course);
+       
+          searchCourses(filters.course, {
+            level: filters.level,
+            department: filters.department
+          });
       }
   
       setCourseLoading(false);
@@ -44,10 +48,13 @@ export default function SearchPage() {
   
     if (!isFetched) {
       fetchAndSearch();
-    } else if (filters.course) {
+    } else if (filters.course || filters.department || filters.level) {
       console.log("🔍 Courses already fetched. Applying filter:", filters.course);
-      searchCourses(filters.course);
-    }
+      searchCourses(filters.course, {
+        level: filters.level,
+        department: filters.department
+      });
+    } 
   }, [isFetched]);  
 
   // Handle Search

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import apiClient from "@/app/lib/apiClient"; // Your API client
-import { CourseFilters, MainCourse } from "../utils/interface";
+import { CourseFilters, MainCourse, searchFilters } from "../utils/interface";
 
 interface CourseStore {
   courses: MainCourse[];
@@ -11,7 +11,7 @@ interface CourseStore {
   setFilters: (update: (prev: CourseFilters) => CourseFilters) => void;
   fetchCourses: () => Promise<void>;
   setCourseLoading: (val: boolean) => void;
-  searchCourses: (query: string, searchfilters?: { level?: string; department?: string }) => void;
+  searchCourses: (query?: string, searchfilters?: searchFilters) => void;
 }
 
 export const useCourseStore = create<CourseStore>((set, get) => ({
@@ -36,14 +36,22 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
 
   searchCourses: (query, searchfilters) => {
     const { courses } = get();
-    // console.log("All courses in Zustand:", courses);
-    // console.log("Filtering with:", query, searchfilters);
+  
     const filtered = courses.filter(course => 
-      course.title.toLowerCase().includes(query.toLowerCase()) &&
+      // Only check course title if query is provided
+      (query ? course.title.toLowerCase().includes(query.toLowerCase()) : true) &&
+  
+      // Check level if provided
       (searchfilters?.level ? course.level === searchfilters.level : true) &&
-      (searchfilters?.department ? course.department.includes(searchfilters.department) : true)
+  
+      // Check department if provided
+      (searchfilters?.department
+        ? course.department.some(dept =>
+            dept.toLowerCase().startsWith(searchfilters.department!.toLowerCase())
+          )
+        : true)
     );
-
+  
     console.log("Finally filtered:", filtered);
     set({ filteredCourses: filtered });
   },

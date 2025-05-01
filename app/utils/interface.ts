@@ -165,6 +165,8 @@ export interface CourseFilters {
     // key?:string;
     // value?:string;
 }
+
+export type  searchFilters = Pick<CourseFilters, | "department" | "level">
   
 export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price" | "title">
 // export interface TutorialCardProps {

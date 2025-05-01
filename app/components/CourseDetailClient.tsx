@@ -7,7 +7,7 @@ import UtilityBar from "./UtilityBar";
 import UserBadge from "./UserBadge";
 import ShowTab from "./VideoReviews";
 import BookIcon from "../../public/book-icon.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TempBuyBtn from "./TempBuyBtn";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,11 @@ type detailProps = {
 const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
     const [selectedLecture, setSelectedLecture] = useState<Lecture | null>( null);
     const { data: session, status } = useSession();
+    const videoRef = useRef<HTMLDivElement>(null);
+
+    const scrollToVideo = () => {
+        videoRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     useEffect(() => {
         if (course?.lectures.length) {
@@ -40,8 +45,9 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                         <p className="text-[14px]/[17.64px] font-semibold sora">Tutorial details</p>
                     </div>
                 </div>
-              
-                <LazyVideo key={selectedLecture?.cloudflare_uid} videoUrl={selectedLecture?.cloudflare_uid} />
+                <div ref={videoRef} className="w-full h-full">
+                    <LazyVideo key={selectedLecture?.cloudflare_uid} videoUrl={selectedLecture?.cloudflare_uid} />
+                </div>
               
                 <div className='w-full pe-[2.5rem] py-[12px] flex flex-col justify-center gap-[6px]'>
                     <p id="tut-topic" className="font-semibold text-[18px]/[26px]">{course?.description}</p>
@@ -62,7 +68,7 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                     <UtilityBar/>
                 </div>
                 <UserBadge userName={course?.tutor}/>
-                <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture}/>
+                <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture} scrollToTop={scrollToVideo}/>
                 <div className="w-full flex justify-center mt-[36px] sora">
                     {!isEnrolled &&  (
                         // <BuyBtn slug={course?.slug} price={course?.price}/>

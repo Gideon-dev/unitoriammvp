@@ -3,7 +3,6 @@ import lockIcon from '../../public/lock-circle.svg';
 import playIcon from '../../public/play-circle.svg';
 import docuIcon from '../../public/document-text.svg';
 import Image from 'next/image';
-import Link from 'next/link';
 
 type videoPillProps = {
   btnType: "locked"  | "open" | "document",
@@ -11,13 +10,15 @@ type videoPillProps = {
   altText: string | undefined,
   proceed: boolean,
   docuLink?: string
+
 }
 
 export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillProps) =>{
- 
+
   return(
-    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 ' 
+    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 cursor-pointer' 
     disabled={!proceed}
+   
     >
       <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
       width={20}
