@@ -10,33 +10,45 @@ import BackBtn from '../components/BackBtn';
 import { useRouter } from 'next/navigation';
 
 export default function SearchPage() {
-  const { filteredCourses, fetchCourses, searchCourses, filters, isFetched } = useCourseStore();
+  const { 
+    filteredCourses, 
+    fetchCourses, 
+    searchCourses, 
+    filters, 
+    isFetched,
+    courseLoading,
+    setCourseLoading
+   } = useCourseStore();
+  // console.log("this is filter in zustand: ", filters);
   const setFilters = useCourseStore((state) => state.setFilters);
   const [query, setQuery] = useState(filters.course || "");    
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [courseLoading, setCourseLoading] = useState(false);
-
+  // const [courseLoading, setCourseLoading] = useState(false);
 
 
 
   useEffect(() => {
-    if (!isFetched) {
-      fetchCourses().then(()=> {
-        searchCourses(query)
-        setCourseLoading((prev) => !prev)
-      }).finally(()=> setCourseLoading((prev) => !prev))
+    const fetchAndSearch = async () => {
+      setCourseLoading(true);
+  
+      await fetchCourses();
+  
       if (filters.course) {
         console.log("🔍 Applying search filter with:", filters.course);
         searchCourses(filters.course);
       }
+  
+      setCourseLoading(false);
+    };
+  
+    if (!isFetched) {
+      fetchAndSearch();
+    } else if (filters.course) {
+      console.log("🔍 Courses already fetched. Applying filter:", filters.course);
+      searchCourses(filters.course);
     }
-      console.log(isFetched);  
-
-    // setCourseLoading((prev)=> !prev);
-  }, [isFetched, fetchCourses,filters.course]);
-
-
+  }, [isFetched]);  
 
   // Handle Search
   const handleSearch = (query: string) => {

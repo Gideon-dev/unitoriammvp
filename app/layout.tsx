@@ -26,7 +26,7 @@ export default  function RootLayout({
         <Providers>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
@@ -39,9 +39,9 @@ export default  function RootLayout({
               <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
                 <DashboardBtns/>
               </div>
-              <div className="absolute bottom-[5%] right-5">
+              {/* <div className="absolute bottom-[5%] right-5">
                 <ModeToggle />
-              </div>
+              </div> */}
             </section> 
           </ThemeProvider>
         </Providers>

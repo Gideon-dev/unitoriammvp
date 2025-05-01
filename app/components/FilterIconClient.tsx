@@ -52,7 +52,7 @@ import searchIcon from '../../public/search-normal.svg';
   const handleSelectDropdown = (key: string, value: string) => {
     setFilters((prev) => ({ 
       ...prev, 
-       [key]: value
+      [key]: value
     }));
     console.log("Updated Filters in Zustand:", key, value);
   };  

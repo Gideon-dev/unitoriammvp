@@ -6,9 +6,11 @@ interface CourseStore {
   courses: MainCourse[];
   filteredCourses: MainCourse[];
   filters: CourseFilters;
+  isFetched: boolean;
+  courseLoading: boolean;
   setFilters: (update: (prev: CourseFilters) => CourseFilters) => void;
   fetchCourses: () => Promise<void>;
-  isFetched: boolean;
+  setCourseLoading: (val: boolean) => void;
   searchCourses: (query: string, searchfilters?: { level?: string; department?: string }) => void;
 }
 
@@ -17,15 +19,18 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
   filteredCourses: [],
   filters: {},
   isFetched: false,
+  courseLoading: false,
   setFilters: (update) => set((state) => ({ filters: update(state.filters) })),
-  // setCourse: (update) => set((prevstate)=> ({courses: update(prevstate.courses)})),
   fetchCourses: async () => {
+    set({ courseLoading: true });
     try {
       const { data } = await apiClient.get<MainCourse[]>("https://tutormeapi-6w2f.onrender.com/api/v2/course/course-list/");
       // console.log("Fetched Courses:", data);
       set({ courses: data, filteredCourses: data , isFetched:true}); // Store and initialize filtered list
     } catch (error) {
-      // console.error("Error fetching courses:", error);
+      console.error("Error fetching courses, from zustand:", error);
+    }finally {
+      set({ courseLoading: false });
     }
   },
 
@@ -41,7 +46,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
 
     console.log("Finally filtered:", filtered);
     set({ filteredCourses: filtered });
-  }
-
- 
+  },
+  setCourseLoading: (val: boolean) => set({ courseLoading: val })
 }));
