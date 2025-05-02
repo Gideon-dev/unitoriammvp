@@ -1,8 +1,7 @@
-import BackBtn from "@/app/components/BackBtn";
-import EnrolledTutorialCard from "@/app/components/EnrolledCard";
+import LibraryClientComponent from "@/app/components/LibraryClientComponent";
 import { getEnrolledCourses } from "@/app/lib/getEnrolledCourse";
 import { EnrolledCourse } from "@/app/utils/interface";
-import Link from "next/link";
+
 
 
  export default async function LibraryPage () {
@@ -10,24 +9,7 @@ import Link from "next/link";
     if(!enrolledCourses || enrolledCourses.length === 0){
       return <p className="sora font-normal text-[14px]/[100%]"> Purchase a Course to build your Library</p>
     }
-    
-  return (
-    <div>
-      <BackBtn/>
-      <div className="flex flex-col gap-4 mt-3"> 
-        {enrolledCourses.map((course,index) => (
-            <Link key={index} href={`/courses/course-detail/${course.course_slug}`}>
-              <EnrolledTutorialCard
-              course_image={course.course_image}
-              tutor={course.tutor}
-              topic={course.lectures[0].title}
-              title={course.course}
-              />
-            </Link>
-          ))}
-      </div>
-    </div>
-  )
-}
 
-// export default LibraryPage;
+
+  return <LibraryClientComponent enrolledCourses={enrolledCourses} />
+}

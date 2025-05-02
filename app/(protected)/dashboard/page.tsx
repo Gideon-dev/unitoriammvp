@@ -29,6 +29,15 @@ const DashboardHome = () => {
   const [onboardingCourse, setOnboardingCourse] = useState<MainCourse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // funtions
+    const handlePageTransition = (slug: string)=>{
+      startTransition(()=>{
+        router.push(`/courses/course-detail/${slug}`)
+      })
+    }
+
+
+  // useEffect
   useEffect(() => {
     if (!isFetched) {
       fetchCourses();
@@ -92,7 +101,7 @@ const DashboardHome = () => {
         <HeaderBoard mainHead='Tutorials for you' nextHead='see all'/>
         <Suspense fallback={<SkeletonCard />}>
           {onboardingCourse ? (
-            <Link href={`/courses/course-detail/${onboardingCourse.slug}`}>
+            <div onClick={()=> handlePageTransition(onboardingCourse.slug)} className='cursor-pointer'>
               <TutorialCard
                 description={onboardingCourse.description}
                 image={onboardingCourse.image}
@@ -100,7 +109,7 @@ const DashboardHome = () => {
                 title={onboardingCourse.title}
                 tutor={onboardingCourse.tutor}
               />
-            </Link>
+            </div>
           ) : (
             <SkeletonCard />
           )}
@@ -112,8 +121,8 @@ const DashboardHome = () => {
         <RatedItems/>
       </section>
       <button
-      onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
-      className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
+        onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
+        className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
       >
         {isPending ? (
           <div className='w-full flex justify-center items-center'>
@@ -123,6 +132,11 @@ const DashboardHome = () => {
           <p> Sign Out</p>
         ) }
       </button>
+      {isPending &&
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <LoadingSpinner/>
+        </div>
+      }
     </div>
   )
 }
