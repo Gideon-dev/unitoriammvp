@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import DashboardBtns from "./components/DashboardNavBtns";
 import { ThemeProvider } from "./components/ThemeProvider";
-import { ModeToggle } from "./components/DarkLightModeBtn";
+import { Analytics } from "@vercel/analytics/react"
 import AuthProvider from "./components/SessionProvider";
 import { Providers } from "./components/Providers";
 
@@ -34,6 +34,7 @@ export default  function RootLayout({
               <main className="overflow-x-hidden overflow-y-scroll pb-32 scrollbar-hide">
                 <AuthProvider>
                   {children} 
+                  <Analytics/>
                 </AuthProvider>
               </main>
               <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
