@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import DashboardBtns from "./components/DashboardNavBtns";
 import { ThemeProvider } from "./components/ThemeProvider";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import AuthProvider from "./components/SessionProvider";
 import { Providers } from "./components/Providers";
 
@@ -35,6 +36,7 @@ export default  function RootLayout({
                 <AuthProvider>
                   {children} 
                   <Analytics/>
+                  <SpeedInsights/>
                 </AuthProvider>
               </main>
               <div className="fixed bottom-1 w-[85.5%] py-1 flex justify-center items-center">
