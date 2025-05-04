@@ -8,12 +8,14 @@ import { FormEvent, useEffect, useState } from "react";
 import InputField from "@/app/components/InputField";
 import FormBtn from "@/app/components/FormBtn";
 import MessageBox from "@/app/components/ErrorAndSuccessMsg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [ErrorMessage, setErrorMessage] = useState<string|null>("");
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
 
   const [isLoading, setisLoading] = useState<boolean>(false);
@@ -46,7 +48,7 @@ const SignInPage: React.FC = () => {
 
         }
         if(result?.url){
-          router.push(`/${result.url}`) 
+          router.push(`${callbackUrl}`) 
         }
       } else {
         // Handles regular credentials sign-in
@@ -55,7 +57,7 @@ const SignInPage: React.FC = () => {
           redirect: false, 
           email: updatedData.email,
           password: updatedData.password,
-          callbackUrl:"/dashboard"
+          callbackUrl: callbackUrl
         });
 
           console.log("Sign-in response:", result);

@@ -7,7 +7,6 @@ const TutorialCard: React.FC<TutorialCardProps> = ({
   tutor,
   description,
   image,  
-  price,
   title
 }) => {
   return (
@@ -27,7 +26,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({
             <p className="font-normal text-[#9EAD9A]">200 Reviews</p>
           </span>
         </div>
-        <p className='text-[10px]/[12.6px] font-semibold '>#{price}</p>
+        {/* <p className='text-[10px]/[12.6px] font-semibold '>#{price}</p> */}
       </div>
     </div>
   )

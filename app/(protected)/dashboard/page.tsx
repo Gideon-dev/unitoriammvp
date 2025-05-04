@@ -16,7 +16,6 @@ import { useCourseStore } from '@/app/lib/useCourseStore';
 import { MainCourse } from '@/app/utils/interface';
 import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
-import Link from 'next/link';
 
 
 
@@ -27,7 +26,10 @@ const DashboardHome = () => {
   const router = useRouter();
   const {courses,fetchCourses,isFetched} = useCourseStore();
   const [onboardingCourse, setOnboardingCourse] = useState<MainCourse>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalTime, setTotalTime] = useState(0);
+ 
+
+
 
   // funtions
     const handlePageTransition = (slug: string)=>{
@@ -37,7 +39,32 @@ const DashboardHome = () => {
     }
 
 
-  // useEffect
+  // useEffect hooks
+  {/*for getting the total time for a user*/}
+  // useEffect(() => {
+  //   if (!session) return;
+
+  //   const fetchTime = async () => {
+  //     const { count, error } = await supabase
+  //       .from('user_activity_events')
+  //       .select('*', { count: 'exact', head: true })
+  //       .eq('user_id', session.userId)
+  //       .eq('type', 'heartbeat');
+
+  //     if (error) {
+  //       console.error('Error fetching time:', error);
+  //       return;
+  //     }
+
+  //     setTotalTime((count || 0) * 30); // 30 seconds per heartbeat
+  //   };
+
+  //   fetchTime();
+  // }, [session]);
+
+
+  {/*for prefetching courses and setting onboarding course*/}
+
   useEffect(() => {
     if (!isFetched) {
       fetchCourses();
@@ -50,6 +77,7 @@ const DashboardHome = () => {
     }
   }, [courses]);
 
+  {/*for authentication redirect*/}
 
   useEffect(() => {
     if (status === "loading") return; 
@@ -91,8 +119,9 @@ const DashboardHome = () => {
           <Image src={timeIcon} alt='timer icon' className='' />
           <p className="uppercase text-[#16430C] text-[11px]/[13.86px] font-extrabold ">TIME SPENT</p>
           <p className='font-semibold text-[9px]/[12px] text-[#292828]'>
-            <span>18</span><span className="font-normal mr-1">h</span>
-            <span>24</span><span className="font-normal">m</span>
+            <span>18</span><span className="font-normal mr-1"> {Math.floor(totalTime / 60)}m</span>
+            {/* <span>24</span><span className="font-normal">m</span> */}
+            {/* {Math.floor(totalTimeInSeconds / 60)} minutes */}
           </p>
         </div>
       </section>
@@ -105,7 +134,7 @@ const DashboardHome = () => {
               <TutorialCard
                 description={onboardingCourse.description}
                 image={onboardingCourse.image}
-                price={onboardingCourse.price}
+                // price={onboardingCourse.price}
                 title={onboardingCourse.title}
                 tutor={onboardingCourse.tutor}
               />

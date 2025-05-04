@@ -168,7 +168,7 @@ export interface CourseFilters {
 
 export type  searchFilters = Pick<CourseFilters, | "department" | "level">
   
-export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "price" | "title">
+export type TutorialCardProps = Pick<MainCourse, | "tutor" | "image" | "description" | "title">
 // export interface TutorialCardProps {
 //     tutor: string | undefined,
 //     image: string | undefined,

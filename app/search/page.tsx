@@ -114,7 +114,7 @@ export default function SearchPage() {
                 image={course.image} 
                 tutor={course.tutor} 
                 description={course.description} 
-                price={course.price} 
+                // price={course.price} 
                 title={course.title}
               />
             </div>
