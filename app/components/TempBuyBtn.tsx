@@ -48,7 +48,8 @@ const TempBuyBtn = ({userId, courseId, courseSlug}: TempBuyBtnProps) => {
             // Stop confetti after 3 seconds
             setTimeout(() => setShowConfetti(false), 3000);
         }else{
-            router.push(`/auth/signin?callbackUrl=/courses/course-detail/${courseSlug}`);
+            setIsLoading(true)
+            router.push(`/auth/signIn?callbackUrl=/courses/course-detail/${courseSlug}`);
             setIsLoading(false);
         }
     }

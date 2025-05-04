@@ -39,7 +39,7 @@ const SignInClientComponent = ({callbackUrl}:{callbackUrl: string}) => {
     try {
       if (clickedBtnType === "google") {
         // Handles Google sign-in
-        const result = await signIn("google", { redirect: false });
+        const result = await signIn("google", { callbackUrl });
         if (result?.error) {
           setErrorMessage("Google sign-in failed. Please try again!")
           throw new Error("Google sign-in failed. Please try again.");

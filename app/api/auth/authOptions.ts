@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("Credentials received:", credentials);
+        // console.log("Credentials received:", credentials);
         try {
           const res = await fetch("https://tutormeapi-6w2f.onrender.com/api/v2/user/token/", {
             method: "POST",
@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const decoded = jwt.decode(accessToken) as JwtPayload;
-          console.log("Decoded jwt:" ,decoded);
+          // console.log("Decoded jwt:" ,decoded);
 
           return {
             id: String(decoded?.user_id) || "",
