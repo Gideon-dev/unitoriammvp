@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import jwt from "jsonwebtoken";
 import { JwtPayload } from "@/app/utils/interface";
-import { supabase } from "@/app/lib/supabaseClient";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -59,39 +58,39 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/auth/signIn" },
   callbacks: {
-    async signIn({ user }) {
-      const { email } = user;
-      if (!email) return false;
+    // async signIn({ user }) {
+    //   const { email } = user;
+    //   if (!email) return false;
   
-      try {
-        // Check if the user exists in Supabase
-        const { data, error } = await supabase
-          .from('users')
-          .select('id')
-          .eq('email', email)
-          .single();
+    //   try {
+    //     // Check if the user exists in Supabase
+    //     const { data, error } = await supabase
+    //       .from('users')
+    //       .select('id')
+    //       .eq('email', email)
+    //       .single();
   
-        // If not found, insert them
-        if (error && error.code === 'PGRST116') {
-          const { data: newUser, error: insertError } = await supabase
-            .from('users')
-            .insert({ email })
-            .select()
-            .single();
+    //     // If not found, insert them
+    //     if (error && error.code === 'PGRST116') {
+    //       const { data: newUser, error: insertError } = await supabase
+    //         .from('users')
+    //         .insert({ email })
+    //         .select()
+    //         .single();
   
-          if (insertError) throw insertError;
+    //       if (insertError) throw insertError;
   
-          user.supabaseId = newUser?.id;
-        } else {
-          user.supabaseId = data?.id;
-        }
+    //       user.supabaseId = newUser?.id;
+    //     } else {
+    //       user.supabaseId = data?.id;
+    //     }
   
-        return true;
-      } catch (err) {
-        console.error("Supabase signIn callback error:", err);
-        return false;
-      }
-    },  
+    //     return true;
+    //   } catch (err) {
+    //     console.error("Supabase signIn callback error:", err);
+    //     return false;
+    //   }
+    // },  
     async jwt({ account, token, user, trigger }) {
      if(user && account){
         if (account?.provider === "google" && trigger !== "update") {
