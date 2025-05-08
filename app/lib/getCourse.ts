@@ -1,7 +1,7 @@
 import { MainCourse } from "../utils/interface";
 
 export async function getCourse(slug: string | null):Promise<MainCourse | null> {
-    console.log("Fetching course with slug:", slug); // Debugging
+    // console.log("Fetching course with slug:", slug); 
 
        try {
         // const headers: Record<string, string> = {}; // Default headers

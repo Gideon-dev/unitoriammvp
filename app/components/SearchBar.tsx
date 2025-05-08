@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import searchLogo from "../../public/search-normal.svg";
 import debounce from "lodash.debounce";
-import { useCourseStore } from "../lib/useCourseStore";
+import { useCourseStore } from "../stores/useCourseStore";
 
 type SearchBarProps = {
     onSearchChange: (value: string) => void;

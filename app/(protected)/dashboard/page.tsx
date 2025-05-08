@@ -12,21 +12,25 @@ import { Suspense, useEffect, useState, useTransition } from 'react';
 import FilterIconClient from '@/app/components/FilterIconClient';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { useRouter } from 'next/navigation';
-import { useCourseStore } from '@/app/lib/useCourseStore';
+import { useCourseStore } from '@/app/stores/useCourseStore';
 import { MainCourse } from '@/app/utils/interface';
 import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
+import { useLessonProgressStore } from '@/app/stores/lessonProgressStore';
 
 
 
 
 const DashboardHome = () => {
+  // useHeartbeat();
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const {courses,fetchCourses,isFetched} = useCourseStore();
   const [onboardingCourse, setOnboardingCourse] = useState<MainCourse>();
   const [totalTime, setTotalTime] = useState(0);
+  const [totalCompletedTutorials, setTotalCompletedTutorials] = useState<string>("0");
+  const [tutorialLoading, setTotalLoading] = useState<boolean>(false);
  
 
 
@@ -40,30 +44,29 @@ const DashboardHome = () => {
 
 
   // useEffect hooks
-  {/*for getting the total time for a user*/}
-  // useEffect(() => {
-  //   if (!session) return;
+  {/*for getting the total completed tutorial for a user*/}
+  useEffect(() => {
+    if(!session)return
+    const fetchProgress = async () => {
+        setTotalLoading(true);
+      const user_id = Number(session.userId)
+      try {
+        const res = await fetch(`/api/get-completed?user_id=${user_id}`);
 
-  //   const fetchTime = async () => {
-  //     const { count, error } = await supabase
-  //       .from('user_activity_events')
-  //       .select('*', { count: 'exact', head: true })
-  //       .eq('user_id', session.userId)
-  //       .eq('type', 'heartbeat');
+        if (!res.ok) throw new Error('Failed to fetch user total completed');
 
-  //     if (error) {
-  //       console.error('Error fetching time:', error);
-  //       return;
-  //     }
+        const data = await res.json();
+        setTotalCompletedTutorials(data.total_completed);
+        setTotalLoading(false);
+      } catch (error) {
+        console.error('Error fetching progress:', error);
+      }
+    };
 
-  //     setTotalTime((count || 0) * 30); // 30 seconds per heartbeat
-  //   };
-
-  //   fetchTime();
-  // }, [session]);
+    fetchProgress();
+  }, [session]);
 
 
-  {/*for prefetching courses and setting onboarding course*/}
 
   useEffect(() => {
     if (!isFetched) {
@@ -76,6 +79,8 @@ const DashboardHome = () => {
       setOnboardingCourse(courses[0]);
     }
   }, [courses]);
+
+
 
   {/*for authentication redirect*/}
 
@@ -112,7 +117,10 @@ const DashboardHome = () => {
           <Image src={completedBg} className='absolute -right-0 -top-0' alt='background award icon'/>
           <Image src={completedIcon} alt='completed icon' className=''/>
           <p className='uppercase text-[#16430C] text-[11px]/[13.86px] font-extrabold'>Completed</p>
-          <p className="font-normal text-[9px]/[12px] text-[#292828] flex items-center gap-[3px]"><span className='text-[#292828]'>10</span>Tutorials</p>
+          <div className="font-normal text-[9px]/[12px] text-[#292828] flex items-center gap-[3px]"><span className='text-[#292828]'>
+            {tutorialLoading ? 
+            <LoadingSpinner/>: totalCompletedTutorials}</span>Tutorial(s)
+          </div>
         </div>
         <div id='timespent-bar' className='relative overflow-hidden bg-[#A1A8BC] w-[45%] rounded-xl ps-3 pe-0 py-3 flex flex-col gap-1'>
           <Image src={timeBg} alt='timer background icon' className='absolute -right-0 -top-0' />

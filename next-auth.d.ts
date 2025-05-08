@@ -20,8 +20,8 @@ declare module "next-auth/jwt" {
 
 declare module "next-auth" {
     interface User {
-        accessToken: string;
-        refreshToken: string;
+      accessToken: string;
+      refreshToken: string;
     }
 }
   
@@ -35,9 +35,21 @@ declare module "next-auth" {
     jti?: number;
     userId?: string;
     full_name?: string;
-    email?: string;
+    email?: string | null | undefined;
     username?: string;
     accessToken?: string;
     refreshToken?: string;
+    supabase_id?: string;
+    user: {
+      email?: string;
+      name?: string;
+      image?: string;
+      supabase_id?: string; 
+      [key: string]: any;    // optional catch-all for flexibility
+    };
+  }
+
+  interface User {
+    supabaseId?: string; // To be passed in the `signIn` callback
   }
 }

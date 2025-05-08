@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useTransition } from 'react';
 import SearchBar from '../components/SearchBar';
-import { useCourseStore } from '../lib/useCourseStore';
+import { useCourseStore } from '../stores/useCourseStore';
 import TutorialCard from '../components/TutorialCard';
 import HeaderBoard from '../components/HeaderBoard';
 import Image from 'next/image';

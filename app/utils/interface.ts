@@ -119,6 +119,7 @@ export interface MainCourse {
     language: string;
     level: string;
     status: string;
+    total_enrolled: string;
     tutor_course_status: string;
     featured: boolean;
     course_id: string;
@@ -127,7 +128,7 @@ export interface MainCourse {
     lectures: Lecture[];
     average_rating: number | null;
     rating_count: number;
-    review: unknown[]; // Assuming an array of reviews (modify if needed)
+    review: unknown[];
 }
 
 export interface EnrolledCourse {
@@ -188,3 +189,14 @@ export interface Dept {
     institution: number,
     name: string
 }
+
+export type MarkCompleteResponse = {
+    message: string;
+    total_completed: number;
+    completed_lessons: CompletedLesson[];
+};
+
+type CompletedLesson = {
+    variant_item_id: string;
+};
+  

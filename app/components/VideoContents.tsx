@@ -2,10 +2,11 @@ import React from 'react';
 import lockIcon from '../../public/lock-circle.svg';
 import playIcon from '../../public/play-circle.svg';
 import docuIcon from '../../public/document-text.svg';
+import completedIcon from '../../public/completed.svg';
 import Image from 'next/image';
 
 type videoPillProps = {
-  btnType: "locked"  | "open" | "document",
+  btnType: "locked"  | "open" | "document" | "complete",
   mainText?: string,
   altText: string | undefined,
   proceed: boolean,
@@ -20,7 +21,7 @@ export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillPro
     disabled={!proceed}
    
     >
-      <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : docuIcon } 
+      <Image src={btnType === "locked" ? lockIcon : btnType === "open" ? playIcon : btnType === "complete" ? completedIcon :  docuIcon } 
       width={20}
       height={20} 
       alt="video button"

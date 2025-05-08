@@ -9,11 +9,14 @@ type tabProps = {
   onSelectLecture: (lecture: Lecture) => void;
   syncVideoUrl?: (vid: string | undefined) => void;
   scrollToTop: () => void;
+  completedLessons?: Record<string, string[] >;
 }
 
-const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture, scrollToTop}) => {
+const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture, scrollToTop, completedLessons}) => {
   const [tab, setTab] = useState<"tutorial" | "reviews">("tutorial");
   const isLectureLocked = (index: number) => index !== 0 && !isEnrolled;
+
+ 
 
   return (
     <section className='w-full mt-[49px] sora'>
@@ -40,6 +43,10 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture, scrollT
             <div className='mt-6 space-y-4'>
               {course && course.lectures.map((lec,idx) => {
                 const isLocked = isLectureLocked(idx);
+                const isComplete: boolean = course.course_id && completedLessons
+                ? completedLessons[course.course_id]?.includes(lec.variant_item_id) ?? false
+                : false;
+                // console.log(isComplete);
                 return(
                 <div 
                 key={lec.variant_item_id}
@@ -53,7 +60,8 @@ const ShowTab:React.FC<tabProps>= ({isEnrolled, course, onSelectLecture, scrollT
                 className=''
                 >
                   <VideoContent
-                    btnType={isLocked ? "locked" : "open"}
+                    btnType={isLocked ? "locked" : isComplete ? "complete" : "open"}
+                    // btnType={isLocked ? "locked" : "open"}
                     mainText={lec.title}
                     altText={lec.content_duration}
                     proceed={!isLocked}

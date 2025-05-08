@@ -10,43 +10,69 @@ import BookIcon from "../../public/book-icon.svg";
 import { useEffect, useRef, useState } from "react";
 import TempBuyBtn from "./TempBuyBtn";
 import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import UserIcon from "../../public/user-heart.svg";
+import { useLessonProgressStore } from "../stores/lessonProgressStore";
 
 
 type detailProps = {
-    lectures:  Lecture[] | undefined,
+    courseId:  string | undefined,
     course: MainCourse | null,
-    isEnrolled: boolean
+    isEnrolled: boolean,
+    userId: number | undefined
 }
 
-const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
+const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) => {
+    const { data: session } = useSession();
     const [selectedLecture, setSelectedLecture] = useState<Lecture | null>( null);
-    const { data: session, status } = useSession();
     const videoRef = useRef<HTMLDivElement>(null);
+    const completedLessons = useLessonProgressStore((state) => state.completedLessons);
+    const updateLessonProgress = useLessonProgressStore((state) => state.updateLessonProgress);
+    // console.log("completed courses in Zustand",completedLessons);
+      
 
     const scrollToVideo = () => {
         videoRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     useEffect(() => {
+        const fetchCompletedLessons = async () => {
+        //   setIsLoading(true);
+        if(!courseId || !userId) return
+        try {
+            await updateLessonProgress(userId, courseId, "");
+        } catch (err) {
+            console.log(err,"error feching completed courses")
+        }
+        };
+    
+        fetchCompletedLessons();
+    }, [userId, courseId, updateLessonProgress]);
+      
+      
+    useEffect(() => {
         if (course?.lectures.length) {
             setSelectedLecture(course.lectures[0]);
         }
-    }, [course])
+    }, [course]);
  
   return (
     <div>
         <div>
             <section className="sora">
-                <nav id="details-header" className="flex items-center mb-[25px] sticky top-0 bg-[#070707] py-2">
+                <nav id="details-header" className="flex items-center mb-[25px] sticky top-0 bg-black bg-opacity-5 py-2">
                     <BackBtn/>
                     <div className="text-center w-full">
                         <p className="text-[14px]/[17.64px] font-semibold sora">Tutorial details</p>
                     </div>
                 </nav>
                 <div ref={videoRef} className="w-full h-full">
-                    <LazyVideo key={selectedLecture?.cloudflare_uid} videoUrl={selectedLecture?.cloudflare_uid} />
+                    <LazyVideo
+                    key={selectedLecture?.cloudflare_uid} 
+                    videoUrl={selectedLecture?.cloudflare_uid}
+                    courseId={courseId} 
+                    userId={Number(session?.userId)}
+                    lectureVariantId={selectedLecture?.variant_item_id}
+                    />
                 </div>
               
                 <div className='w-full pe-[2.5rem] py-[12px] flex flex-col justify-center gap-[6px]'>
@@ -56,10 +82,9 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                             <Image src={BookIcon} width={15} height={15} alt="book icon" />
                             <p className="font-semibold text-[9.28px]/[100%] sora text-[#514B07]">{course?.title}</p>
                         </div>
-                        <span id='r-and-r' className='flex items-center gap-2 text-[9.04px]/[11.39px]'>
-                            <Image src={'/star.png'} width={11} height={11} alt="rating icon"/>
-                            <p className="font-sembiold">4.5</p>
-                            <p className="font-normal text-[#9EAD9A]">200 Reviews</p>
+                        <span id='r-and-r' className='flex items-center gap-1 text-[15.04px]/[11.39px]'>
+                            <Image src={UserIcon} width={20} height={20} alt="total no of users loving this course"/>
+                            <p className="font-medium">{`${course?.total_enrolled} student(s)`}</p>
                         </span>
                     </div>
                 </div>
@@ -67,7 +92,13 @@ const CourseDetailClient = ({lectures,course,isEnrolled}: detailProps) => {
                     <UtilityBar/>
                 </div>
                 <UserBadge userName={course?.tutor}/>
-                <ShowTab isEnrolled={isEnrolled} course={course} onSelectLecture={setSelectedLecture} scrollToTop={scrollToVideo}/>
+                <ShowTab
+                 isEnrolled={isEnrolled} 
+                 course={course} 
+                 onSelectLecture={setSelectedLecture} 
+                 scrollToTop={scrollToVideo}
+                 completedLessons={completedLessons}
+                />
                 <div className="w-full flex justify-center mt-[36px] sora">
                     {!isEnrolled &&  (
                         // <BuyBtn slug={course?.slug} price={course?.price}/>

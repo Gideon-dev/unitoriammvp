@@ -5,7 +5,7 @@ import filterIcon from '../../public/filter.svg';
 import HeaderBoard from './HeaderBoard';
 import { AnimatePresence, motion } from "framer-motion";
 import { CustomDropdown } from './CustomDropdown';
-import { useCourseStore } from '../lib/useCourseStore';
+import { useCourseStore } from '../stores/useCourseStore';
 import { useRouter } from 'next/navigation';
 import searchIcon from '../../public/search-normal.svg';
 
