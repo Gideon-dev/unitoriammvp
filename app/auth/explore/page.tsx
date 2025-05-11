@@ -83,15 +83,15 @@ const page = () => {
           <p className="text-[14px]/[17.64px] font-semibold sora">Discover Tutorials</p>
         </div>
       </nav>
-      <div className="w-full flex justify-between items-center ">
-        <div className="w-[80%]">
+      <div className="w-full">
+        <div className="w-full">
           <SearchBar onSearchChange={handleSearch} defValue={query}/>
         </div>
-        <div className="flex items-center bg-[#1A1B1A] py-[8px] px-[10px] gap-[10px] rounded-[5px]">
+        {/* <div className="flex items-center bg-[#1A1B1A] py-[8px] px-[10px] gap-[10px] rounded-[5px]">
           <Image src={SettingIcon} width={10} height={10} alt="caret up icon"/>
           <p className="font-semibold text-[10px]/[100%] text-white sora"> Filters </p>
           <Image src={CaretUp} width={10} height={10} className="rotate-180" alt="filter caret down"/>
-        </div>
+        </div> */}
       </div>
       <div className="w-full h-auto overflow-y-scroll scrollbar-hide flex flex-col space-y-[21px] py-[30px] mt-4">
           {filteredCourses.length > 0 ? (

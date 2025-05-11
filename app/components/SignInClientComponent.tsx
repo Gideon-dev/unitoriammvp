@@ -1,7 +1,7 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import Image from 'next/image';
-import unitoriaLogo from '../../public/logo.svg';  
+import unitoriaLogo from '../../public/unitoria-fav-icon.svg';  
 import googleLogo from '../../public/google-icon.svg';
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from "react";
@@ -86,10 +86,12 @@ const SignInClientComponent = ({callbackUrl}:{callbackUrl: string}) => {
   
   return (
     <section className='w-full h-screen flex flex-col items-center'>  
-      <div className='w-[60%] h-auto mx-auto my-5' >
+      <div className='w-[60%] h-auto mx-auto my-5  flex justify-center items-center' >
         <Image
           src={unitoriaLogo}
           alt="logo"
+          width={100}
+          height={150}
           priority
         />
       </div>
