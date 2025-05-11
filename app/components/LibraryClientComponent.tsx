@@ -20,7 +20,12 @@ const LibraryClientComponent = ({enrolledCourses}: EnrolledCourseProps) => {
   }
   return (
     <div>
-      <BackBtn/>
+       <nav id="details-header" className="flex items-center mb-[25px] py-2">
+        <BackBtn/>
+        <div className="text-center w-full">
+          <p className="text-[14px]/[17.64px] font-semibold sora">My Tutorials</p>
+        </div>
+      </nav>
       <div className="flex flex-col gap-4 mt-3"> 
       {enrolledCourses.map((course,index) => (
           <div key={index} onClick={() => handlePageTransition(course.course_slug)}>

@@ -12,7 +12,8 @@ import { usePathname, useRouter } from "next/navigation";
     "/auth/register", 
     "/auth/signUp", 
     "/search",
-    "/auth/checkout"
+    "/auth/checkout",
+    "/auth/explore"
     ];
   const isHidden = hiddenRoutes.some((route) => pathname.startsWith(route));
      // Dynamically set active navigation based on pathname

@@ -18,13 +18,11 @@ export default function SearchPage() {
     isFetched,
     courseLoading,
     setCourseLoading
-   } = useCourseStore();
-  // console.log("this is filter in zustand: ", filters);
+  } = useCourseStore();
   const setFilters = useCourseStore((state) => state.setFilters);
   const [query, setQuery] = useState(filters.course || "");    
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  // const [courseLoading, setCourseLoading] = useState(false);
 
 
 
@@ -137,7 +135,7 @@ export default function SearchPage() {
             }
           </div>
         )}
-         {isPending && (
+        {isPending && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
             </div>

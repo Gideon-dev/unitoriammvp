@@ -10,9 +10,9 @@ type SearchBarProps = {
     defValue?: string; 
 };
 
-const   SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
-    const [query, setQuery] = useState<string|undefined>(defValue);
-    const {setFilters} = useCourseStore();
+const SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
+const [query, setQuery] = useState<string|undefined>(defValue);
+const {setFilters} = useCourseStore();
 
  
     const debouncedSearch = useMemo(
@@ -38,7 +38,7 @@ const   SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
     };
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="w-full">
             <div className='flex items-center gap-3 sora'>
                 <div className="relative w-[75%]">
                     <label htmlFor="search_query"></label>
@@ -47,9 +47,9 @@ const   SearchBar: React.FC<SearchBarProps> = ({ onSearchChange, defValue}) => {
                         id='search_query' 
                         onChange={handleInputChange} 
                         value={query}  
-                        className='py-[10px] pl-[15%] bg-[#1A1B1A] rounded-lg w-full text-[10px]/[12.6px] font-normal' 
+                        className='py-[10px] pl-[15%] ml-1.5 bg-[#1A1B1A] rounded-lg w-full text-[10px]/[12.6px] font-normal' 
                     />
-                    <Image src={searchLogo} alt="search icon" width={15} height={15} className="search-icon"/>
+                    <Image src={searchLogo} alt="search icon" width={15} height={15} className="search-icon "/>
                 </div>
                 <button 
                     onClick={handleClearSearch}
