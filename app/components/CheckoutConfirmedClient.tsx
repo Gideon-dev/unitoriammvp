@@ -4,6 +4,7 @@ import UtilityBar from '@/app/components/UtilityBar';
 import { MainCourse } from '@/app/utils/interface';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import useCourseDuration from '../utils/hooks/contentDuration';
 
 type ConfirmedClientProps = {
   course: MainCourse | null,
@@ -12,6 +13,7 @@ type ConfirmedClientProps = {
 
 const ConfirmedPageClient = ({course, payment_method}: ConfirmedClientProps) => {
   const router = useRouter();
+  const {formatted} = useCourseDuration(course?course.lectures : []);
 
  
   return (
@@ -26,7 +28,7 @@ const ConfirmedPageClient = ({course, payment_method}: ConfirmedClientProps) => 
           <div className="mt-[41px] px-2 flex flex-col gap-2 w-[95%] mx-auto">
             <p className='text-[12px]/[100%] font-semibold sora'>{course.description}</p>
             <p className='text-[#9EAD9A] text-[8px]/[100%] sora'>By <span className='text-white'>{course.tutor}</span></p>
-            <UtilityBar />
+            <UtilityBar formatted={formatted}/>
           </div>
         ) : (
           <>

@@ -3,6 +3,7 @@ import React from 'react'
 import { EnrolledCardprops, TutorialCardProps } from '../utils/interface';
 import UtilityBar from './UtilityBar';
 import BookIcon from '../../public/book-icon.svg'
+import useCourseDuration from '../utils/hooks/contentDuration';
 
 const EnrolledTutorialCard: React.FC<EnrolledCardprops> = ({
     tutor,
@@ -10,6 +11,7 @@ const EnrolledTutorialCard: React.FC<EnrolledCardprops> = ({
    topic,
    title
 }) => {
+  
   return (
     <div className="flex flex-col items-center w-full relative h-[212px] overflow-hidden rounded-[15px]">
       <div className="w-full h-[50%]" style={{backgroundImage: `url('${course_image}')`, backgroundSize: "cover", backgroundPosition: "center"}} />
@@ -27,7 +29,6 @@ const EnrolledTutorialCard: React.FC<EnrolledCardprops> = ({
                 <p className="font-normal text-[#9EAD9A]">200 Reviews</p>
             </span>
             </div>
-         <UtilityBar/> 
       </div>
     </div>
   )
