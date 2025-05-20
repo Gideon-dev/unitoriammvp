@@ -13,7 +13,7 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      courseList: courses.map((c) => c.name),
+      courseList: courses.map((c) => c.category),
       department: dept.map((c) => c.name),
     });
   } catch (error) {

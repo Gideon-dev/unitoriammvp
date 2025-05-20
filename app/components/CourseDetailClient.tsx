@@ -12,6 +12,7 @@ import TempBuyBtn from "./TempBuyBtn";
 import { useSession } from "next-auth/react";
 import UserIcon from "../../public/user-heart.svg";
 import { useLessonProgressStore } from "../stores/lessonProgressStore";
+import useCourseDuration from "../utils/hooks/contentDuration";
 
 
 type detailProps = {
@@ -27,7 +28,7 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
     const videoRef = useRef<HTMLDivElement>(null);
     const completedLessons = useLessonProgressStore((state) => state.completedLessons);
     const updateLessonProgress = useLessonProgressStore((state) => state.updateLessonProgress);
-    // console.log("completed courses in Zustand",completedLessons);
+    const {totalMinutes, formatted } = useCourseDuration(course? course.lectures : []);
       
 
     const scrollToVideo = () => {
@@ -67,11 +68,11 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
                 </nav>
                 <div ref={videoRef} className="w-full h-full">
                     <LazyVideo
-                    key={selectedLecture?.cloudflare_uid} 
-                    videoUrl={selectedLecture?.cloudflare_uid}
-                    courseId={courseId} 
-                    userId={Number(session?.userId)}
-                    lectureVariantId={selectedLecture?.variant_item_id}
+                        key={selectedLecture?.cloudflare_uid} 
+                        videoUrl={selectedLecture?.cloudflare_uid}
+                        courseId={courseId} 
+                        userId={Number(session?.userId)}
+                        lectureVariantId={selectedLecture?.variant_item_id}
                     />
                 </div>
               
@@ -89,7 +90,7 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
                     </div>
                 </div>
                 <div className="mt-[13px]">
-                    <UtilityBar/>
+                    <UtilityBar formatted={formatted}/>
                 </div>
                 <UserBadge userName={course?.tutor}/>
                 <ShowTab

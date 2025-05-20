@@ -29,7 +29,7 @@ const DashboardHome = () => {
   const {courses,fetchCourses,isFetched} = useCourseStore();
   const [onboardingCourse, setOnboardingCourse] = useState<MainCourse>();
   const [totalTime, setTotalTime] = useState(0);
-  const [totalCompletedTutorials, setTotalCompletedTutorials] = useState<string>("0");
+  const [totalCompletedTutorials, setTotalCompletedTutorials] = useState<number>(0);
   const [tutorialLoading, setTotalLoading] = useState<boolean>(false);
  
 
@@ -117,7 +117,7 @@ const DashboardHome = () => {
           <Image src={completedBg} className='absolute -right-0 -top-0' alt='background award icon'/>
           <Image src={completedIcon} alt='completed icon' className=''/>
           <p className='uppercase text-[#16430C] text-[11px]/[13.86px] font-extrabold'>Completed</p>
-          <div className="font-normal text-[9px]/[12px] text-[#292828] flex items-center gap-[3px]"><span className='text-[#292828]'>
+          <div className="font-normal text-[9px]/[12px] text-[#292828] flex items-center gap-[3px]"><span className='text-[#292828] font-bold'>
             {tutorialLoading ? 
             <LoadingSpinner/>: totalCompletedTutorials}</span>Tutorial(s)
           </div>

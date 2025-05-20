@@ -52,7 +52,7 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
         : true)
     );
   
-    console.log("Finally filtered:", filtered);
+    // console.log("Finally filtered:", filtered);
     set({ filteredCourses: filtered });
   },
   setCourseLoading: (val: boolean) => set({ courseLoading: val })
