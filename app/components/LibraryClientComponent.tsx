@@ -1,13 +1,13 @@
 "use client";
 import { useTransition } from "react";
-import { EnrolledCourse } from "../utils/interface"
+import { NewEnrolledCourseProps } from "../utils/interface"
 import BackBtn from "./BackBtn"
 import EnrolledTutorialCard from "./EnrolledCard";
 import LoadingSpinner from "./LoadingSpinner";
 import { useRouter } from "next/navigation";
 
 type EnrolledCourseProps = {
-  enrolledCourses: EnrolledCourse[];
+  enrolledCourses: NewEnrolledCourseProps[];
 }
 
 const LibraryClientComponent = ({enrolledCourses}: EnrolledCourseProps) => {
@@ -32,8 +32,8 @@ const LibraryClientComponent = ({enrolledCourses}: EnrolledCourseProps) => {
               <EnrolledTutorialCard
                 course_image={course.course_image}
                 tutor={course.tutor}
-                topic={course.lectures[0].title}
-                title={course.course}
+                topic={course.course.description}
+                title={course.course.title}
               />
           </div>
           ))}

@@ -145,6 +145,25 @@ export interface EnrolledCourse {
     review: string | null; // Course review (if available)
     enrollment_id: string; // Unique enrollment ID
 }
+export interface NewEnrolledCourseProps{
+    course: NewEnrolled; // Course ID or name (e.g., "GEL121")
+    course_slug: string; // Unique course slug (e.g., "gel12141cfOpqSZ2")
+    course_image: string; // Course image URL
+    user: string; // User email
+    tutor: string; // Tutor name
+    lectures: EnrolledLecture[]; // List of enrolled lectures
+    completed_lesson?: any[]; // Define proper type if available
+    curriculum?: any[]; // Define proper type if available
+    note?: any[]; // Define proper type if available
+    question_answer?: any[]; // Define proper type if available
+    review: string | null; // Course review (if available)
+    enrollment_id: string; // Unique enrollment ID
+}
+export interface NewEnrolled{
+    title: string;
+    description: string
+}
+
 
 // Define the EnrolledLecture interface if not already defined
 export interface EnrolledLecture {
