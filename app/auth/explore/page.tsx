@@ -76,7 +76,7 @@ const page = () => {
 
 
   return (
-    <section className="flex flex-col overflow-y-hidden w-full h-screen">
+    <section className="flex flex-col overflow-y-hidden w-full h-full">
       <nav id="details-header" className="flex items-center mb-[25px] py-2">
         <BackBtn/>
         <div className="text-center w-full">

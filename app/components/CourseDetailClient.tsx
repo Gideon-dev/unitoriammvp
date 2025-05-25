@@ -28,7 +28,8 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
     const videoRef = useRef<HTMLDivElement>(null);
     const completedLessons = useLessonProgressStore((state) => state.completedLessons);
     const updateLessonProgress = useLessonProgressStore((state) => state.updateLessonProgress);
-    const {totalMinutes, formatted } = useCourseDuration(course? course.lectures : []);
+    const {formatted } = useCourseDuration(course? course.lectures : []);
+    const totalLecture: number   = course ? course.lectures.length : 1;
       
 
     const scrollToVideo = () => {
@@ -90,7 +91,7 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
                     </div>
                 </div>
                 <div className="mt-[13px]">
-                    <UtilityBar formatted={formatted}/>
+                    <UtilityBar formatted={formatted} totalLecture={totalLecture}/>
                 </div>
                 <UserBadge userName={course?.tutor}/>
                 <ShowTab

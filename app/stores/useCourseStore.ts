@@ -25,7 +25,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
     set({ courseLoading: true });
     try {
       const { data } = await apiClient.get<MainCourse[]>("https://tutormeapi-6w2f.onrender.com/api/v2/course/course-list/");
-      // console.log("Fetched Courses:", data);
       set({ courses: data, filteredCourses: data , isFetched:true}); // Store and initialize filtered list
     } catch (error) {
       console.error("Error fetching courses, from zustand:", error);
@@ -51,8 +50,6 @@ export const useCourseStore = create<CourseStore>((set, get) => ({
           )
         : true)
     );
-  
-    // console.log("Finally filtered:", filtered);
     set({ filteredCourses: filtered });
   },
   setCourseLoading: (val: boolean) => set({ courseLoading: val })

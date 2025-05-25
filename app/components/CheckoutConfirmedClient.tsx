@@ -14,6 +14,8 @@ type ConfirmedClientProps = {
 const ConfirmedPageClient = ({course, payment_method}: ConfirmedClientProps) => {
   const router = useRouter();
   const {formatted} = useCourseDuration(course?course.lectures : []);
+    const totalLecture: number   = course ? course.lectures.length : 1;
+
 
  
   return (
@@ -28,7 +30,7 @@ const ConfirmedPageClient = ({course, payment_method}: ConfirmedClientProps) => 
           <div className="mt-[41px] px-2 flex flex-col gap-2 w-[95%] mx-auto">
             <p className='text-[12px]/[100%] font-semibold sora'>{course.description}</p>
             <p className='text-[#9EAD9A] text-[8px]/[100%] sora'>By <span className='text-white'>{course.tutor}</span></p>
-            <UtilityBar formatted={formatted}/>
+            <UtilityBar formatted={formatted} totalLecture={totalLecture}/>
           </div>
         ) : (
           <>

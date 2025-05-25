@@ -16,13 +16,11 @@ import { useCourseStore } from '@/app/stores/useCourseStore';
 import { MainCourse } from '@/app/utils/interface';
 import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
-import { useLessonProgressStore } from '@/app/stores/lessonProgressStore';
 
 
 
 
 const DashboardHome = () => {
-  // useHeartbeat();
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

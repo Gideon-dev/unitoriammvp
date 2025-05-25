@@ -1,21 +1,19 @@
 import Image from 'next/image';
 import React from 'react'
-import { EnrolledCardprops, TutorialCardProps } from '../utils/interface';
-import UtilityBar from './UtilityBar';
+import { EnrolledCardprops } from '../utils/interface';
 import BookIcon from '../../public/book-icon.svg'
-import useCourseDuration from '../utils/hooks/contentDuration';
 
 const EnrolledTutorialCard: React.FC<EnrolledCardprops> = ({
-    tutor,
-   course_image,
-   topic,
-   title
+  tutor,
+  course_image,
+  topic,
+  title
 }) => {
   
   return (
     <div className="flex flex-col items-center w-full relative h-[212px] overflow-hidden rounded-[15px]">
-      <div className="w-full h-[50%]" style={{backgroundImage: `url('${course_image}')`, backgroundSize: "cover", backgroundPosition: "center"}} />
-      <div className='w-full h-[50%] px-[17px] py-[12px] flex flex-col justify-center gap-[6px] bg-[#1A1B1A]'>
+      <div className="w-full h-[60%]" style={{backgroundImage: `url('${course_image}')`, backgroundSize: "cover", backgroundPosition: "center"}} />
+      <div className='w-full h-[40%] px-[17px] py-[12px] flex flex-col justify-center gap-[6px] bg-[#1A1B1A]'>
             <p className="text-[10px]/[12.6px] text-[#9EAD9A] flex items-center gap-1">By<span id='tutor-name' className="text-[#FAFAFA]">{tutor}</span></p>
             <p id="tut-topic" className="font-semibold text-[12px]/[15.12px]">{topic}</p>
             <div className="flex items-center gap-2">

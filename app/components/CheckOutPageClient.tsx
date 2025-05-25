@@ -14,7 +14,9 @@ type CheckoutProps ={
     const flutterWaveRef = useRef<HTMLButtonElement | null>(null);
     const payStackRef = useRef<HTMLButtonElement | null>(null);
     const [gateway, setGateway] = useState<string>("");
-        const {formatted } = useCourseDuration(course? course.lectures : []);   
+    const {formatted } = useCourseDuration(course? course.lectures : []); 
+    const totalLecture: number   = course ? course.lectures.length : 1;
+
 
     const handleSelect = (selected: "flutterwave" | "paystack") => {
         if (selected === "flutterwave") {
@@ -44,7 +46,7 @@ type CheckoutProps ={
             <div className='flex flex-col gap-[5px] mt-[15px]'>
                 <p className="font-semibold font-[14px]/[17.64px] sora">{course?.description}</p>
                 <p className='text-[#9EAD9A] text-[10px]/[12.6px] sora'>By <span className='text-white'>{course?.tutor}</span></p>
-                <UtilityBar formatted={formatted}/>
+                <UtilityBar formatted={formatted} totalLecture={totalLecture}/>
             </div>
             <div className='mt-[30px] sora'>
                 <h1 className={`${headingStyles} sora`}>Billing Summary</h1>
