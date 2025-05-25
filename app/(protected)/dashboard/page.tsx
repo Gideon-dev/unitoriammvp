@@ -96,7 +96,7 @@ const DashboardHome = () => {
         </div>
         <div className='flex flex-col gap-3'>
           <p className='text-[14px]/[12px]  font-semibold capitalize'>
-          {`Hey ${status === "authenticated" ? session.user?.name || session?.full_name : "..fetching username"} `}
+          {`Hey ${status === "authenticated" ? session.user?.name || session?.full_name : "Loading..."} `}
           </p>
           <p id="" className="font-normal text-[10px]/[12.6px]">Welcome back to learning!!</p> 
         </div>

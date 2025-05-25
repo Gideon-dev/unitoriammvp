@@ -91,13 +91,13 @@ import searchIcon from '../../public/search-normal.svg';
                        
                       <div>
                         <HeaderBoard mainHead="Search filter" nextHead='Reset' styles='mb-[36px]'/>
-                        <CustomDropdown 
+                        {/* <CustomDropdown 
                          labelName="Course"
                          placeholder='Search courses here'
                          toDisplay={courseList}
                          onSelect={(value)=> handleSelectDropdown("course", value) }
                           isLoading={loading}
-                        />
+                        /> */}
                         <CustomDropdown 
                           labelName="Level"
                           placeholder='Search your level here' 
