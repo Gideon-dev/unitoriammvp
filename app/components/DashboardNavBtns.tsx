@@ -14,7 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
     "/search",
     "/auth/checkout",
     "/courses/course-detail"
-    ];
+  ];
   const isHidden = hiddenRoutes.some((route) => pathname.startsWith(route));
      // Dynamically set active navigation based on pathname
   const getActivePage = () => {
