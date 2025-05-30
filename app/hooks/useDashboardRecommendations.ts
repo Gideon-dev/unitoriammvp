@@ -16,7 +16,6 @@ const fetcher = async (url: string) => {
   }
 
   const data = await response.json();
-  console.log('Fetched data:', data);
   
   if (!Array.isArray(data)) {
     console.error('Invalid response format:', data);

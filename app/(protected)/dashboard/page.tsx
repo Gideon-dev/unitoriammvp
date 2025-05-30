@@ -155,7 +155,7 @@ const DashboardHome = () => {
         <RecommendedSkeleton />
       }
 
-      <button
+      {/* <button
         onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
         className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
       >
@@ -166,7 +166,7 @@ const DashboardHome = () => {
         ) : (
           <p> Sign Out</p>
         ) }
-      </button>
+      </button> */}
       {isPending &&
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <LoadingSpinner/>

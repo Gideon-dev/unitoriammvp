@@ -34,7 +34,6 @@ export async function GET(
     }
 
     const data = await response.json();
-    console.log('API Response Data:', data);
 
     // Type check the response
     if (!Array.isArray(data)) {

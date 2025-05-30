@@ -1,8 +1,13 @@
+"use client";
 import Image from "next/image";
 import rateIcon from "../../public/star.png";
 import { EnrolledCourse, MainCourse, NewEnrolledCourseProps, RatedBoxProps } from "../utils/interface";
 import BookIcon from "../../public/book-icon.svg";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import LoadingSpinner from "./LoadingSpinner";
+import { FullLoadingSpinner } from "./FullLoadingSpinner";
 
 type RatedCourses = {
     dataRated?: MainCourse[] | NewEnrolledCourseProps[];
@@ -19,6 +24,13 @@ function isMainCourse(course: MainCourse | EnrolledCourse): course is MainCourse
 }
 
 const RatedItems = ({dataRated, isEnrolled = false}: RatedCourses) => {
+    const router = useRouter();
+    const [isLoading, startTransition] = useTransition();
+    function HandleNavigation(item: MainCourse | NewEnrolledCourseProps){
+        startTransition(()=>{
+            router.push(`/courses/course-detail/${isEnrolledCourse(item) ? item.course_slug : item.slug}`)
+        })
+    }
     return(
         <section className='w-full flex gap-8 overflow-x-scroll pt-3 pb-3'>
           {dataRated && dataRated.map((item: MainCourse | NewEnrolledCourseProps)=> {
@@ -28,9 +40,9 @@ const RatedItems = ({dataRated, isEnrolled = false}: RatedCourses) => {
             }
 
             return (
-              <Link 
+              <div 
                 key={isEnrolledCourse(item) ? item.enrollment_id : item.id} 
-                href={`/courses/course-detail/${isEnrolledCourse(item) ? item.course_slug : item.slug}`}
+                onClick={()=>HandleNavigation(item)}
                 className="min-w-[48%]"
               >
                 <RatedItem
@@ -39,7 +51,10 @@ const RatedItems = ({dataRated, isEnrolled = false}: RatedCourses) => {
                     tut_topic={isEnrolledCourse(item) ? item.course.description : item.description}
                     course_code={isEnrolledCourse(item) ? item.course.title : item.name}
                 />
-              </Link>
+                <>
+                    {isLoading && <FullLoadingSpinner/>}
+                </>
+              </div>
             );
           })}
         </section>

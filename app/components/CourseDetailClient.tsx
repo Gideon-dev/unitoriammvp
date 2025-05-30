@@ -16,7 +16,8 @@ import useCourseDuration from "../utils/hooks/contentDuration";
 import VideoShimmer from "./VideoShimmer";
 import RecommendedSkeleton from "./RecommendedSkeleton";
 
-const LazyVideo = lazy(() => import("./LazyVideo"));
+// Wrap the video component in a separate component to better handle loading states
+const VideoPlayer = lazy(() => import("./VideoPlayer"));
 
 // Dynamically import RecommendedCorner
 const RecommendedCorner = dynamic(() => import('./RecommendedDetailCorner'), {
@@ -29,6 +30,25 @@ type detailProps = {
     course: MainCourse | null,
     isEnrolled: boolean,
     userId: number | undefined
+}
+
+// Separate Video Component for better suspense handling
+function VideoSection({ selectedLecture, courseId, userId }: { 
+    selectedLecture: Lecture | null, 
+    courseId: string | undefined,
+    userId: number | undefined 
+}) {
+    return (
+        <Suspense fallback={<VideoShimmer />}>
+            <VideoPlayer
+                key={selectedLecture?.cloudflare_uid}
+                videoUrl={selectedLecture?.cloudflare_uid}
+                courseId={courseId}
+                userId={userId}
+                lectureVariantId={selectedLecture?.variant_item_id}
+            />
+        </Suspense>
+    );
 }
 
 const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) => {
@@ -77,15 +97,11 @@ const CourseDetailClient = ({courseId,course,isEnrolled,userId}: detailProps) =>
                 </div>
             </nav>
             <div ref={videoRef} className="w-full h-full">
-                <Suspense fallback={<VideoShimmer />}>
-                    <LazyVideo
-                        key={selectedLecture?.cloudflare_uid} 
-                        videoUrl={selectedLecture?.cloudflare_uid}
-                        courseId={courseId} 
-                        userId={Number(session?.userId)}
-                        lectureVariantId={selectedLecture?.variant_item_id}
-                    />
-                </Suspense>
+                <VideoSection 
+                    selectedLecture={selectedLecture}
+                    courseId={courseId}
+                    userId={Number(session?.userId)}
+                />
             </div>
             
             <div className='w-full pe-[2.5rem] py-[12px] flex flex-col justify-center gap-[6px]'>
