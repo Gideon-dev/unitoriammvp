@@ -12,25 +12,25 @@ const fetcher = async (url: string) => {
 interface UseRelatedCoursesProps {
   category: string;
   courseId: number;
+  limit?: number;
 }
 
-export function useRelatedCourses({ category, courseId }: UseRelatedCoursesProps) {
-    // console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+export function useRelatedCourses({ category, courseId, limit = 4 }: UseRelatedCoursesProps) {
   const { data, error, isLoading } = useSWR<MainCourse[]>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v2/course/course-list/`,
+    `/api/courses/list`,
     fetcher,
     {
-      revalidateOnFocus: false, // Don't revalidate on window focus
-      revalidateOnReconnect: true, // Revalidate when browser regains connection
-      refreshInterval: 300000, // Refresh every 5 minutes
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      refreshInterval: 300000, // 5 minutes
     }
   );
 
-  const relatedCourses = data?.filter(
-    (course) =>
-      course.category.toLowerCase() === category.toLowerCase() &&
-      course.id !== courseId
-  ) || [];
+  // Filter related courses
+  const relatedCourses = data?.filter(course => 
+    course.category.toLowerCase() === category.toLowerCase() && 
+    course.id !== courseId
+  )?.slice(0, limit) || [];
 
   return {
     courses: relatedCourses,
