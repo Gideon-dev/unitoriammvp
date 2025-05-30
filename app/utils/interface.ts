@@ -37,10 +37,7 @@ export interface RatedBoxProps {
     course_jpg: string,
     author_name: string,
     tut_topic: string,
-    subject_icon: string,
-    price: number,
-    isNew: boolean;
-    id?: number
+    course_code: string
 }
 
 
@@ -132,32 +129,32 @@ export interface MainCourse {
 }
 
 export interface EnrolledCourse {
-    course: string; // Course ID or name (e.g., "GEL121")
-    course_slug: string; // Unique course slug (e.g., "gel12141cfOpqSZ2")
-    course_image: string; // Course image URL
-    user: string; // User email
-    tutor: string; // Tutor name
-    lectures: EnrolledLecture[]; // List of enrolled lectures
-    completed_lesson?: any[]; // Define proper type if available
-    curriculum?: any[]; // Define proper type if available
-    note?: any[]; // Define proper type if available
-    question_answer?: any[]; // Define proper type if available
-    review: string | null; // Course review (if available)
-    enrollment_id: string; // Unique enrollment ID
+    course: string; 
+    course_slug: string; 
+    course_image: string;
+    user: string; 
+    tutor: string;
+    lectures: EnrolledLecture[]; 
+    completed_lesson?: any[]; 
+    curriculum?: any[]; 
+    note?: any[]; 
+    question_answer?: any[]; 
+    review: string | null; 
+    enrollment_id: string; 
 }
 export interface NewEnrolledCourseProps{
-    course: NewEnrolled; // Course ID or name (e.g., "GEL121")
-    course_slug: string; // Unique course slug (e.g., "gel12141cfOpqSZ2")
-    course_image: string; // Course image URL
-    user: string; // User email
-    tutor: string; // Tutor name
-    lectures: EnrolledLecture[]; // List of enrolled lectures
-    completed_lesson?: any[]; // Define proper type if available
-    curriculum?: any[]; // Define proper type if available
-    note?: any[]; // Define proper type if available
-    question_answer?: any[]; // Define proper type if available
-    review: string | null; // Course review (if available)
-    enrollment_id: string; // Unique enrollment ID
+    course: NewEnrolled; 
+    course_slug: string; 
+    course_image: string; 
+    user: string; 
+    tutor: string; 
+    lectures: EnrolledLecture[]; 
+    completed_lesson?: any[]; 
+    curriculum?: any[];
+    note?: any[]; 
+    question_answer?: any[]; 
+    review: string | null; 
+    enrollment_id: string; 
 }
 export interface NewEnrolled{
     title: string;

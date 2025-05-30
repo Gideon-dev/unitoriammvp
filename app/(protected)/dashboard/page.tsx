@@ -153,7 +153,7 @@ const DashboardHome = () => {
 
       <section id="rated-section" className='w-full'>
         <HeaderBoard mainHead='Top Rated' nextHead='See all'/> 
-        <RatedItems/>
+        {/* <RatedItems/> */}
       </section>
       <button
         onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
