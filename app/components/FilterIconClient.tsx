@@ -15,7 +15,7 @@ import searchIcon from '../../public/search-normal.svg';
 //     department: string[]
 // }
 
- const FilterIconClient= () => {
+ const FilterIconClient = () => {
   const  {setFilters} = useCourseStore();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);

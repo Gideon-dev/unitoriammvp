@@ -17,7 +17,7 @@ type videoPillProps = {
 export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillProps) =>{
 
   return(
-    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 cursor-pointer' 
+    <button className='w-full rounded-xl flex gap-1 bg-[#1A1B1A] text-white items-center sora p-3 cursor-pointer text-left' 
     disabled={!proceed}
    
     >
@@ -30,7 +30,7 @@ export const VideoContent = ({btnType, mainText, altText, proceed}: videoPillPro
         <p className="text-[10px]/[18px] font-semibold text-[#D1D1D6] ">
         {mainText}
         </p>
-        <p className="text-[8px]/[14px] font-normal">
+        <p className="text-[8px]/[14px] font-normal shrink-0">
         {altText}
         </p>
       </span>

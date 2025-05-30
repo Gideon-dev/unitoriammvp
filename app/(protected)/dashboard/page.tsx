@@ -16,6 +16,8 @@ import { useCourseStore } from '@/app/stores/useCourseStore';
 import { MainCourse } from '@/app/utils/interface';
 import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
+import DashboardRecommendations from '@/app/components/DashboardRecommendations';
+import RecommendedSkeleton from '@/app/components/RecommendedSkeleton';
 
 
 
@@ -104,13 +106,11 @@ const DashboardHome = () => {
 
       <section id='search-section' className="">
         <div id="filter-box" className=''>
-          <Suspense fallback={<p>...</p>}>
-            <FilterIconClient /> 
-          </Suspense>
+          <FilterIconClient />
         </div> 
       </section>
 
-      <section id='status-section' className='w-full h-full flex justify-between items-center sora'>
+      <section id='status-section' className='w-full h-auto flex justify-between items-center sora'>
         <div id='completed-bar' className='relative overflow-hidden bg-[#A5C69D] w-[45%] rounded-xl ps-3 pe-0 py-3 flex flex-col gap-1'>
           <Image src={completedBg} className='absolute -right-0 -top-0' alt='background award icon'/>
           <Image src={completedIcon} alt='completed icon' className=''/>
@@ -140,7 +140,6 @@ const DashboardHome = () => {
               <TutorialCard
                 description={onboardingCourse.description}
                 image={onboardingCourse.image}
-                // price={onboardingCourse.price}
                 title={onboardingCourse.title}
                 tutor={onboardingCourse.tutor}
               />
@@ -151,10 +150,11 @@ const DashboardHome = () => {
         </Suspense>
       </section>
 
-      <section id="rated-section" className='w-full'>
-        <HeaderBoard mainHead='Top Rated' nextHead='See all'/> 
-        {/* <RatedItems/> */}
-      </section>
+      {session?.userId ? 
+        <DashboardRecommendations userId={session.userId} /> :
+        <RecommendedSkeleton />
+      }
+
       <button
         onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
         className="px-4 py-2 bg-red-500 text-white rounded-md w-full"

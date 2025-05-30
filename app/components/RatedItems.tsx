@@ -1,32 +1,50 @@
 import Image from "next/image";
 import rateIcon from "../../public/star.png";
-import { MainCourse, RatedBoxProps } from "../utils/interface";
+import { EnrolledCourse, MainCourse, NewEnrolledCourseProps, RatedBoxProps } from "../utils/interface";
 import BookIcon from "../../public/book-icon.svg";
 import Link from "next/link";
 
 type RatedCourses = {
-    dataRated: MainCourse[]
+    dataRated?: MainCourse[] | NewEnrolledCourseProps[];
+    isEnrolled?: boolean;
 }
 
-const RatedItems = ({dataRated}: RatedCourses) => {
+// Type guard functions to check the type of course
+function isEnrolledCourse(course: MainCourse | NewEnrolledCourseProps): course is NewEnrolledCourseProps {
+    return 'course_image' in course && 'enrollment_id' in course;
+}
+
+function isMainCourse(course: MainCourse | EnrolledCourse): course is MainCourse {
+    return 'id' in course && 'image' in course;
+}
+
+const RatedItems = ({dataRated, isEnrolled = false}: RatedCourses) => {
     return(
         <section className='w-full flex gap-8 overflow-x-scroll pt-3 pb-3'>
-          {dataRated.map((item)=> (
-            <Link key={item.id} href={`/courses/${item.id}`} className="min-w-[48%]">
+          {dataRated && dataRated.map((item: MainCourse | NewEnrolledCourseProps)=> {
+            if (!isEnrolledCourse(item) && !isMainCourse(item)) {
+              console.error('Invalid course type:', item);
+              return null;
+            }
+
+            return (
+              <Link 
+                key={isEnrolledCourse(item) ? item.enrollment_id : item.id} 
+                href={`/courses/course-detail/${isEnrolledCourse(item) ? item.course_slug : item.slug}`}
+                className="min-w-[48%]"
+              >
                 <RatedItem
-                    key={item.id}
+                    course_jpg={isEnrolledCourse(item) ? item.course_image : item.image}
                     author_name={item.tutor}
-                    tut_topic={item.description}
-                    course_jpg={item.image}
-                    course_code={item.name}
+                    tut_topic={isEnrolledCourse(item) ? item.course.description : item.description}
+                    course_code={isEnrolledCourse(item) ? item.course.title : item.name}
                 />
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </section>
     )
 };
-
-
 
 export const RatedItem = ({
     course_jpg, 
@@ -34,10 +52,11 @@ export const RatedItem = ({
     tut_topic,
     course_code
 }: RatedBoxProps) => {
+    const src = course_jpg.startsWith('http') ? course_jpg : `https://res.cloudinary.com/dtlz2vhof/${course_jpg}`;
   return (
     <div className='relative flex flex-col aspect-square w-full rounded-[10px] overflow-hidden sora cursor-pointer'>
         <div 
-        style={{backgroundImage: `url('https://res.cloudinary.com/dtlz2vhof/${course_jpg}')`, backgroundPosition: "top", backgroundSize:"cover", backgroundRepeat:"no-repeat"}}
+        style={{backgroundImage: `url('${src}')`, backgroundPosition: "top", backgroundSize:"cover", backgroundRepeat:"no-repeat"}}
         className="w-full h-[55%] overflow-hidden"
         />
         <div className='w-full h-auto flex flex-col gap-1 bg-[#1A1B1A] pl-3 pt-2 pb-2'>
@@ -55,11 +74,5 @@ export const RatedItem = ({
     </div>
   )
 }
-
-
-
-
-
-
 
 export default RatedItems;

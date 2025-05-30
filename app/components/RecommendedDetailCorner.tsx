@@ -10,7 +10,7 @@ interface RecommendedCornerProps {
   courseId: number;
 }
 
-export default function RecommendedCorner({ category, courseId }: RecommendedCornerProps) {
+export default function RecommendedDetailCorner({ category, courseId }: RecommendedCornerProps) {
   const { courses, isLoading, isError } = useRelatedCourses({ category, courseId });
 
   if (isError) {

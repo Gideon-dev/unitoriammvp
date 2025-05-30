@@ -19,7 +19,7 @@ import RecommendedSkeleton from "./RecommendedSkeleton";
 const LazyVideo = lazy(() => import("./LazyVideo"));
 
 // Dynamically import RecommendedCorner
-const RecommendedCorner = dynamic(() => import('./RecommendedCorner'), {
+const RecommendedCorner = dynamic(() => import('./RecommendedDetailCorner'), {
     loading: () => <RecommendedSkeleton/>,
     ssr: true // Enable SSR as this component handles its own loading state
 });
