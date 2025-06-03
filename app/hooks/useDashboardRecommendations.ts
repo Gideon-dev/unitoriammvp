@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { NewEnrolledCourseProps } from '../utils/interface';
 
 const fetcher = async (url: string) => {
-  console.log('Fetching from URL:', url);
+  // console.log('Fetching from URL:', url);
   const response = await fetch(url);
   
   if (!response.ok) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {formBtnProps } from '../utils/interface'
+import { formBtnProps } from '../utils/interface'
 import Image from 'next/image'
 import LoadingSpinner from './LoadingSpinner'
 
@@ -11,11 +11,19 @@ const FormBtn: React.FC<formBtnProps> = ({
     btnName,
     isDisabled,
     id,
-    isLoading
+    isLoading,
+    onClick,
+    type = 'submit' // Default to submit if not provided
 }) => {
   return (
     <div id={id}>
-      <button type='submit' name={btnName} className={`w-full rounded-[15px] flex justify-center items-center gap-5  ${btnStyling}`} disabled={isDisabled}>
+      <button 
+        type={type}
+        name={btnName}
+        className={`w-full rounded-[15px] flex justify-center items-center gap-5 ${btnStyling}`}
+        disabled={isDisabled}
+        onClick={onClick}
+      >
         {isLoading ? (
           <div className='w-full flex justify-center items-center'>
             <LoadingSpinner/>

@@ -1,11 +1,4 @@
 "use client";
-import Image from 'next/image';
-import UserImage from '../../../public/user-picture.png';
-import completedIcon from '../../../public/completed-icon.svg';
-import completedBg from '../../../public/award.svg';
-import timeIcon from '../../../public/time-icon.svg';
-import timeBg from '../../../public/timer.svg';
-import RatedItems from '../../components/RatedItems';
 import HeaderBoard from '../../components/HeaderBoard';
 import { signOut, useSession } from "next-auth/react";
 import { Suspense, useEffect, useState, useTransition } from 'react';   
@@ -16,11 +9,11 @@ import { useCourseStore } from '@/app/stores/useCourseStore';
 import { MainCourse } from '@/app/utils/interface';
 import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
-import DashboardRecommendations from '@/app/components/DashboardRecommendations';
 import RecommendedSkeleton from '@/app/components/RecommendedSkeleton';
 import StatusSection from '@/app/components/StatusSection';
 import UserBanner from '@/app/components/UserBanner';
 
+import dynamic from 'next/dynamic';
 const DashboardHome = () => {
   const { data: session, status } = useSession();
   const [isPending, startTransition] = useTransition();
@@ -32,6 +25,11 @@ const DashboardHome = () => {
   const [tutorialLoading, setTotalLoading] = useState<boolean>(false);
  
 
+  
+  const DashboardRecommendations = dynamic(() => import('@/app/components/DashboardRecommendations'), {
+    ssr: true,
+    loading: () => <RecommendedSkeleton/>
+  });
 
 
   // funtions
@@ -130,13 +128,12 @@ const DashboardHome = () => {
         </Suspense>
       </section>
 
-      <Suspense fallback={<RecommendedSkeleton />}>
-        {session?.userId ? (
-          <DashboardRecommendations userId={session.userId} />
-        ) : (
-          <RecommendedSkeleton />
-        )}
-      </Suspense>
+      {session?.userId ? (
+        <DashboardRecommendations userId={session.userId} />
+      ) : (
+        <RecommendedSkeleton />
+      )}
+      <button className='bg-red-500 text-white px-4 py-2 rounded-md mb-40' onClick={() => signOut({ callbackUrl: "/auth/signIn" })}>Sign Out</button>
 
       {isPending && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">

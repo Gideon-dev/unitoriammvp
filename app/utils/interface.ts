@@ -7,25 +7,29 @@ import { StaticImageData } from "next/image";
 }
 
 export interface genericInputProps {
-    id?: string,
-    parentClass?: string,
-    inputClass?: string,
-    type?:string,
-    placeholder?: string,
-    label?: string,
-    value?: string,
+    id: string;
+    parentClass?: string;
+    inputClass?: string;
+    type?: string;
+    placeholder?: string;
+    label?: string;
+    value?: string;
     handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    error?: string;
+    ref?: React.Ref<HTMLInputElement>;
 }
 
 export interface formBtnProps {
-    btnStyling?: string,
-    btnlabel?: string,
-    icon?: StaticImageData | string,
-    iconStyle?: string,
-    btnName: string,
-    isDisabled?: boolean,
-    id?: string,
-    isLoading?: boolean
+    btnStyling?: string;
+    btnlabel: string;
+    icon?: any;
+    iconStyle?: string;
+    btnName?: string;
+    isDisabled?: boolean;
+    id?: string;
+    isLoading?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    type?: 'button' | 'submit' | 'reset';
 }
   
 export interface signInFormSchema {

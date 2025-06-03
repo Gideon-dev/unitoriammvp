@@ -79,10 +79,10 @@ export const RatedItem = ({
             <h1 className="text-[10px]/[12.08px] font-semibold capitalize pr-3">{tut_topic.toLowerCase()}</h1>
             <div className="text-[4px]/[5.04px] flex items-center gap-1">
                     <div className="flex items-center gap-1 bg-[#CDC784] border-[#514B07] border-2 rounded-lg h-[25px] px-2 py-3">
-                        <Image src={BookIcon} width={15} height={15} alt="book icon" />
-                        <p className="font-semibold text-[9.28px]/[100%] sora text-[#514B07]">{course_code}</p>
+                      <Image src={BookIcon} width={15} height={15} alt="book icon" />
+                      <p className="font-semibold text-[9.28px]/[100%] sora text-[#514B07]">{course_code}</p>
                     </div>
-                <Image src={rateIcon} width={10} height={10} alt="5-star rating"/>
+                <Image src={rateIcon} width={0} height={0} className='w-[10px] h-[10px]' alt="5-star rating"/>
                 <p className="font-semibold">4.5 <span className="font-nomal text-[#9EAD9A]">200 reviews</span></p>
             </div>
         </div>

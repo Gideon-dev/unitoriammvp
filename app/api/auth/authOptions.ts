@@ -6,7 +6,6 @@ import { JwtPayload } from "@/app/utils/interface";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
-  debug: false,
   session: { strategy: 'jwt' },
   providers: [
     CredentialsProvider({

@@ -21,7 +21,7 @@ const TutorialCard: React.FC<TutorialCardProps> = ({
             <p className="font-semibold text-[9.28px]/[100%] sora text-[#514B07]">{title}</p>
           </div>
           <span id='r-and-r' className='flex items-center gap-2 text-[9.04px]/[11.39px]'>
-            <Image src={'/star.png'} width={11} height={11} alt="rating icon"/>
+            <Image src={'/star.png'} width={0} height={0} className='w-[11px] h-[11px]' alt="rating icon"/>
             <p className="font-sembiold">4.5</p>
             <p className="font-normal text-[#9EAD9A]">200 Reviews</p>
           </span>
