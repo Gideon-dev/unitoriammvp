@@ -18,9 +18,8 @@ import TutorialCard from '@/app/components/TutorialCard';
 import SkeletonCard from '@/app/components/ShimmerSkeleton';
 import DashboardRecommendations from '@/app/components/DashboardRecommendations';
 import RecommendedSkeleton from '@/app/components/RecommendedSkeleton';
-
-
-
+import StatusSection from '@/app/components/StatusSection';
+import UserBanner from '@/app/components/UserBanner';
 
 const DashboardHome = () => {
   const { data: session, status } = useSession();
@@ -36,22 +35,28 @@ const DashboardHome = () => {
 
 
   // funtions
-    const handlePageTransition = (slug: string)=>{
-      startTransition(()=>{
-        router.push(`/courses/course-detail/${slug}`)
-      })
-    }
+  const handlePageTransition = (slug: string)=>{
+    startTransition(()=>{
+      router.push(`/courses/course-detail/${slug}`)
+    })
+  }
 
 
   // useEffect hooks
   {/*for getting the total completed tutorial for a user*/}
   useEffect(() => {
-    if(!session)return
+    if(!session) return;
+    
     const fetchProgress = async () => {
-        setTotalLoading(true);
-      const user_id = Number(session.userId)
+      setTotalLoading(true);
+      const user_id = Number(session.userId);
       try {
-        const res = await fetch(`/api/get-completed?user_id=${user_id}`);
+        const res = await fetch(`/api/get-completed?user_id=${user_id}`, {
+          next: { 
+            revalidate: 300, // Revalidate every 5 minutes
+            tags: ['userProgress']
+          }
+        });
 
         if (!res.ok) throw new Error('Failed to fetch user total completed');
 
@@ -60,6 +65,7 @@ const DashboardHome = () => {
         setTotalLoading(false);
       } catch (error) {
         console.error('Error fetching progress:', error);
+        setTotalLoading(false);
       }
     };
 
@@ -92,17 +98,7 @@ const DashboardHome = () => {
   
   return (
     <div className='flex flex-col gap-7 h-screen'>
-      <div id="user-banner" className='w-full flex items-center gap-5 sora'>
-        <div className='w-[46px] aspect-square'>
-          <Image src={UserImage} className='rounded-[50%]' alt='user image'/>
-        </div>
-        <div className='flex flex-col gap-3'>
-          <p className='text-[14px]/[12px]  font-semibold capitalize'>
-          {`Hey ${status === "authenticated" ? session.user?.name || session?.full_name : "Loading..."} `}
-          </p>
-          <p id="" className="font-normal text-[10px]/[12.6px]">Welcome back to learning!!</p> 
-        </div>
-      </div>
+      <UserBanner user={session?.user} status={status} />
 
       <section id='search-section' className="">
         <div id="filter-box" className=''>
@@ -110,27 +106,11 @@ const DashboardHome = () => {
         </div> 
       </section>
 
-      <section id='status-section' className='w-full h-auto flex justify-between items-center sora'>
-        <div id='completed-bar' className='relative overflow-hidden bg-[#A5C69D] w-[45%] rounded-xl ps-3 pe-0 py-3 flex flex-col gap-1'>
-          <Image src={completedBg} className='absolute -right-0 -top-0' alt='background award icon'/>
-          <Image src={completedIcon} alt='completed icon' className=''/>
-          <p className='uppercase text-[#16430C] text-[11px]/[13.86px] font-extrabold'>Completed</p>
-          <div className="font-normal text-[9px]/[12px] text-[#292828] flex items-center gap-[3px]"><span className='text-[#292828] font-bold'>
-            {tutorialLoading ? 
-            <LoadingSpinner/>: totalCompletedTutorials}</span>Tutorial(s)
-          </div>
-        </div>
-        <div id='timespent-bar' className='relative overflow-hidden bg-[#A1A8BC] w-[45%] rounded-xl ps-3 pe-0 py-3 flex flex-col gap-1'>
-          <Image src={timeBg} alt='timer background icon' className='absolute -right-0 -top-0' />
-          <Image src={timeIcon} alt='timer icon' className='' />
-          <p className="uppercase text-[#16430C] text-[11px]/[13.86px] font-extrabold ">TIME SPENT</p>
-          <p className='font-semibold text-[9px]/[12px] text-[#292828]'>
-            <span>18</span><span className="font-normal mr-1"> {Math.floor(totalTime / 60)}m</span>
-            {/* <span>24</span><span className="font-normal">m</span> */}
-            {/* {Math.floor(totalTimeInSeconds / 60)} minutes */}
-          </p>
-        </div>
-      </section>
+      <StatusSection 
+        totalCompletedTutorials={totalCompletedTutorials}
+        totalTime={totalTime}
+        tutorialLoading={tutorialLoading}
+      />
 
       <section id="tutorials-section" className='flex flex-col gap-[20px] sora'>
         <HeaderBoard mainHead='Tutorials for you' nextHead='see all'/>
@@ -150,28 +130,19 @@ const DashboardHome = () => {
         </Suspense>
       </section>
 
-      {session?.userId ? 
-        <DashboardRecommendations userId={session.userId} /> :
-        <RecommendedSkeleton />
-      }
-
-      {/* <button
-        onClick={() => startTransition(() => signOut({ callbackUrl: "/auth/signIn" }))} 
-        className="px-4 py-2 bg-red-500 text-white rounded-md w-full"
-      >
-        {isPending ? (
-          <div className='w-full flex justify-center items-center'>
-            <LoadingSpinner/>
-          </div>
+      <Suspense fallback={<RecommendedSkeleton />}>
+        {session?.userId ? (
+          <DashboardRecommendations userId={session.userId} />
         ) : (
-          <p> Sign Out</p>
-        ) }
-      </button> */}
-      {isPending &&
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <RecommendedSkeleton />
+        )}
+      </Suspense>
+
+      {isPending && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
           <LoadingSpinner/>
         </div>
-      }
+      )}
     </div>
   )
 }
